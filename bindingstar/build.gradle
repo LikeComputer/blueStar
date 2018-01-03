@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+//apply from: 'bintrayUpload.gradle'
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.support.recyclerview
+    implementation deps.support.app_compat
+    implementation deps.support.design
+    implementation deps.logger
+    implementation deps.jtabstrip
+    implementation deps.rxbinding
+    implementation deps.gson
+    implementation deps.rxjava2
+    implementation deps.rx_android
+    implementation deps.jstatelayout
+    compileOnly deps.lifecycle.runtime
+    compileOnly deps.lifecycle.extensions
+    annotationProcessor deps.lifecycle.compiler
+//    implementation 'com.yun.ospl:bindingcollectionadapter:1.0.1'
+//    implementation 'com.yun.ospl:easybindpagelist:0.1.15'
+    implementation project(':bindingcollectionadapter')
+    implementation project(':easybindpagelist')
+}

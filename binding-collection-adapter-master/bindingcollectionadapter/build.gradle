@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+//apply from: 'bintrayUpload.gradle'
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    compileOnly deps.support.recyclerview
+    compileOnly deps.lifecycle.runtime
+    compileOnly deps.lifecycle.extensions
+    annotationProcessor deps.lifecycle.compiler
+}
+
+//apply from: '../publish.gradle'
+

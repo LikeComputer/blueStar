@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+apply from: 'bintrayUpload.gradle'
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+dependencies {
+    compileOnly deps.support.recyclerview
+    compileOnly deps.jstatelayout
+    compileOnly deps.lifecycle.runtime
+    compileOnly deps.lifecycle.extensions
+    compileOnly deps.rxjava2
+    annotationProcessor deps.lifecycle.compiler
+//    implementation 'com.yun.ospl:bindingcollectionadapter:1.0.1'
+    implementation project(':bindingcollectionadapter')
+}

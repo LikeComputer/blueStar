@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <import type="me.tatarka.bindingcollectionadapter.sample.ItemViewModel" />
+
+        <variable
+            name="recViewModel"
+            type="me.tatarka.bindingcollectionadapter.sample.RecycleViewModel" />
+        <variable
+            name="viewModel"
+            type="easybind.jzy.bindingstar.loadmorehelper.BaseLoadmoreViewModel" />
+        <variable
+            name="listeners"
+            type="me.tatarka.bindingcollectionadapter.sample.Listeners" />
+
+        <import type="me.tatarka.bindingcollectionadapter2.recv.LayoutManagers" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/com_pagelist_layout"
+            layout="@layout/com_pagelist_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            bind:pageViewModel="@{recViewModel}"/>
+
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--bind:loadmoreControl="@{recViewModel.mLoadmoreControl}"-->
+            <!--bind:itemBinding="@{recViewModel.multipleItems}"-->
+            <!--bind:dataList="@{recViewModel.godLists}"-->
+            <!--bind:layoutManager="@{recViewModel.layoutManager}" />-->
+
+        <LinearLayout
+            style="?buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/add_ad"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClickListener="@{() -> listeners.onAddItem()}"
+                android:text="Add Item" />
+            <Button
+                android:id="@+id/remove"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClickListener="@{() -> listeners.onRemoveItem()}"
+                android:text="Remove Item" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

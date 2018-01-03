@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 列表数据为ExtrasBindViewModel类型 include该布局
+  ~ ViewModel 必须jzy.easybindpagelist.loadmorehelper.LoadMoreViewModelel
+  ~                     jzy.easybindpagelist.loadmorehelper.AbsLoadMoreViewModeldelodel<ExtrasBindViewModel>
+  ~                     jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel<ExtrasBindViewModel>
+  ~  <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:pageViewModel="@{pagelistViewModel}"
+            layout="@layout/object_pagelist_layout"/>
+  ~
+  -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="me.tatarka.bindingcollectionadapter2.itembindings.ExtrasBindViewModel"/>
+        <!--// Error:(11) Error parsing XML: duplicate attribute -->
+        <!--//这个错误的原因是  layout 标签和布局标签 使用了 重复的命名空间 命名空间重复产生了冲突 layout下的命名空间会被合并到最外层布局里面-->
+        <import type="jzy.easybindpagelist.ScrollChildSwipeRefreshLayout"/>
+
+        <variable
+            name="pageViewModel"
+            type="jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel&lt;ExtrasBindViewModel&gt;"/>
+        <!--tyjzy.easybindpagelist.loadmorehelper.LoadMoreViewModelel2"/>-->
+        <!--如果数据是泛型 需要指定数据类型 使用的时候泛型必须要匹配-->
+        <!--type="jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel&lt;Object&gt;"/>-->
+    </data>
+
+    <jonas.jlayout.MultiStateLayout
+        android:id="@+id/joutter_multl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        bind:layoutChange="@{pageViewModel}"
+        bind:onRetryListener="@{pageViewModel}"
+        bind:registEmpty="@{pageViewModel.pageEmptyRes}"
+        bind:registError="@{pageViewModel.pageErrorRes}"
+        bind:registLoading="@{pageViewModel.pageLoadingRes}"
+        bind:loadingColor="@{pageViewModel.pageLoadingColorInt}"
+        bind:showState="@{pageViewModel.pageState}">
+
+        <jzy.easybindpagelist.ScrollChildSwipeRefreshLayout
+            android:id="@+id/jswipe_refrl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onRefresh="@{pageViewModel}"
+            bind:enableRefresh="@{pageViewModel.enableSwipeRefresh}"
+            bind:isRefreshing="@{pageViewModel.down2Refreshing}"
+            bind:layoutChange="@{pageViewModel}">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/jpage_recyv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:dataList="@{pageViewModel.godLists}"
+                bind:itemBinding="@{pageViewModel.multipleItems}"
+                bind:layoutChange="@{pageViewModel}"
+                bind:layoutManager="@{pageViewModel.layoutManager}"
+                bind:loadmoreControl="@{pageViewModel.mLoadmoreControl}"/>
+        </jzy.easybindpagelist.ScrollChildSwipeRefreshLayout>
+    </jonas.jlayout.MultiStateLayout>
+</layout>
