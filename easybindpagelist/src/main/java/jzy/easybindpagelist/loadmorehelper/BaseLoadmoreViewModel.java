@@ -9,8 +9,6 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import jonas.jlayout.MultiStateLayout;
-import jzy.easybindpagelist.ScrollChildSwipeRefreshLayout;
 import jzy.easybindpagelist.statehelper.PageDiffState;
 import jzy.easybindpagelist.statehelper.StateDiffViewModel;
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList;
@@ -57,7 +55,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      * <b>《接口返回的集合数据被添加到{@link #mDataLists}JObservableList通过changecallback通知adapter增删改 》</b><br>
      * <b>《对RecycleView列表的增删改操作只需要对{@link #mDataLists}执行增删改即可 》</b>
      */
-    public JObservableList<ID> mDataLists = new JObservableList<>();
+    private JObservableList<ID> mDataLists = new JObservableList<>();
 
     /**
      * 列表数据容器{@link #godLists} 在处理上拉加载的ViewModel 中<br>
@@ -71,7 +69,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
     /**
      * 注册 不同类型布局及其布局变量ID(data binding传数据给布局的方式通过BR.id方式) 和 对应的class数据类型
      */
-    public final OnItemBindClass<ID> multipleItems = wrapperLoadMoreBinding(new OnItemBindClass<>());
+    private final OnItemBindClass<ID> multipleItems = wrapperLoadMoreBinding(new OnItemBindClass<>());
     //======  分页 ====
     public static final long FIRST_PAGE = 1;
     /**
@@ -90,10 +88,15 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
     /**
      * 用于下拉刷新全部数据的时候 比较数据差异
      */
-    DiffObservableList mDiffObservableList = new DiffObservableList(mDataLists);
+    private DiffObservableList mDiffObservableList = new DiffObservableList(mDataLists);
 
-    protected RecyclerView mRecyclerView;
-    protected MultiStateLayout mMultiStateLayout;
+    //todo 不引用 view
+//    protected RecyclerView mRecyclerView;
+//    protected MultiStateLayout mMultiStateLayout;
+
+    {
+        registItemTypes(multipleItems);
+    }
 
     /**
      * 不同的layoutmanager复写该方法即可
@@ -113,10 +116,6 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      */
     protected abstract void registItemTypes(OnItemBindClass<ID> multipleItems);
 
-    {
-        registItemTypes(multipleItems);
-    }
-
     /**
      * <a href="https://developer.android.com/topic/libraries/architecture/viewmodel.html"><b> Caution: A ViewModel must never reference a view, Lifecycle, or any class that may hold a reference to the activity context.</b></a>
      *
@@ -125,22 +124,31 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      */
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom){
-        if(v instanceof RecyclerView) {
-            mRecyclerView = (RecyclerView)v;
-            if(mSwipeRefreshLayout != null) {
-                mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
-            }
-        }else if(v instanceof SwipeRefreshLayout) {
-            mSwipeRefreshLayout = (ScrollChildSwipeRefreshLayout)v;
-            if(mRecyclerView != null) {
-                mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
-            }
-        }else if(v instanceof MultiStateLayout) {
-            mMultiStateLayout = (MultiStateLayout)v;
-        }
+//        if(v instanceof RecyclerView) {
+//            mRecyclerView = (RecyclerView)v;
+//            if(mSwipeRefreshLayout != null) {
+//                mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
+//            }
+//        }else if(v instanceof SwipeRefreshLayout) {
+//            mSwipeRefreshLayout = (ScrollChildSwipeRefreshLayout)v;
+//            if(mRecyclerView != null) {
+//                mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
+//            }
+//        }else if(v instanceof MultiStateLayout) {
+//            mMultiStateLayout = (MultiStateLayout)v;
+//        }
+    }
+
+    public OnItemBindClass<ID> getMultipleItems(){
+        return multipleItems;
     }
 
     // ========================== 上拉加载 逻辑 ==============================
+
+
+    public JObservableList<ID> getDataLists(){
+        return mDataLists;
+    }
 
     public boolean isFirstPage(){
         return mCurrentPage == FIRST_PAGE;
@@ -242,6 +250,10 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         godLists.insertItem(mLoadmoreFootViewModel);
     }
 
+    /**
+     * 将数据刷新到mDataList 不是第一页需要判断是否有下一页
+     * @param listData
+     */
     @Override
     public void showPageStateSuccess(List<ID> listData){
         super.showPageStateSuccess(listData);
@@ -260,8 +272,16 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      *
      * @param newData
      */
-    protected final void refreshedAllData(List<ID> newData){
-        refreshedAllData(newData, false);
+    protected void refreshedAllData(List<ID> newData){
+        checkOrignParam();
+        LOG("=========== refreshedAllData ===========", newData.size());
+        if(mDataLists.isEmpty()) {
+            mDataLists.addAll(newData);
+        }else {
+            mDataLists.clear();
+            mDataLists.addAll(newData);
+        }
+        hideLoading();
     }
 
     /**
@@ -270,21 +290,25 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      * @param newData
      * @param detectMoves
      */
-    protected void refreshedAllData(List<ID> newData, boolean detectMoves){
+    protected final void refreshedAllData(List<ID> newData, boolean detectMoves){
         checkOrignParam();
         LOG("=========== refreshedAllData ===========", newData.size());
         if(mDataLists.isEmpty()) {
             mDataLists.addAll(newData);
         }else {
-            mDataLists.clear();
-            mDataLists.addAll(newData);
-            //ID不一定是 IRecvDataDiff 的子类
-            //            if(!mDiffObservableList.set(mDataLists).detectMoves(detectMoves).update(newData)) {
-            //                mDataLists.clear();
-            //                mDataLists.addAll(newData);
-            //            }
+//            mDataLists.clear();
+//            mDataLists.addAll(newData);
+            //newData 不一定是 IRecvDataDiff 的子类  差异计算必须是IRecvDataDiff的子类
+            if(!mDiffObservableList.set(mDataLists).detectMoves(detectMoves).update(newData)) {
+                mDataLists.clear();
+                mDataLists.addAll(newData);
+            }
         }
         hideLoading();
+    }
+
+    protected void addItemData(ID item){
+        mDataLists.add(item);
     }
 
     public void addMoreData(List<ID> moreData){

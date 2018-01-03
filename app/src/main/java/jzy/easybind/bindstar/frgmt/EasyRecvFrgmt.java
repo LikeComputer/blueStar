@@ -35,8 +35,7 @@ public class EasyRecvFrgmt extends Fragment {
 //        ComPagelistLayoutBinding c = (ComPagelistLayoutBinding)binding.comPagelistLayout;
 //        viewModel.setRecvItemClick(this);
         binding.setPagelistViewModel(viewModel);
-        viewModel.registLife(this);
-        viewModel.toSubscribeData(new HashMap());
+        viewModel.registOrignParam(new HashMap()).registLife(this);
 //        binding.setListeners(new Listeners(viewModel));
         binding.executePendingBindings();
         return binding.getRoot();

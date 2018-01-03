@@ -11,6 +11,7 @@ import me.tatarka.bindingcollectionadapter2.itembindings.OnItemBindClass;
 /**
  * @another 江祖赟
  * @date 2017/12/18.
+ * <ID extends IRecvDataDiff>
  * view 中 第一次发起数据请求调用 {@link #subscribeData(Object)}<br>
  * viewModel 中实际请求网络接口需要实现 {@link #onSubscribeData(Object)}<br>
  * {@link #onSubscribeData(Object)}拿到数据成功之后 根据结果调用{@link #refreshedAllData(List)},{@link #addMoreData(List, boolean)}<br>

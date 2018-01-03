@@ -3,9 +3,12 @@ package jzy.easybindpagelist.statehelper;
 import android.arch.lifecycle.GenericLifecycleObserver;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LiveData;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
@@ -16,6 +19,7 @@ import jonas.jlayout.OnStateClickListener;
 import jzy.easybindpagelist.ScrollChildSwipeRefreshLayout;
 import me.tatarka.bindingcollectionadapter2.itembindings.ExtrasBindViewModel;
 
+import static android.arch.lifecycle.Lifecycle.State.DESTROYED;
 import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_UNMODIFY;
 import static me.tatarka.bindingcollectionadapter2.Utils.LOG;
 
@@ -24,7 +28,7 @@ import static me.tatarka.bindingcollectionadapter2.Utils.LOG;
  * @date 2017/12/16.
  * 带有 泛型 不能在 databinding里面 作为变量 引用
  */
-public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel implements OnStateClickListener, View.OnLayoutChangeListener, GenericLifecycleObserver {
+public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel implements OnStateClickListener, View.OnLayoutChangeListener,LifecycleOwner, GenericLifecycleObserver {
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     public CharSequence pageStateMsg;
     public ObservableInt pageState = new ObservableInt(MultiStateLayout.LayoutState.STATE_LOADING);
@@ -34,6 +38,9 @@ public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel impleme
     public ObservableInt pageLoadingColorInt = new ObservableInt(STATE_UNMODIFY);
     protected Object mOrignParam;
     protected ScrollChildSwipeRefreshLayout mSwipeRefreshLayout;
+    //转发 View的生命周期
+    private LifecycleRegistry mLifecycleRegistry = new LifecycleRegistry(this);
+    protected LiveData<SD> mDestData;
 
     /**
      * 显示 SwipeRefreshLayout 刷新状态
@@ -70,29 +77,32 @@ public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel impleme
      * <li>{@link #pageErrorRes}</li>
      * <li>{@link #pageLoadingColorInt}</li>
      */
-    public void customMultiStateLayoutRes(){
+    protected void customMultiStateLayoutRes(){
 
     }
 
     /**
-     * 由 view 发起请求数据<br>
+     * <s>由 view 发起请求数据</s><br>
+     * <B>在{@link StateDiffViewModel}中会自己根据传入的act,frgmt的生命周期在create的时候触发</B><br>
      * <b>主要是保存 原始请求参数 下拉上拉加载数据的时候需要用到</b>
      *
      * @param orignParam
      */
-    public void subscribeData(Object orignParam){
+    @Deprecated
+    protected void subscribeData(Object orignParam){
         mOrignParam = orignParam;
         onSubscribeData(mOrignParam);
     }
 
     /**
+     * <B>在{@link StateDiffViewModel}中会自己根据传入的act,frgmt的生命周期在create的时候触发</B><br>
      * 实际请求数据 实现逻辑<br>
      * {@link #subscribeData(Object)}保留 请求参数之后 会回掉
      * <b>下拉刷新，上拉加载 都是回掉该方法 请求数据的</b>
-     *
+     * <br>通过使用{@link LiveData}的方式获取数据{@link StateDiffViewModel}就是一个{@link LifecycleOwner}
      * @param orignParam
      */
-    public abstract void onSubscribeData(Object orignParam);
+    protected abstract void onSubscribeData(Object orignParam);
 
     public void onRefresh(SwipeRefreshLayout swipeRefreshLayout){
         LOG("=========== onRefresh ===========");
@@ -180,6 +190,7 @@ public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel impleme
 
     @Override
     public void onLoadingCancel(){
+        //todo
     }
 
     /**
@@ -195,29 +206,40 @@ public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel impleme
         enableSwipeRefresh.set(enable);
     }
 
+    public StateDiffViewModel<SD> registOrignParam(Object orignParam){
+       mOrignParam = orignParam;
+        return this;
+    }
+
+    //=================== about lifecircle ==========================
     @Override
     protected void onCleared(){
         clearDisposables();
     }
 
     public StateDiffViewModel<SD> registLife(LifecycleOwner owner){
+        if (owner.getLifecycle().getCurrentState() == DESTROYED) {
+            // ignore
+            return this;
+        }
         owner.getLifecycle().addObserver(this);
-//        owner.getLifecycle().getCurrentState();
-        return this;
-    }
-
-    public StateDiffViewModel<SD> registOrignParam(Object orignParam){
-       mOrignParam = orignParam;
         return this;
     }
 
 
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle(){
+        return mLifecycleRegistry;
+    }
 
     @Override
     public void onStateChanged(LifecycleOwner source, Lifecycle.Event event){
         mCurrentEvent = event;
+        mLifecycleRegistry.handleLifecycleEvent(event);
         LOG(source,"LifecycleOwner 当前状态",event);
         if(event == Lifecycle.Event.ON_DESTROY) {
+            LOG(source,"移除当前生命周期 观察者");
             source.getLifecycle().removeObserver(this);
         }else if(event == Lifecycle.Event.ON_CREATE) {
             onSubscribeData(mOrignParam);

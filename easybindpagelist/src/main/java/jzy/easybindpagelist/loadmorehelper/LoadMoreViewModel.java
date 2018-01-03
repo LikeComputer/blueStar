@@ -5,9 +5,9 @@ import android.databinding.Observable;
 import java.util.HashMap;
 import java.util.List;
 
+import jzy.easybindpagelist.statehelper.StateDiffViewModel;
+import me.tatarka.bindingcollectionadapter2.collections.IRecvDataDiff;
 import me.tatarka.bindingcollectionadapter2.itembindings.ExtrasBindViewModel;
-
-import static me.tatarka.bindingcollectionadapter2.Utils.LOG;
 
 /**
  * @another 江祖赟
@@ -17,14 +17,29 @@ import static me.tatarka.bindingcollectionadapter2.Utils.LOG;
  * {@link #onSubscribeData(Object)}拿到数据成功之后 根据结果调用{@link #refreshedAllData(List)},{@link #addMoreData(List, boolean)}<br>
  * <b>接口返回的数据列表的javaBean需要更新对应的item界面必须继承{@link Observable},使用LoadMoreViewModel2必须继承自{@link ExtrasBindViewModel}</b>
  */
-public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<ExtrasBindViewModel> {
+public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<IRecvDataDiff> {
 
     private HashMap mMapParam;
 
-    public final void toSubscribeData(HashMap mapParam){
+    /**
+     * 该方法在本类中 已过时<br>
+     *     必须使用{@link #registOrignParam(HashMap)}传入请求参数
+     * @param orignParam
+     * @return
+     */
+    @Deprecated
+    @Override
+    public StateDiffViewModel<List<IRecvDataDiff>> registOrignParam(Object orignParam){
+        if(orignParam != null) {
+            throw new RuntimeException("该方法在本类中 已过时,必须使用{@link #registOrignParam(HashMap)}传入请求参数");
+        }
+        return super.registOrignParam(orignParam);
+    }
+
+    public LoadMoreViewModel registOrignParam(HashMap mapParam){
         putOrignParam(mapParam);
         mMapParam = mapParam;
-        toGetData(mMapParam);
+        return this;
     }
 
     /**
@@ -34,14 +49,6 @@ public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<ExtrasBindV
     @Override
     public void onSubscribeData(Object orignParam){
         toGetData(mMapParam);
-    }
-
-    /**
-     * 界面 第一次发起请求 调用 {@link #toSubscribeData(HashMap)}
-     */
-    @Override
-    public final void subscribeData(Object orignParam){
-        super.subscribeData(orignParam);
     }
 
     /**
@@ -65,18 +72,8 @@ public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<ExtrasBindV
      */
     public abstract void toGetData(HashMap mapParam);
 
-    protected final void refreshedAllData(List<ExtrasBindViewModel> newData, boolean detectMoves){
-        checkOrignParam();
-        LOG("=========== refreshedAllData ===========", newData.size());
-        if(mDataLists.isEmpty()) {
-            mDataLists.addAll(newData);
-        }else {
-            //计算差异
-            if(!mDiffObservableList.set(mDataLists).detectMoves(detectMoves).update(newData)) {
-                mDataLists.clear();
-                mDataLists.addAll(newData);
-            }
-        }
-        hideLoading();
+    @Override
+    protected void refreshedAllData(List<IRecvDataDiff> newData){
+        super.refreshedAllData(newData, false);
     }
 }

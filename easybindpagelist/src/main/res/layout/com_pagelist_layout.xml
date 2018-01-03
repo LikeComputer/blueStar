@@ -17,13 +17,14 @@
     <data>
 
         <import type="me.tatarka.bindingcollectionadapter2.itembindings.ExtrasBindViewModel"/>
+        <import type="me.tatarka.bindingcollectionadapter2.collections.IRecvDataDiff"/>
         <!--// Error:(11) Error parsing XML: duplicate attribute -->
         <!--//这个错误的原因是  layout 标签和布局标签 使用了 重复的命名空间 命名空间重复产生了冲突 layout下的命名空间会被合并到最外层布局里面-->
         <import type="jzy.easybindpagelist.ScrollChildSwipeRefreshLayout"/>
 
         <variable
             name="pageViewModel"
-            type="jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel&lt;ExtrasBindViewModel&gt;"/>
+            type="jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel&lt;IRecvDataDiff&gt;"/>
         <!--tyjzy.easybindpagelist.loadmorehelper.LoadMoreViewModelel2"/>-->
         <!--如果数据是泛型 需要指定数据类型 使用的时候泛型必须要匹配-->
         <!--type="jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel&lt;Object&gt;"/>-->

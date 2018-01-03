@@ -3,6 +3,8 @@ package jzy.easybindpagelist.loadmorehelper;
 import java.util.HashMap;
 import java.util.List;
 
+import jzy.easybindpagelist.statehelper.StateDiffViewModel;
+
 /**
  * @another 江祖赟
  * @date 2017/12/18.
@@ -15,27 +17,35 @@ public abstract class LoadMoreObjectViewModel extends AbsLoadMoreViewModel<Objec
 
     private HashMap mMapParam;
 
-    public final void toSubscribeData(HashMap mapParam){
+    /**
+     * 该方法在本类中 已过时<br>
+     *     必须使用{@link #registOrignParam(HashMap)}传入请求参数
+     * @param orignParam
+     * @return
+     */
+    @Deprecated
+    @Override
+    public StateDiffViewModel<List<Object>> registOrignParam(Object orignParam){
+        if(orignParam != null) {
+            throw new RuntimeException("该方法在本类中 已过时,必须使用{@link #registOrignParam(HashMap)}传入请求参数");
+        }
+        return super.registOrignParam(orignParam);
+    }
+
+    public LoadMoreObjectViewModel registOrignParam(HashMap mapParam){
         putOrignParam(mapParam);
         mMapParam = mapParam;
-        toGetData(mMapParam);
+        return this;
     }
 
     /**
      * {@link #subscribeData(Object)}保留 请求参数之后 会回掉
+     *
      * @param orignParam
      */
     @Override
     public void onSubscribeData(Object orignParam){
         toGetData(mMapParam);
-    }
-
-    /**
-     * 界面 第一次发起请求 调用 {@link #toSubscribeData(HashMap)}
-     */
-    @Override
-    public final void subscribeData(Object orignParam){
-        super.subscribeData(orignParam);
     }
 
     /**
@@ -56,6 +66,7 @@ public abstract class LoadMoreObjectViewModel extends AbsLoadMoreViewModel<Objec
      * </li>
      * <li>数据异常(空/网络异常) ，直接调用{@link #showPageStateError(int)},或者 {@link #showPageStateError(int, String)}
      * <br>要显示的错误状态{PAGE_STATE_EMPTY,PAGE_STATE_EMPTY}具体看{@link jzy.easybindpagelist.statehelper.PageDiffState}</li>
+     * <br>推荐使用{@link android.arch.lifecycle.LiveData}
      */
     public abstract void toGetData(HashMap mapParam);
 

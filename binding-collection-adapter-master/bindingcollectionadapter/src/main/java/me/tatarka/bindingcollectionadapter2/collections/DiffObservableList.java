@@ -83,6 +83,7 @@ public class DiffObservableList<T extends IRecvDataDiff> implements ListUpdateCa
             return true;
         }catch(Exception e) {
             Log.e(TAG, " list中的元素 并非全部为 IRecvDataDiff 的子类 无法进行差异判断");
+            Log.e(TAG, Log.getStackTraceString(e));
             return false;
         }
     }
