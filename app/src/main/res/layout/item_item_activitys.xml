@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_jbackground"
+              android:orientation="vertical"
+              android:paddingBottom="10dp"
+              android:paddingLeft="14dp"
+              android:paddingRight="14dp"
+              android:paddingTop="2dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp">
+
+        <ImageView
+            android:id="@+id/item_walfare_activitys_pic"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:scaleType="centerCrop"
+            tools:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/item_walfare_activitys_title"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom"
+            android:background="@color/j_black_a70"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/card_pading_8"
+            android:paddingRight="40dp"
+            android:textColor="@color/j_white"
+            android:textSize="14dp"
+            tools:text="六一送礼物"/>
+
+
+        <TextView
+            android:id="@+id/item_walfare_activitys_status"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom|right"
+            android:gravity="left|center_vertical"
+            android:paddingRight="@dimen/card_pading_8"
+            android:textColor="@color/red060"
+            android:textSize="14dp"
+            tools:text="进行中"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/item_walfare_activitys_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:maxLines="1"
+        android:text="@string/item_walfare_activitys_desc"
+        android:textColor="@color/black333"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/item_walfare_activitys_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/item_walfare_activitys_duration"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"/>
+
+</LinearLayout>

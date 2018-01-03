@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    tools:context=".vp.workshop.topic.detail.TopicDetailAt">
+
+    <ImageView
+        android:id="@+id/at_ws_topic_detail_iv_blurbg"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:fitsSystemWindows="true"
+        android:foreground="@drawable/selector_jforground"
+        android:onClick="backfinish">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:src="@drawable/icon_btn_back"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/at_ws_topic_detail_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/jbase_swipe"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="86dp"
+        android:shadowColor="@color/common_line"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="3"
+        android:text="新手教程"
+        android:textColor="@color/j_white"
+        android:textSize="15dp"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/jbase_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/at_ws_topic_detail_iv_blurbg"
+        android:clipChildren="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/at_ws_topic_detail_iv_blurbg"
+            android:background="@color/common_line"
+            android:clipChildren="false">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:background="@color/j_white"
+                android:clipChildren="false">
+
+                <com.blueprint.widget.JCimageView
+                    android:id="@+id/at_ws_topic_detail_iv_icon"
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="-31dp"
+                    android:elevation="24dp"
+                    android:src="@mipmap/ic_launcher"/>
+
+                <TextView
+                    android:id="@+id/at_ws_topic_detail_tv_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="86dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="14dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="6dp"
+                    android:maxLines="2"
+                    android:text="测试策士测试策士测试策士测试策士测试策士测试策士测试策士测试策士测试策士"
+                    android:textColor="@color/gray666"
+                    android:textSize="12dp"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/jbase_recv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="62dp"/>
+
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

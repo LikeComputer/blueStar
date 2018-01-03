@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutAnimation="@anim/layaniscalecenter"
+                android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="12dp">
+
+        <Space
+            android:id="@+id/item_center_temp"
+            android:layout_width="12dip"
+            android:layout_height="1dip"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/item_wshop_recom_image2_1"
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:layout_toLeftOf="@+id/item_center_temp"
+            android:foreground="@drawable/selector_jforground"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"/>
+
+        <ImageView
+            android:id="@+id/item_wshop_recom_image2_2"
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:layout_toRightOf="@+id/item_center_temp"
+            android:foreground="@drawable/selector_jforground"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"/>
+    </RelativeLayout>
+</RelativeLayout>

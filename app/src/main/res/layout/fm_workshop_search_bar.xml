@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/raiders_titlebar_search"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="28dp"
+    android:layout_centerInParent="true"
+    android:layout_marginEnd="14dp"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:layout_marginStart="14dp"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/frgmt_wshorp_home_local"
+        android:layout_width="34dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="10dp"
+        android:src="@drawable/icon_btn_localdata"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/frgmt_wshorp_home_local"
+        android:background="@drawable/round_search_bar_bg">
+
+        <TextView
+            android:id="@+id/common_search_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/icon_ass_search_small"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/frgmt_ws_tv_map_search"
+            android:textColor="@color/gray999"
+            android:textSize="12dp"/>
+    </FrameLayout>
+</RelativeLayout>

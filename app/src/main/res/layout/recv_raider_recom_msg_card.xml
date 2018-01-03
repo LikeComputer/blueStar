@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="9dp">
+
+    <LinearLayout
+        android:id="@+id/recv_msgcard_"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@drawable/selector_jbackground"
+        android:orientation="horizontal"
+        android:padding="@dimen/card_pading_8">
+
+        <ImageView
+            android:id="@+id/recv_msgcard_img"
+            android:layout_width="100dp"
+            android:layout_height="76dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            tools:src="@mipmap/ic_launcher"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/card_pading_8"
+            android:paddingStart="@dimen/card_pading_8">
+
+            <TextView
+                android:id="@+id/recv_msgcard_tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black333"
+                android:textSize="@dimen/tab_top_textsize"
+                tools:text="迷你世界挂机刷塔怎么做"/>
+
+            <TextView
+                android:id="@+id/recv_msgcard_tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recv_msgcard_tv_title"
+                android:layout_marginTop="@dimen/card_pading_8"
+                android:maxLines="2"
+                android:textColor="@color/gray999"
+                android:textSize="@dimen/recv_item_card_desc_size"
+                tools:text="测试文字测试文字测试文字测试文字测试文字测试文字"/>
+
+            <TextView
+                android:id="@+id/recv_msgcard_tv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/round_conor_bg"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/tv_out_fram"
+                android:textSize="10dp"
+                tools:text="新闻"/>
+
+            <TextView
+                android:id="@+id/recv_msgcard_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/gray999"
+                android:textSize="11dp"
+                tools:text="6-12"/>
+
+            <TextView
+                android:id="@+id/recv_msgcard_tv_anthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/card_pading_8"
+                android:layout_toLeftOf="@+id/recv_msgcard_tv_time"
+                android:drawableLeft="@drawable/icon_ass_user_small"
+                android:drawablePadding="4dp"
+                android:textColor="@color/gray999"
+                android:textSize="11dp"
+                tools:text="4399心诚"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

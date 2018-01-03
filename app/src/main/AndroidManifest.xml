@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.n4399.miniworld"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <application
+        android:name=".JApp"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- android:theme="@style/splash" -->
+        <activity
+            android:name=".vp.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- 4399登录页面 -->
+        <activity
+            android:name="cn.m4399.operate.controller.OpeHostActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".vp.jpublic.SearchActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible">
+
+            <!-- 不影响布局，显示软键盘 -->
+        </activity>
+        <activity
+            android:name=".vp.raiders.synthesis.sort.SynthesDetailActivy"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.webactivity.WebViewPage"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".vp.basic.JBasicWebViewAt"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".vp.raiders.turorial.TutorialDetailAt"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".vp.live.sort.RecoSortAt"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".vp.me.setting.MeSettingAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.me.mycoll.MyCollectAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.me.usercent.UserCenterActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.me.search.GuysSearchAt"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible">
+        </activity>
+        <activity
+            android:name=".vp.me.usercent.StarsFollowsAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.workshop.recommend.walfare.WalfareAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.workshop.topic.detail.TopicDetailAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.me.usercent.share.UserShareListAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.workshop.featured.sort.MapSortAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.workshop.online.seach.RoomSearchAt"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible">
+        </activity>
+        <activity
+            android:name=".vp.workshop.mapsearch.MapSearchAt"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible">
+        </activity>
+        <activity
+            android:name=".vp.workshop.local.MapLocalAt"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".vp.workshop.mapdetail.MapDetailAt"
+            android:screenOrientation="portrait">
+        </activity>
+    </application>
+
+</manifest>

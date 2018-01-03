@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize">
+
+    <april.yun.JPagerSlidingTabStrip
+        android:id="@+id/frgmt_wshorp_mapdetail_jsts"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"/>
+
+    <CheckBox
+        android:id="@+id/frgmt_wshorp_mapdetail_selection"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:button="@drawable/selector_collect"/>
+
+</RelativeLayout>

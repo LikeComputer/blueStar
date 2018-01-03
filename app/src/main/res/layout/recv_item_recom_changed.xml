@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/item_wshop_recom_iv_placeholder_fl"
+        android:layout_width="match_parent"
+        android:layout_height="127dp"
+        android:layout_marginTop="9dp"
+        android:background="@android:color/white"
+        android:foreground="?selectableItemBackground"
+        android:padding="14dp">
+        android:layoutAnimation="@anim/layanipushup"
+
+        <ImageView
+            android:id="@+id/item_wshop_recom_iv_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"/>
+    </FrameLayout>
+
+    <!--android:layoutAnimation="@anim/layanipushup"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="9dp"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/white"
+        android:paddingLeft="14dp">
+
+        <TextView
+            android:id="@+id/tv_recv_recom_change_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/icon_ass_greentitle"
+            android:drawablePadding="@dimen/card_pading_8"
+            android:text="@string/item_wshop_recom_jx"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/btn_recv_recom_change_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_jforground"
+            android:drawableLeft="@drawable/icon_ass_change_small_green"
+            android:drawablePadding="@dimen/card_pading_8"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="14dp"
+            android:text="@string/item_change_next"
+            android:textColor="@color/colorAccent"
+            android:textSize="12dp"/>
+    </RelativeLayout>
+
+    <ViewSwitcher
+        android:id="@+id/item_wshop_recom_hotitem_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_line"/>
+
+    <ViewSwitcher
+        android:id="@+id/item_wshop_recom_hotitem_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_line"/>
+
+    <ViewSwitcher
+        android:id="@+id/item_wshop_recom_hotitem_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_line"/>
+
+    <ViewSwitcher
+        android:id="@+id/item_wshop_recom_hotitem_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_line"/>
+</LinearLayout>

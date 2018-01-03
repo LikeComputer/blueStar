@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_jbackground"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="14dp"
+                android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/item_ws_online_room_iv_icon"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/item_ws_online_room_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_iv_icon"
+        android:textColor="@color/black333"
+        android:textSize="15dp"
+        tools:text="房间名字"/>
+
+    <ImageView
+        android:id="@+id/item_ws_online_room_iv_lock"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_alignBaseline="@+id/item_ws_online_room_tv_title"
+        android:layout_marginLeft="6dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_tv_title"
+        android:baseline="13dp"
+        android:src="@drawable/icon_ass_lock_small"/>
+
+    <TextView
+        android:id="@+id/item_ws_online_room_tv_actor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_online_room_tv_title"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_iv_icon"
+        android:drawableLeft="@drawable/icon_ass_user_small"
+        android:drawablePadding="4dp"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"
+        tools:text="作者"/>
+
+    <TextView
+        android:id="@+id/item_ws_online_room_tv_mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_online_room_tv_actor"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_iv_icon"
+        android:text="@string/item_ws_online_room_tv_mini"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/item_ws_online_room_tv_mapversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_online_room_tv_mini"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_iv_icon"
+        android:text="@string/item_ws_online_room_tv_mapversion"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/item_ws_online_room_tv_label"
+        android:layout_width="35dp"
+        android:layout_height="15dp"
+        android:gravity="center"
+        android:layout_below="@+id/item_ws_online_room_tv_mapversion"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_iv_icon"
+        android:text="生存"
+        android:textColor="@color/gray999"
+        android:textSize="10dp"/>
+
+    <ImageView
+        android:id="@+id/item_ws_online_room_iv_signal"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_below="@+id/item_ws_online_room_tv_mapversion"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_online_room_tv_label"
+        android:src="@drawable/icon_ass_signal_good"/>
+
+    <TextView
+        android:id="@+id/item_ws_online_room_tv_signal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_online_room_tv_mapversion"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+
+        android:layout_toRightOf="@+id/item_ws_online_room_iv_signal"
+        android:text="信号良好"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_ws_online_room_tv_join"
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:text="@string/frgmt_ws_room_join"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/item_ws_online_room_tv_percent"
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:text="@string/item_ws_online_room_tv_percent"
+            android:textSize="12dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

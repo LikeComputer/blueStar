@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/jbase_swipe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/jbase_recv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="231dp"
+            tools:listitem="@layout/item_ws_map"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="231dp"
+            android:background="@color/j_white"
+            app:layout_behavior="com.blueprint.behavior.JTopPanel">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/frgmt_wshorp_feature_sort"
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                tools:listitem="@layout/item_ws_feature_sort"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:layout_below="@+id/frgmt_wshorp_feature_sort"
+                android:background="@color/common_q_gray"/>
+
+            <TextView
+                android:id="@+id/item_fixinterval_tv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/frgmt_wshorp_feature_sort"
+                android:layout_marginTop="9dp"
+                android:drawableLeft="@drawable/icon_ass_greentitle"
+                android:drawablePadding="@dimen/card_pading_8"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="14dp"
+                android:paddingTop="10dp"
+                android:text="@string/item_wshop_recom_jx"
+                android:textColor="@color/black333"
+                android:textSize="15dp"/>
+
+            <RelativeLayout
+                android:layout_width="78dp"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="14dp"
+                android:gravity="center_vertical">
+
+                <RelativeLayout
+                    android:layout_width="78dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/round_conor_gray_bg"
+                    android:paddingLeft="9dp">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_ass_dropdown_green"/>
+
+                    <Spinner
+                        android:id="@+id/frgmt_wshorp_feature_sort_span"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@android:color/transparent"
+                        android:dropDownSelector="@color/colorAccent"
+                        android:dropDownVerticalOffset="26dp"
+                        android:gravity="center"
+                        android:popupBackground="@drawable/box_dropdown"
+                        android:spinnerMode="dropdown"/>
+                        android:dropDownSelector="@color/colorAccent"
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

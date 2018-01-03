@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/jbase_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.blueprint.widget.DampLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/jbase_recv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:paddingTop="8dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </com.blueprint.widget.DampLayout>
+
+        <ImageView
+            android:id="@+id/frgmt_wshorp_recom_fb_startgame"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="26dp"
+            android:layout_marginLeft="20dp"
+            android:elevation="24dp"
+            android:foreground="@drawable/selector_jforground"
+            android:src="@drawable/ganestart"
+            app:layout_behavior="com.blueprint.behavior.JBottomBehave"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.design.widget.CoordinatorLayout>

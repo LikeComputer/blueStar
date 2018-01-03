@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    tools:context="com.n4399.miniworld.vp.me.setting.MeSettingAt">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center_vertical"
+        android:onClick="checkversion"
+        android:paddingEnd="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingStart="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="检查更新"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <april.yun.widget.PromptView
+            android:id="@+id/me_setting_version_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/icon_btn_gointo"
+            android:text="当前版本"
+            android:textColor="@color/black333"
+            android:textSize="12dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center_vertical"
+        android:onClick="clearcache"
+        android:paddingEnd="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingStart="14dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除缓存"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <april.yun.widget.PromptView
+            android:id="@+id/me_setting_cachesize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="14dp"
+            android:drawableRight="@drawable/icon_btn_gointo"
+            android:text="2.2M"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center_vertical"
+        android:onClick="feedback"
+        android:paddingEnd="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingStart="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="意见反馈"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <april.yun.widget.PromptView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/icon_btn_gointo"
+            android:textColor="@color/black333"
+            android:textSize="12dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center_vertical"
+        android:onClick="aboutus"
+        android:paddingEnd="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingStart="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于我们"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <april.yun.widget.PromptView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="14dp"
+            android:drawableRight="@drawable/icon_btn_gointo"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center"
+        android:onClick="logOut"
+        android:text="退出当前账号"
+        android:textColor="@color/red060"
+        android:textSize="15dp"/>
+
+</LinearLayout>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.n4399.miniworld.vp.me.usercent.UserCenterActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pgbg_personalcenter"
+        android:fitsSystemWindows="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="left"
+            android:layout_marginLeft="14dp"
+            android:onClick="iconBack"
+            android:src="@drawable/icon_btn_back"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="254dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.blueprint.widget.JCimageView
+                android:id="@+id/me_user_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:elevation="26dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/me_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="11dp"
+                android:clickable="true"
+                android:textColor="@color/j_white"
+                android:textSize="18dp"
+                tools:text="4399"/>
+
+            <TextView
+                android:id="@+id/me_login_mini_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/me_center_edit_name"
+                android:textColor="#5e96cf"
+                android:textSize="14dp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/selector_jbackground">
+
+        <View
+            android:id="@+id/temp_center_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/card_pading_8"
+            android:layout_marginTop="@dimen/card_pading_8"
+            android:background="@color/common_line"/>
+
+        <TextView
+            android:id="@+id/me_center_stars"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/temp_center_line"
+            android:background="@drawable/selector_jbackground"
+            android:gravity="center"
+            android:lineSpacingExtra="9dp"
+            android:textColor="@color/gray999"
+            android:textSize="13dp"
+            tools:text="@string/me_center_follow"/>
+
+        <TextView
+            android:id="@+id/me_center_flowers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/temp_center_line"
+            android:background="@drawable/selector_jbackground"
+            android:gravity="center"
+            android:lineSpacingExtra="9dp"
+            android:text="@string/me_center_fances"
+            android:textColor="@color/gray999"
+            android:textSize="13dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/me_my_collection"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/me_item_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            style="@style/me_style_middle_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/icon_btn_collect_line_grey"
+            android:drawablePadding="11dp"
+            android:text="@string/me_my_collection"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <ImageView
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:src="@drawable/icon_btn_gointo"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/me_my_share"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/me_item_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/selector_jbackground"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            style="@style/me_style_middle_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/icon_ass_share_grey"
+            android:drawablePadding="11dp"
+            android:text="@string/me_my_share"
+            android:textColor="@color/black333"
+            android:textSize="15dp"/>
+
+        <ImageView
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:src="@drawable/icon_btn_gointo"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_jbackground"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="14dp"
+                android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/item_ws_material_iv_icon"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/item_ws_material_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/item_ws_material_iv_icon"
+        android:textColor="@color/black333"
+        android:textSize="15dp"
+        tools:text="房间名字"/>
+
+    <TextView
+        android:id="@+id/item_ws_material_tv_actor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_material_tv_title"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_material_iv_icon"
+        android:drawableLeft="@drawable/icon_ass_user_small"
+        android:drawablePadding="4dp"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"
+        tools:text="作者"/>
+
+    <TextView
+        android:id="@+id/item_ws_material_tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_material_tv_actor"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/item_ws_material_iv_icon"
+        android:text="item_ws_material_tv_mini"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/item_ws_material_tv_join"
+        android:layout_width="70dp"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="@string/frgmt_ws_room_unlocked"
+        android:textSize="12dp"/>
+
+</RelativeLayout>

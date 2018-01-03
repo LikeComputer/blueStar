@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    tools:context="com.n4399.miniworld.vp.jpublic.SearchActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:fitsSystemWindows="true"
+        android:layoutAnimation="@anim/layanipushdown"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="backfinish"
+                android:padding="14dp"
+                android:src="@drawable/icon_btn_back"/>
+
+            <com.blueprint.widget.JEditText
+                android:id="@+id/act_raider_search_et_key"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/round_search_bar_bg"
+                android:drawableLeft="@drawable/icon_ass_search_small"
+                android:drawablePadding="8dp"
+                android:hint="@string/raiders_tb_tv_search"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="60dp"
+                android:textColor="@color/black333"
+                android:textColorHint="@color/gray999"
+                android:textSize="13dp"/>
+
+            <!--android:layoutAnimation="@anim/layanipushup"-->
+            <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:animateLayoutChanges="true">-->
+
+            <!--<EditText-->
+            <!--android:id="@+id/act_raider_search_et_key"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="28dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:background="@drawable/round_search_bar_bg"-->
+            <!--android:drawableLeft="@drawable/icon_ass_search_small"-->
+            <!--android:drawablePadding="8dp"-->
+            <!--android:hint="@string/raiders_tb_tv_search"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:textColor="@color/recv_item_title"-->
+            <!--android:textColorHint="@color/tv_color_gray"-->
+            <!--android:textSize="15dp"/>-->
+
+            <!--<include-->
+            <!--layout="@layout/fm_radiers_search_bar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"/>-->
+            <!--</FrameLayout>-->
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/raiders_search_history_hot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <!--搜索历史记录-->
+        <LinearLayout
+            android:id="@+id/at_raider_ll_search_his"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutAnimation="@anim/layanifadein"
+            android:orientation="vertical">
+
+            <!--搜索历史  清除  -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@android:color/white"
+                android:layoutAnimation="@anim/layanipushdown">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="@string/common_search_history"
+                    android:textColor="@color/gray999"
+                    android:textSize="14dp"/>
+
+                <TextView
+                    android:id="@+id/act_raider_search_his_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp"
+                    android:text="@string/common_search_history_clear"
+                    android:textColor="@color/gray999"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="@color/common_line"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/act_raider_search_hislist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/comon_item_search_history"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:background="@color/common_q_gray"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="14dp"
+            android:text="@string/common_search_hot"
+            android:textColor="@color/gray999"
+            android:textSize="14dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/common_line"/>
+
+        <com.blueprint.widget.JFlowLayout
+            android:id="@+id/act_raider_search_hot_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:background="@android:color/white"
+            android:layoutAnimation="@anim/layaniscalecenter"
+            android:padding="20dp"/>
+
+        <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/common_q_gray"/>-->
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/raiders_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

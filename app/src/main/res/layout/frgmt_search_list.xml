@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/jbase_swipe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/jbase_recv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="61dp">
+        </android.support.v7.widget.RecyclerView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@color/common_q_gray"
+            android:padding="16dp"
+            app:layout_behavior="com.blueprint.behavior.JTopBehave">
+
+            <com.blueprint.widget.JEditText
+                android:id="@+id/act_raider_synthes_search_et_key"
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:background="@drawable/round_search_bar_bg"
+                android:drawableLeft="@drawable/icon_ass_search_small"
+                android:drawablePadding="8dp"
+                android:hint="@string/raiders_tb_tv_search"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="60dp"
+                android:textColor="@color/black333"
+                android:textColorHint="@color/gray999"
+                android:textSize="13dp"/>
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

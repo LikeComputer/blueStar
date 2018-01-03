@@ -1,0 +1,85 @@
+apply plugin: 'com.android.library'
+//apply from: 'https://raw.githubusercontent.com/ZuYun/workspace/master/config.gradle'
+apply from: 'bintrayUpload.gradle'
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        //某个api的在不同版本有不同行为体现，targetsdkversion就是不同行为中指定的版本某个行为
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+        consumerProguardFiles 'consumer-proguard-rules.pro'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true
+
+    }
+//    我们知道当方法书超过64k时，需要配置multidex，但是如果我们的工程minSdkVersion 设置为 20 或更低值，
+// 那么构建时间会大大增加，因为构建系统必须就哪些类必须包括在主 DEX 文件中以及哪些类可以包括在辅助 DEX 文件中作出复杂的决策。
+//    productFlavors {
+//        dev {
+//            // Enable pre-dexing to produce an APK that can be tested on
+//            // Android 5.0+ without the time-consuming DEX build processes.
+//            minSdkVersion 21
+    //only package english translations, and xxhdpi resources
+//    resConfigs (“en”, “xxhdpi”)
+//        }
+//        prod {
+//            // The actual minSdkVersion for the production version.
+//            minSdkVersion config.minSdkVersion
+//        }
+//    }
+
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+    lintOptions {
+        abortOnError false
+    }
+
+//    task makeJar(type: proguard.gradle.ProGuardTask, dependsOn: "build") {
+//        // 未混淆的jar
+//        injars 'build/intermediates/bundles/release/classes.jar'
+//        // 混淆后的jar路径
+//        outjars 'build/libs/bluestar.jar'
+//        // 具体需要keep住的类
+//        configuration 'proguard-rules.pro'
+//    }
+//    task clearJar(type: Delete) {
+//        delete 'build/libs/blueprint.jar'
+//    }
+//    task makeJar(type: Copy) {
+//        from('build/intermediates/bundles/release/')
+//        into('build/libs/')
+//        include('classes.jar')
+//        rename ('classes.jar', 'blueprint.jar')
+//    }
+//    makeJar.dependsOn(clearJar, build)
+}
+
+dependencies {
+//    api fileTree(dir: 'libs', include: ['*.jar'])
+    api thirdLibs.appcompat
+    api thirdLibs.mdesigh
+    api thirdLibs.gson
+    api thirdLibs.rxbinding
+    api thirdLibs.rxjava2
+    api thirdLibs.rxandroid
+
+    api thirdLibs.jtabstrip
+    api thirdLibs.jstatelayout
+    api('me.drakeet.multitype:multitype:2.5.0', {
+        exclude group: 'com.android.support'
+    })
+    api "com.squareup.retrofit2:converter-gson:$libsVersion.retrofit2"
+    api "com.squareup.retrofit2:adapter-rxjava2:$libsVersion.retrofit2"
+
+    api thirdLibs.logger
+    api thirdLibs.rxsimplify
+}

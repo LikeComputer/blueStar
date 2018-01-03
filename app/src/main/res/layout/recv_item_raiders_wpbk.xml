@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="94dp"
+                android:background="@drawable/selector_jbackground"
+                android:padding="8dp">
+
+    <TextView
+        android:id="@+id/raiders_item_tvimg_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/card_pading_8"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/black333"
+        android:textSize="12dp"
+        tools:text="年兽在哪里"/>
+
+    <ImageView
+        android:id="@+id/raiders_item_tvimg_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/raiders_item_tvimg_title"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/ic_launcher"/>
+</RelativeLayout>

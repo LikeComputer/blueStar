@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_jbackground"
+                android:paddingBottom="18dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:paddingTop="18dp">
+
+    <com.blueprint.widget.JCimageView
+        android:id="@+id/item_ws_mapdetail_comment_avatar"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="2dp"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/item_ws_mapdetail_comment_anthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_pading_8"
+        android:layout_toRightOf="@+id/item_ws_mapdetail_comment_avatar"
+        android:textColor="@color/black333"
+        android:textSize="14dp"
+        tools:text="楼主"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/card_pading_8"
+        android:src="@drawable/icon_ass_comment_small"
+        android:textColor="@color/black333"
+        android:textSize="14dp"/>
+
+
+    <TextView
+        android:id="@+id/item_ws_mapdetail_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_mapdetail_comment_anthor"
+        android:layout_marginBottom="@dimen/card_pading_8"
+        android:layout_marginLeft="@dimen/card_pading_8"
+        android:layout_marginTop="@dimen/card_pading_8"
+        android:layout_toRightOf="@+id/item_ws_mapdetail_comment_avatar"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"
+        tools:text="2017/12/12   12:12"/>
+
+    <TextView
+        android:id="@+id/item_ws_mapdetail_comment_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_mapdetail_comment_time"
+        android:layout_marginLeft="@dimen/card_pading_8"
+        android:layout_toRightOf="@+id/item_ws_mapdetail_comment_avatar"
+        android:textColor="@color/black333"
+        android:textSize="14dp"
+        tools:text="明月几时有 把酒问青天！"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_ws_mapdetail_comment_gentie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_ws_mapdetail_comment_msg"
+        android:layout_marginTop="@dimen/card_pading_8"
+        android:layout_toRightOf="@+id/item_ws_mapdetail_comment_avatar"
+        android:background="@color/common_q_gray"/>
+</RelativeLayout>

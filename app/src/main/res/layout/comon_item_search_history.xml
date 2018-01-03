@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/selector_jbackground"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView_"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:src="@drawable/icon_ass_his_small"/>
+
+    <TextView
+        android:id="@+id/common_item_search_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/imageView_"
+        android:text="历史"
+        android:textColor="@color/black333"
+        android:textSize="15dp"/>
+
+
+    <ImageView
+        android:id="@+id/common_img_search_history_del"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="14dp"
+        android:src="@drawable/icon_btn_delete"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_alignParentBottom="true"
+        android:background="@color/common_line"/>
+
+</RelativeLayout>

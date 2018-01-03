@@ -1,0 +1,92 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="jmultistate">@style/multistate</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="jbackgroundColor">@android:color/white</item>
+        <item name="jpressedColor">@android:color/holo_blue_dark</item>
+        <item name="jcheckedColor">@android:color/holo_red_dark</item>
+        <item name="android:windowBackground">@color/common_q_gray</item>
+    </style>
+        <!--<item name="android:windowAnimationStyle">@style/jWindowAni.mz</item>-->
+
+    <style name="me_style_middle_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">11dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="splash" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="multistate">
+        <item name="error">@layout/j_multitylayout_error</item>
+        <item name="loading">@layout/m_multitylayout_loading</item>
+        <item name="empty">@layout/m_multitylayout_empt</item>
+        <item name="state">loading</item>
+    </style>
+
+    <style name="rela_option">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:background">@drawable/selector_jbackground</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="search_normal_style">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:textSize">@dimen/tab_top_textsize</item>
+    </style>
+
+    <style name="search_key_style">
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">@dimen/tab_top_textsize</item>
+    </style>
+
+    <style name="frgmt_live_recom_type">
+        <item name="android:foreground">@drawable/selector_jforground</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="me_center_keynum">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="me_center_nornum">
+        <item name="android:textColor">@color/gray999</item>
+        <item name="android:textSize">13dp</item>
+    </style>
+
+    <style name="me_login_account_desc">
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="me_login_account_detail">
+        <item name="android:textColor">#5e96cf</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/jbase_swipe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/frgmt_liveing_cl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/jbase_recv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="159dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/fm_live_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.blueprint.widget.LoopImagePager
+                android:id="@+id/frgmt_liveing_lip"
+                android:layout_width="match_parent"
+                android:layout_height="159dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"/>
+
+            <LinearLayout
+                android:id="@+id/frgmt_liveing_ll_"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/frgmt_liveing_lip"
+                android:layout_marginBottom="8dp"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:id="@+id/fm_live_reco_xxyl"
+                    style="@style/frgmt_live_recom_type"
+                    android:drawableTop="@drawable/icon_ass_entertain"
+                    android:text="@string/live_reco_xxyl"/>
+
+                <TextView
+                    android:id="@+id/fm_live_reco_dljx"
+                    style="@style/frgmt_live_recom_type"
+                    android:drawableTop="@drawable/icon_ass_electric"
+                    android:text="@string/live_reco_dljx"/>
+
+                <TextView
+                    android:id="@+id/fm_live_reco_scsk"
+                    style="@style/frgmt_live_recom_type"
+                    android:drawableTop="@drawable/icon_ass_survive"
+                    android:text="@string/live_reco_scsk"/>
+
+                <TextView
+                    android:id="@+id/fm_live_reco_jzjx"
+                    style="@style/frgmt_live_recom_type"
+                    android:drawableTop="@drawable/icon_ass_building"
+                    android:text="@string/live_reco_jzjx"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/frgmt_liveing_tv_jx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/frgmt_liveing_ll_"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@drawable/icon_ass_greentil"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/icon_ass_greentil"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="精选推荐"
+                android:textColor="@color/black333"
+                android:textSize="15dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_above="@+id/frgmt_liveing_tv_jx"
+                android:background="@color/common_q_gray"/>
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

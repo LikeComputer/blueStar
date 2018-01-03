@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:background="@drawable/selector_jbackground"
+                android:layout_height="129dp"
+                android:padding="14dp">
+
+    <ImageView
+        android:id="@+id/item_ws_topic_iv_icon"
+        android:layout_width="100dp"
+        android:layout_height="97dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/item_ws_topic_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_pading_8"
+        android:layout_toRightOf="@+id/item_ws_topic_iv_icon"
+        android:textColor="@color/black333"
+        android:textSize="15dp"
+        tools:text="标题"/>
+
+    <TextView
+        android:id="@+id/item_ws_topic_tv_desc"
+        style="e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/card_pading_8"
+        android:layout_toRightOf="@+id/item_ws_topic_iv_icon"
+        android:ellipsize="end"
+        android:lineSpacingExtra="8dp"
+        android:maxLines="2"
+        android:textColor="@color/gray999"
+        android:textSize="12dp"
+        tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题"/>
+
+    <TextView
+        android:id="@+id/item_ws_topic_iv_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:drawablePadding="4dp"
+        android:drawableRight="@drawable/icon_btn_go_right_green"
+        android:text="@string/frgmt_ws_topic_item_enter"
+        android:textColor="@color/colorAccent"
+        android:textSize="12dp"/>
+</RelativeLayout>

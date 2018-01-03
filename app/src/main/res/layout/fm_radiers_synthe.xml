@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/synthe_tjdq_show_all"
+            style="@style/rela_option"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:text="@string/common_show_all"
+                android:textColor="@color/colorAccent"
+                android:textSize="12dp"/>
+
+            <TextView
+                style="@style/me_style_middle_text"
+                android:drawableLeft="@drawable/icon_ass_greentitle"
+                android:drawablePadding="10dp"
+                android:text="@string/fm_radiers_syn_tjdq"
+                android:textSize="15dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/sync_tjdq_lay1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/shape_line"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_character"
+                    android:text="角色大全"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_mount"
+                    android:text="坐骑大全"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_dress"
+                    android:text="装扮大全"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_pet"
+                    android:text="宠物大全"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/synthe_wpbk_show_all"
+            style="@style/rela_option"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="bottom"
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:text="@string/common_show_all"
+                android:textColor="@color/colorAccent"
+                android:textSize="12dp"/>
+
+            <TextView
+                style="@style/me_style_middle_text"
+                android:drawableLeft="@drawable/icon_ass_greentitle"
+                android:drawablePadding="10dp"
+                android:text="@string/fm_radiers_syn_wpbk"
+                android:textSize="15dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/sync_tjdq_lay3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/shape_line"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_crop"
+                    android:text="作物百科"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_tool"
+                    android:text="工具百科"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_debris"
+                    android:text="杂物百科"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                style="@style/rela_option"
+                android:layout_height="70dp">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_my_to"/>
+
+                <TextView
+                    style="@style/me_style_middle_text"
+                    android:drawableLeft="@drawable/icon_ass_block"
+                    android:text="方块百科"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

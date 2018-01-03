@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginEnd="14dp"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:id="@+id/raiders_titlebar_search"
+    android:layout_centerInParent="true"
+    android:layout_marginStart="14dp"
+    android:clickable="true"
+    android:background="@drawable/round_search_bar_bg"
+    android:layout_height="28dp">
+<TextView
+    android:id="@+id/common_search_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="28dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:text="@string/raiders_tb_tv_search"
+    android:drawablePadding="8dp"
+    android:drawableLeft="@drawable/icon_ass_search_small"
+    android:textColor="@color/gray999"
+    android:textSize="12dp"/>
+</FrameLayout>
