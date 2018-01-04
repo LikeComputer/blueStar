@@ -50,6 +50,6 @@ public abstract class AbsLoadMoreViewModel<ID> extends BaseLoadmoreViewModel<ID>
      * @param orignParam
      */
     @Override
-    public abstract void onSubscribeData(Object orignParam);
+    protected abstract void onSubscribeData(Object orignParam);
 
 }

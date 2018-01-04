@@ -14,6 +14,7 @@ import static me.tatarka.bindingcollectionadapter2.Utils.LOG;
 /**
  * @another 江祖赟
  * @date 2017/12/15.
+ * 上拉加载更多 中底部的loading
  */
 public class LoadmoreFootViewModel extends ExtrasBindViewModel implements LayoutManagers.FullSpan {
     public static final int layoutRes = R.layout.jfoot_loadmore_holder;
@@ -22,7 +23,7 @@ public class LoadmoreFootViewModel extends ExtrasBindViewModel implements Layout
      */
     @Bindable public boolean moreload_fail = false;
     @Bindable public boolean moreload_finish = false;
-    public String mTips;
+    public CharSequence mTips;
     private LoadMoreWrapperAdapter.OnLoadmoreControl loadmoreControl;
 
     public LoadmoreFootViewModel(LoadMoreWrapperAdapter.OnLoadmoreControl moreloadControl){
@@ -59,7 +60,7 @@ public class LoadmoreFootViewModel extends ExtrasBindViewModel implements Layout
      *
      * @param loadFailTips
      */
-    private void switch2LoadFail(String loadFailTips){
+    private void switch2LoadFail(CharSequence loadFailTips){
         mTips = loadFailTips;
         moreload_fail = ( true );
         notifyPropertyChanged(jzy.easybindpagelist.BR.moreload_fail);
@@ -70,7 +71,7 @@ public class LoadmoreFootViewModel extends ExtrasBindViewModel implements Layout
      *
      * @param loadingTips
      */
-    private void switch2Loading(String loadingTips){
+    private void switch2Loading(CharSequence loadingTips){
         mTips = loadingTips;
         moreload_fail = ( false );
         notifyPropertyChanged(jzy.easybindpagelist.BR.moreload_fail);
@@ -82,7 +83,7 @@ public class LoadmoreFootViewModel extends ExtrasBindViewModel implements Layout
      * @param finishTips
      *         设置 加载 成功/失败
      */
-    private void switch2LoadFinish(String finishTips){
+    private void switch2LoadFinish(CharSequence finishTips){
         mTips = finishTips;
         //加载结束 但是 下拉刷新之后 要重置
         moreload_fail = moreload_finish = ( true );

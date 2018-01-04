@@ -1,14 +1,18 @@
 package jzy.easybindpagelist.loadmorehelper;
 
 import android.databinding.BaseObservable;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
+import jonas.jlayout.MultiStateLayout;
+import jzy.easybindpagelist.ScrollChildSwipeRefreshLayout;
 import jzy.easybindpagelist.statehelper.PageDiffState;
 import jzy.easybindpagelist.statehelper.StateDiffViewModel;
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList;
@@ -91,8 +95,8 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
     private DiffObservableList mDiffObservableList = new DiffObservableList(mDataLists);
 
     //todo 不引用 view
-//    protected RecyclerView mRecyclerView;
-//    protected MultiStateLayout mMultiStateLayout;
+    protected WeakReference<RecyclerView> mRecyclerView;
+    protected WeakReference<MultiStateLayout> mMultiStateLayout;
 
     {
         registItemTypes(multipleItems);
@@ -124,28 +128,64 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      */
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom){
-//        if(v instanceof RecyclerView) {
-//            mRecyclerView = (RecyclerView)v;
-//            if(mSwipeRefreshLayout != null) {
-//                mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
-//            }
-//        }else if(v instanceof SwipeRefreshLayout) {
-//            mSwipeRefreshLayout = (ScrollChildSwipeRefreshLayout)v;
-//            if(mRecyclerView != null) {
-//                mSwipeRefreshLayout.setScrollUpChild(mRecyclerView);
-//            }
-//        }else if(v instanceof MultiStateLayout) {
-//            mMultiStateLayout = (MultiStateLayout)v;
-//        }
+        if(v instanceof RecyclerView) {
+            mRecyclerView = new WeakReference<RecyclerView>((RecyclerView)v);
+            if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.get() != null) {
+                mSwipeRefreshLayout.get().setScrollUpChild(v);
+            }
+        }else if(v instanceof SwipeRefreshLayout) {
+            mSwipeRefreshLayout = new WeakReference<ScrollChildSwipeRefreshLayout>((ScrollChildSwipeRefreshLayout)v);
+            if(mRecyclerView != null && mRecyclerView.get() != null) {
+                mSwipeRefreshLayout.get().setScrollUpChild(mRecyclerView.get());
+            }
+        }else if(v instanceof MultiStateLayout) {
+            mMultiStateLayout = new WeakReference<MultiStateLayout>((MultiStateLayout)v);
+        }
     }
 
     public OnItemBindClass<ID> getMultipleItems(){
         return multipleItems;
     }
 
+    /**
+     * 设置默认的底部holder的上拉加载 结束提示语
+     *
+     * @param finishTips
+     */
+    protected BaseLoadmoreViewModel<ID> customFootHolderFinishTips(CharSequence finishTips){
+        mLoadmoreControl.mLoadFinishTips = finishTips;
+        return this;
+    }
+
+    /**
+     * 设置默认的底部holder的上拉加载 加载中的提示语
+     *
+     * @param loadingTips
+     */
+    protected BaseLoadmoreViewModel<ID> customFootHolderLoadingTips(CharSequence loadingTips){
+        mLoadmoreControl.mLoadingTips = loadingTips;
+        return this;
+    }
+
+    /**
+     * 设置默认的底部holder的上拉加载 失败提示语
+     *
+     * @param failTips
+     */
+    protected BaseLoadmoreViewModel<ID> customFootHolderFailTips(CharSequence failTips){
+        mLoadmoreControl.mLoadFailTips = failTips;
+        return this;
+    }
+
     // ========================== 上拉加载 逻辑 ==============================
 
-
+    /**
+     * 获取 {@link #mDataLists} 列表显示的items的数据容器列表<BR>
+     * 需要显示的列表数据 都需要装载在{@link #mDataLists}中<BR>
+     * {@link #mDataLists}的任何增删变化都会通知recycleview的adapter进行相应的增删
+     *
+     * @return
+     */
     public JObservableList<ID> getDataLists(){
         return mDataLists;
     }
@@ -154,17 +194,13 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         return mCurrentPage == FIRST_PAGE;
     }
 
-    @Override
-    public void subscribeData(Object orignParam){
-        super.subscribeData(orignParam);
-    }
-
     /**
-     * 保留请求参数 (重试等时候需要用到)
+     * 保留请求参数 (参数重试/刷新等时候需要用到)<BR>
+     * 不会发起数据请求不触发{@link #onSubscribeData(Object)}
      *
      * @param orignParam
      */
-    public void putOrignParam(Object orignParam){
+    protected void putOrignParam(Object orignParam){
         mOrignParam = orignParam;
     }
 
@@ -174,7 +210,13 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         }
     }
 
-    public void search(EditText editText, String key){
+    public void search(String key){
+        if(!TextUtils.isEmpty(key)) {
+            search(null, key);
+        }
+    }
+
+    public void search(EditText editText, @NonNull String key){
         CURRENT_SEARCH_KEY = key;
         if(!key.equals(mLastSearchKey)) {
             mCurrentPage = FIRST_PAGE;
@@ -242,16 +284,19 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         }
     }
 
-    public void removeFootLoadmoreItem(){
+    protected void removeFootLoadmoreItem(){
+        mLoadmoreControl.setEnableUp2LoadMore(false);
         godLists.removeItem(mLoadmoreFootViewModel);
     }
 
-    public void restoreFootLoadmoreItem(){
+    protected void restoreFootLoadmoreItem(){
+        mLoadmoreControl.setEnableUp2LoadMore(true);
         godLists.insertItem(mLoadmoreFootViewModel);
     }
 
     /**
-     * 将数据刷新到mDataList 不是第一页需要判断是否有下一页
+     * todo 将数据刷新到mDataList 不是第一页需要判断是否有下一页,需要留意 数据可能就只有一页
+     *
      * @param listData
      */
     @Override
@@ -260,6 +305,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         //子类注意重写 addMoreData逻辑 不然一直可以无限上拉加载
         if(mCurrentPage == FIRST_PAGE) {
             refreshedAllData(listData);
+            //第一页也可能就结束了,数据可能就一页
         }else {
             addMoreData(listData);
         }
@@ -296,8 +342,8 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         if(mDataLists.isEmpty()) {
             mDataLists.addAll(newData);
         }else {
-//            mDataLists.clear();
-//            mDataLists.addAll(newData);
+            //            mDataLists.clear();
+            //            mDataLists.addAll(newData);
             //newData 不一定是 IRecvDataDiff 的子类  差异计算必须是IRecvDataDiff的子类
             if(!mDiffObservableList.set(mDataLists).detectMoves(detectMoves).update(newData)) {
                 mDataLists.clear();
@@ -307,21 +353,28 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         hideLoading();
     }
 
+    /**
+     * 上拉加载结束了 没有更多可加载了
+     */
+    protected void noMore2Load(){
+        mLoadmoreControl.loadmoreFinished();
+    }
+
     protected void addItemData(ID item){
         mDataLists.add(item);
     }
 
-    public void addMoreData(List<ID> moreData){
+    protected void addMoreData(List<ID> moreData){
         addMoreData(moreData, true, null);
     }
 
-    public void addMoreData(List<ID> moreData, boolean hasNext, String tips){
+    protected void addMoreData(List<ID> moreData, boolean hasNext, String tips){
         LOG("=========== addMoreData ===========", hasNext, tips);
         mLoadmoreControl.setLoadmoreFinished(!hasNext, tips);//有下一页 finish就是false不结束
         mDataLists.addAll(moreData);
     }
 
-    public void addMoreData(List<ID> moreData, boolean hasNext){
+    protected void addMoreData(List<ID> moreData, boolean hasNext){
         addMoreData(moreData, hasNext, null);
     }
 

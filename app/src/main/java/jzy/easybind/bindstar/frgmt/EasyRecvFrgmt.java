@@ -1,5 +1,7 @@
 package jzy.easybind.bindstar.frgmt;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +36,14 @@ public class EasyRecvFrgmt extends Fragment {
         BindPagelistLayoutBinding binding = BindPagelistLayoutBinding.inflate(inflater, container, false);
 //        ComPagelistLayoutBinding c = (ComPagelistLayoutBinding)binding.comPagelistLayout;
 //        viewModel.setRecvItemClick(this);
+        MutableLiveData liveData = new MutableLiveData();
+        getLifecycle().addObserver(viewModel);
+        liveData.observe(this, new Observer() {
+            @Override
+            public void onChanged(@Nullable Object o){
+
+            }
+        });
         binding.setPagelistViewModel(viewModel);
         viewModel.registOrignParam(new HashMap()).registLife(this);
 //        binding.setListeners(new Listeners(viewModel));

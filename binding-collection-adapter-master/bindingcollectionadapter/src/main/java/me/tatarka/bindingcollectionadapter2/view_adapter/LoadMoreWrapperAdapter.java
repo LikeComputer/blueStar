@@ -45,10 +45,21 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
      */
     public static abstract class OnLoadmoreControl extends BaseObservable {
 
+        //上拉加载更多的开关
+        private boolean mEnableUp2LoadMore = true;
+
+        public boolean isEnableUp2LoadMore(){
+            return mEnableUp2LoadMore;
+        }
+
+        public void setEnableUp2LoadMore(boolean enableUp2LoadMore){
+            mEnableUp2LoadMore = enableUp2LoadMore;
+        }
+
         /**
          * 上拉加载 是否结束
          * <li>外部 手动调整 下拉刷新 需要重置为 false 调用{@link #forceDown2Refresh()}</li>
-         * <li>外部 手动调整 接口数据表示没有下一页 需要设置为 true 调用{@link #loadmoreFinished()} ,{@link #loadmoreFinished(String)}</li>
+         * <li>外部 手动调整 接口数据表示没有下一页 需要设置为 true 调用{@link #loadmoreFinished()} ,{@link #loadmoreFinished(CharSequence)}</li>
          */
         @Bindable public boolean loadmoreFinished = false;
         /**
@@ -57,13 +68,13 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
          * <b>false 表示上拉加载处于 失败的状态</b><br>
          * <b>true 表示上拉加载处于 成功/正在加载 的状态</b>
          * <br>
-         * <li>外部 手动调整 上拉加载失败为 true 调用 {@link #loadMoreFail()}, {@link #loadMoreFail(String)} </li>
+         * <li>外部 手动调整 上拉加载失败为 true 调用 {@link #loadMoreFail()}, {@link #loadMoreFail(CharSequence)} </li>
          * <li>上拉加载成功 false  不需要外部手动调用，在adapter中监听到插入数据就会回掉，还有重启上拉刷新{@link #forceDown2Refresh()}也会回掉  调用 {@link #loadmoreSucceed()} </li>
          */
         @Bindable private boolean loadmoreFailed = false;
-        public String mLoadFailTips;
-        public String mLoadFinishTips;
-        public String mLoadingTips;
+        public CharSequence mLoadFailTips;
+        public CharSequence mLoadFinishTips;
+        public CharSequence mLoadingTips;
         private OnPropertyChangedCallback mCallback;
 
         /**
@@ -84,7 +95,7 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
         /**
          * 上拉加载失败
          */
-        public void loadMoreFail(String tips){
+        public void loadMoreFail(CharSequence tips){
             setLoadmoreFailed(true, tips);
         }
 
@@ -95,7 +106,7 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
          * @param fail
          *         设置 加载 成功/失败
          */
-        private void setLoadmoreFailed(boolean fail, String tips){
+        private void setLoadmoreFailed(boolean fail, CharSequence tips){
             mLoadFailTips = tips;
             if(!loadmoreFinished && loadmoreFailed != fail) {
                 LOG("OnLoadmoreControl", "跟新底部loading状态: loadmoreFailed", fail);
@@ -135,12 +146,12 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
         /**
          * 上拉加载 结束 之后上拉不再检测是否加载数据
          */
-        public void loadmoreFinished(String finishTips){
+        public void loadmoreFinished(CharSequence finishTips){
             loadmoreFinished();
             mLoadFinishTips = finishTips;
         }
 
-        public void setLoadmoreFinished(boolean finished, String finishTips){
+        public void setLoadmoreFinished(boolean finished, CharSequence finishTips){
             mLoadFinishTips = finishTips;
             if(loadmoreFinished != finished) {
                 mLoadFinishTips = null;
@@ -238,50 +249,54 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
      * 检查 是否loadingholder可见，可见则回掉监听的onup2LoadingMore 去加载下一页数据
      */
     private synchronized void checkUp2loadMore(){
-        LOG("checkUp2loadMore()-> mInLoadingState 当前列表的是否处于加载状态(加载状态不检测上拉加载)", mInLoadingState);
-        if(!mLoadmoreControl.loadmoreFinished && getItemCount() == 1) {
-            //清空到 只剩下一个 底部loading 则重启 上拉加载
-            mLoadmoreControl.forceDown2Refresh();
-            //当前状态为停止滑动状态SCROLL_STATE_IDLE时   getItemCount()-1去掉底部 loading
-        }else if(!mInLoadingState && !mLoadmoreControl.loadmoreFinished && getItemCount()-1>0) {
-            //1 上拉加载 没结束的时候 上拉加载
-            //2 mInLoadingState 为false 即没有处于 加载数据ing 状态的时候 允许检测
-            //3 处于错误状态的时候 没有监听到数据的增删改 mInLoadingState会 一直为false （回到 第2点）
-            //4 下拉刷新 更新数据之后 会出现增删改的情况 但是 数据都一样就不会 触发增删改 也就是没有检查上拉请求过数据checkUp2loadMore()没走 mInLoadingState为false
-            int lastPosition = 0;
-            RecyclerView.LayoutManager layoutManager = this.recyclerView.getLayoutManager();
-            if(layoutManager instanceof GridLayoutManager) {
-                //通过LayoutManager找到当前显示的最后的item的position
-                lastPosition = ( (GridLayoutManager)layoutManager ).findLastVisibleItemPosition();
-            }else if(layoutManager instanceof LinearLayoutManager) {
-                lastPosition = ( (LinearLayoutManager)layoutManager ).findLastVisibleItemPosition();
-            }else if(layoutManager instanceof StaggeredGridLayoutManager) {
-                //因为StaggeredGridLayoutManager的特殊性可能导致最后显示的item存在多个，所以这里取到的是一个数组
-                //得到这个数组后再取到数组中position值最大的那个就是最后显示的position值了
-                int[] lastPositions = new int[( (StaggeredGridLayoutManager)layoutManager ).getSpanCount()];
-                ( (StaggeredGridLayoutManager)layoutManager ).findLastVisibleItemPositions(lastPositions);
-                lastPosition = findMax(lastPositions);
-            }
-            //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
-            //如果相等则说明已经滑动到最后了
-            if(lastPosition>=getItemCount()-1) {
-                Log.d(TAG, "loading 上拉提示 item 可见");
-                if(mLoadmoreControl != null) {
-                    mInLoadingState = true;
-                    mLoadmoreControl.onUp2Loadmore(this.recyclerView);
+        if(mLoadmoreControl.isEnableUp2LoadMore()) {
+            LOG("checkUp2loadMore()-> mInLoadingState 当前列表的是否处于加载状态(加载状态不检测上拉加载)", mInLoadingState);
+            if(!mLoadmoreControl.loadmoreFinished && getItemCount() == 1) {
+                //清空到 只剩下一个 底部loading 则重启 上拉加载
+                mLoadmoreControl.forceDown2Refresh();
+                //当前状态为停止滑动状态SCROLL_STATE_IDLE时   getItemCount()-1去掉底部 loading
+            }else if(!mInLoadingState && !mLoadmoreControl.loadmoreFinished && getItemCount()-1>0) {
+                //1 上拉加载 没结束的时候 上拉加载
+                //2 mInLoadingState 为false 即没有处于 加载数据ing 状态的时候 允许检测
+                //3 处于错误状态的时候 没有监听到数据的增删改 mInLoadingState会 一直为false （回到 第2点）
+                //4 下拉刷新 更新数据之后 会出现增删改的情况 但是 数据都一样就不会 触发增删改 也就是没有检查上拉请求过数据checkUp2loadMore()没走 mInLoadingState为false
+                int lastPosition = 0;
+                RecyclerView.LayoutManager layoutManager = this.recyclerView.getLayoutManager();
+                if(layoutManager instanceof GridLayoutManager) {
+                    //通过LayoutManager找到当前显示的最后的item的position
+                    lastPosition = ( (GridLayoutManager)layoutManager ).findLastVisibleItemPosition();
+                }else if(layoutManager instanceof LinearLayoutManager) {
+                    lastPosition = ( (LinearLayoutManager)layoutManager ).findLastVisibleItemPosition();
+                }else if(layoutManager instanceof StaggeredGridLayoutManager) {
+                    //因为StaggeredGridLayoutManager的特殊性可能导致最后显示的item存在多个，所以这里取到的是一个数组
+                    //得到这个数组后再取到数组中position值最大的那个就是最后显示的position值了
+                    int[] lastPositions = new int[( (StaggeredGridLayoutManager)layoutManager ).getSpanCount()];
+                    ( (StaggeredGridLayoutManager)layoutManager ).findLastVisibleItemPositions(lastPositions);
+                    lastPosition = findMax(lastPositions);
                 }
-            }
+                //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
+                //如果相等则说明已经滑动到最后了
+                if(lastPosition>=getItemCount()-1) {
+                    Log.d(TAG, "loading 上拉提示 item 可见");
+                    if(mLoadmoreControl != null) {
+                        mInLoadingState = true;
+                        mLoadmoreControl.onUp2Loadmore(this.recyclerView);
+                    }
+                }
 
-            //                    if(mLoadingBinder != null && mLoadingBinder.itemView != null) {
-            //                        //或者 loading可见自动加载 下一页
-            //                        Rect visiRect = new Rect();
-            //                        mLoadingBinder.itemView.getGlobalVisibleRect(visiRect);
-            //                        System.out.println(visiRect.toString());
-            //                        mLoadingBinder.itemView.getLocalVisibleRect(visiRect);
-            //                        System.out.println(visiRect.toString());
-            //                        mLoadingBinder.itemView.getWindowVisibleDisplayFrame(visiRect);
-            //                        System.out.println(visiRect.toString());
-            //                    }
+                //                    if(mLoadingBinder != null && mLoadingBinder.itemView != null) {
+                //                        //或者 loading可见自动加载 下一页
+                //                        Rect visiRect = new Rect();
+                //                        mLoadingBinder.itemView.getGlobalVisibleRect(visiRect);
+                //                        System.out.println(visiRect.toString());
+                //                        mLoadingBinder.itemView.getLocalVisibleRect(visiRect);
+                //                        System.out.println(visiRect.toString());
+                //                        mLoadingBinder.itemView.getWindowVisibleDisplayFrame(visiRect);
+                //                        System.out.println(visiRect.toString());
+                //                    }
+            }
+        }else {
+            LOG("  TT TT  外部关闭了 上拉加载 TT  TT  TT  TT");
         }
     }
 
