@@ -86,8 +86,8 @@ public class BindingViewPagerAdapter<T> extends PagerAdapter implements BindingC
     @Override
     public CharSequence getPageTitle(int position){
         T item = items.get(position);
-        if(item instanceof BindingViewPagerAdapter2.PageTitle) {
-            return ( (BindingViewPagerAdapter2.PageTitle)item ).getPageTitle();
+        if(item instanceof PageTitle) {
+            return ( (PageTitle)item ).getPageTitle();
         }else {
             return pageTitles == null ? "null" : pageTitles.getPageTitle(position, item);
         }

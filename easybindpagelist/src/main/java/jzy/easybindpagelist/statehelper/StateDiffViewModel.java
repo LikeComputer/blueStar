@@ -35,11 +35,11 @@ import static me.tatarka.bindingcollectionadapter2.Utils.LOG;
 public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel implements OnStateClickListener, View.OnLayoutChangeListener, LifecycleOwner, GenericLifecycleObserver {
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     protected CharSequence pageStateMsg;
-    protected ObservableInt pageState = new ObservableInt(MultiStateLayout.LayoutState.STATE_LOADING);
-    protected ObservableInt pageLoadingRes = new ObservableInt(STATE_UNMODIFY);
-    protected ObservableInt pageEmptyRes = new ObservableInt(STATE_UNMODIFY);
-    protected ObservableInt pageErrorRes = new ObservableInt(STATE_UNMODIFY);
-    protected ObservableInt pageLoadingColorInt = new ObservableInt(STATE_UNMODIFY);
+    public ObservableInt pageState = new ObservableInt(MultiStateLayout.LayoutState.STATE_LOADING);
+    public ObservableInt pageLoadingRes = new ObservableInt(STATE_UNMODIFY);
+    public ObservableInt pageEmptyRes = new ObservableInt(STATE_UNMODIFY);
+    public ObservableInt pageErrorRes = new ObservableInt(STATE_UNMODIFY);
+    public ObservableInt pageLoadingColorInt = new ObservableInt(STATE_UNMODIFY);
     protected Object mOrignParam;
     protected WeakReference<ScrollChildSwipeRefreshLayout> mSwipeRefreshLayout;
     //转发 View的生命周期
@@ -48,8 +48,8 @@ public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel impleme
     /**
      * 显示 SwipeRefreshLayout 刷新状态
      */
-    protected ObservableBoolean down2Refreshing = new ObservableBoolean(false);
-    protected ObservableBoolean enableSwipeRefresh = new ObservableBoolean(true);
+    public ObservableBoolean down2Refreshing = new ObservableBoolean(false);
+    public ObservableBoolean enableSwipeRefresh = new ObservableBoolean(true);
     private Lifecycle.Event mCurrentEvent;
     /**
      * 开关,注册activity或者fragment后会监听生命周期,在create的时候触发{@link #onSubscribeData(Object)}请求数据

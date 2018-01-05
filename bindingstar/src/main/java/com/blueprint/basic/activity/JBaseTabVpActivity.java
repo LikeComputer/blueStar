@@ -51,7 +51,7 @@ public abstract class JBaseTabVpActivity extends JBaseTitleActivity {
     protected void setupAdapter(){
         mBaseViewpager.setAdapter(new TabAdapter(getSupportFragmentManager(), mTabTitles = setTabTitles(),
                 mBaseFrgmtFractory = setFrgmtProvider()));
-        //        mBaseViewpager.setAdapter(new TabAdapter(getFragmentManager(), setTabTitles(), setFrgmtProvider()));
+        //        mBaseViewpager.setAdapter(new TabFrgmtAdapter(getFragmentManager(), setTabTitles(), setFrgmtProvider()));
         mBaseViewpager.setOffscreenPageLimit(offScreenPageLimit());
         //不需要加载数据 直接显示内容
         if(mBaseViewpager.getAdapter() instanceof TabAdapter) {

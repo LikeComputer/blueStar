@@ -120,6 +120,7 @@ public class SpanHelper {
 
     /**
      * 通过国际化 转 成字符串 然后 修改关键字样式
+     * style里面设置的background无效
      *
      * @param view
      *         为textview的时候 直接设置给textview

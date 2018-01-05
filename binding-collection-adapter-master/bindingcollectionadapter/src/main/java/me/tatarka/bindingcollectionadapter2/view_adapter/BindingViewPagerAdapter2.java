@@ -18,6 +18,7 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding;
 import me.tatarka.bindingcollectionadapter2.OnItemBind;
 import me.tatarka.bindingcollectionadapter2.Utils;
 import me.tatarka.bindingcollectionadapter2.collections.JObservableList;
+import me.tatarka.bindingcollectionadapter2.collections.PageTitle;
 
 /**
  * A {@link PagerAdapter} that binds mDataLists to layouts using the given {@link ItemBinding} or {@link
@@ -157,9 +158,5 @@ public class BindingViewPagerAdapter2<T> extends PagerAdapter implements Binding
 
     public interface PageTitles<T> {
         CharSequence getPageTitle(int position, T item);
-    }
-
-    public interface PageTitle {
-        CharSequence getPageTitle();
     }
 }

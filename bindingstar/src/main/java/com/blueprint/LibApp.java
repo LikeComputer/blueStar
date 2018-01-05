@@ -54,6 +54,7 @@ public class LibApp {
     //需要可调
     public static boolean JELLYLIST = false;
 
+    //todo 权衡下看看是否需要添加 https://www.jianshu.com/p/006fb4fb0f0c
     public static CrashWrapper takeCare(Application context, final boolean inDebug){
         sContext = context.getApplicationContext();
         sInDebug = inDebug;
