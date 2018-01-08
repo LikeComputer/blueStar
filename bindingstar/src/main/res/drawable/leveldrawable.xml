@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="0">
+        <bitmap
+            android:src="@drawable/ic_access_alarms_grey600_24dp"
+            android:tint="@color/colorAccent"/>
+    </item>
+    <item
+        android:drawable="@drawable/ic_access_alarms_grey600_24dp"
+        android:maxLevel="1"/>
+    <item
+        android:drawable="@drawable/ic_access_alarms_grey600_24dp"
+        android:maxLevel="2"/>
+    <item
+        android:maxLevel="13"
+        android:minLevel="3">
+        <layer-list>
+            <item android:drawable="@drawable/ic_access_alarms_grey600_24dp"/>
+            <item android:gravity="top|right">
+                <shape android:shape="oval">
+                    <size
+                        android:width="3.3dp"
+                        android:height="3.3dp"/>
+                    <solid android:color="@color/colorAccent"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</level-list>
