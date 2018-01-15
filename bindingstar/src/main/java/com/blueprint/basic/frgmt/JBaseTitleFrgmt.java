@@ -94,11 +94,11 @@ public abstract class JBaseTitleFrgmt extends JBaseFragment {
             mTitleBar.getTitleTextView().setTextColor(titleColor);
         }
         //        //空页面提示信息
-        //        setTextView(mContentLayout.getEmptyLayout(), R.id.j_multity_empt_msg, setEmptMsg());
-        //        setTextView(mContentLayout.getEmptyLayout(), R.id.j_multity_retry, setEmptRetryMsg());
+        //        setTextView(mContainerLayout.getEmptyLayout(), R.id.j_multity_empt_msg, setEmptMsg());
+        //        setTextView(mContainerLayout.getEmptyLayout(), R.id.j_multity_retry, setEmptRetryMsg());
         //        //错误页面提示信息 只有出现错误页面才加载错误页面 应该注册文字
-        //        setTextView(mContentLayout.getErrorLayout(), R.id.j_multity_error_msg, setErrorMsg());
-        //        setTextView(mContentLayout.getErrorLayout(), R.id.j_multity_retry, setErrorRetryMsg());
+        //        setTextView(mContainerLayout.getErrorLayout(), R.id.j_multity_error_msg, setErrorMsg());
+        //        setTextView(mContainerLayout.getErrorLayout(), R.id.j_multity_retry, setErrorRetryMsg());
 
 
     }

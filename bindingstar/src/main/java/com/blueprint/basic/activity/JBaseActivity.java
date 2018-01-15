@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -64,11 +63,11 @@ public class JBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-            //状态栏透明
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);//布局全屏
-        }
+        //if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+        //    //状态栏透明
+        //    getWindow().setStatusBarColor(Color.TRANSPARENT);
+        //    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);//布局全屏
+        //}
         super.onCreate(savedInstanceState);
         if(mNeedLoopTransition && Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setExitTransition(setExitTransition());

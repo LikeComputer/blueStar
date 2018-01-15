@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="jbaseStateViewModel"
+            type="jzy.easybindpagelist.statehelper.BaseDiffSteteViewModel"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/root_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.blueprint.widget.JToolbar
+            android:id="@+id/jbase_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:drawableLeft="@drawable/icon_btn_back"/>
+        <!--android:fitsSystemWindows="true"-->
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/jbase_swipe"
+            android:onRefresh="@{pageViewModel}"
+            bind:enableRefresh="@{pageViewModel.enableSwipeRefresh}"
+            bind:isRefreshing="@{pageViewModel.down2Refreshing}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <jonas.jlayout.MultiStateLayout
+                android:id="@+id/jbase_state_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:onRetryListener="@{pageViewModel}"
+                bind:registEmpty="@{pageViewModel.pageEmptyRes}"
+                bind:registError="@{pageViewModel.pageErrorRes}"
+                bind:registLoading="@{pageViewModel.pageLoadingRes}"
+                bind:loadingColor="@{pageViewModel.pageLoadingColorInt}"
+                bind:showState="@{pageViewModel.pageState}"
+                android:animateLayoutChanges="true"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -38,6 +38,7 @@ dependencies {
     implementation deps.rxjava2
     implementation deps.rx_android
     implementation deps.jstatelayout
+    implementation deps.constraint_layout
     compileOnly deps.lifecycle.runtime
     compileOnly deps.lifecycle.extensions
     annotationProcessor deps.lifecycle.compiler

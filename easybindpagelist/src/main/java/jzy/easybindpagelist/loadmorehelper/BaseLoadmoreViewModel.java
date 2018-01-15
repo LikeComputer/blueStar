@@ -210,21 +210,42 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         }
     }
 
+
+    /**
+     * 过滤了空数据
+     * @param key
+     */
     public void search(String key){
         if(!TextUtils.isEmpty(key)) {
             search(null, key);
         }
     }
 
+
+    /**
+     * 不过滤空数据 空数据可以用来清除搜索
+     * @param editText
+     * @param key
+     */
     public void search(EditText editText, @NonNull String key){
         CURRENT_SEARCH_KEY = key;
         if(!key.equals(mLastSearchKey)) {
             mCurrentPage = FIRST_PAGE;
+            showPageStateLoading();
+            reset4Search();
             toSearchFromService(key);
         }else {
             theSameSearchKey(key);
         }
         mLastSearchKey = key;
+    }
+
+
+    /**
+     * 搜索新关键字的时候 清空列表
+     */
+    protected void reset4Search() {
+        mDataLists.clear();
     }
 
     protected void theSameSearchKey(String key){ /* 搜索同一个关键字 */ }
@@ -233,7 +254,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      * 搜索 关键字 复写方法<br>
      * <li>{@link #CURRENT_SEARCH_KEY} 会保存 当前的搜索关键字</li>
      * <li>默认 回掉 {@link #onSubscribeData(Object)}</li>
-     *
+     * <br>搜索的时候也可以上啦加载 有搜索关键字的时候 上啦加载会处罚
      * @param key
      */
     protected void toSearchFromService(String key){
@@ -404,6 +425,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
 
     @Override
     public void onRetry(int layoutState){
+        pageState.set(0);
         down2RefreshData();
     }
 }

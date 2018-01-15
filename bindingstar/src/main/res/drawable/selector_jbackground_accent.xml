@@ -3,5 +3,5 @@
     <item android:drawable="@color/colorAccent" android:state_pressed="true"/>
     <!--5.0 以下找不到-->
     <!--<item android:state_pressed="true" android:color="?attr/colorControlHighlight"/>-->
-    <item android:drawable="@android:color/white"/>
+    <item android:drawable="@color/jselector_default_bg_color"/>
 </selector>

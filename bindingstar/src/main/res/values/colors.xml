@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="jforground_trans_gray">#20000000</color>
+    <color name="jselector_default_bg_color">#ffff</color>
+    <color name="jselector_pressed_color">#20000000</color>
 
     <!--note-->
     <color name="theme_primary">#00BCD4</color>
@@ -49,7 +50,7 @@
     <color name="j_black_a60">#66000000</color>
     <color name="j_black_a55">#73000000</color>
     <color name="j_black_a50">#80000000</color>
-    <color name="j_black_a45">#0D000000</color>
+    <color name="j_black_a45">#8C000000</color>
     <color name="j_black_a40">#8C000000</color>
     <color name="j_black_a35">#A6000000</color>
     <color name="j_black_a30">#B3000000</color>
@@ -70,7 +71,7 @@
     <color name="j_white_a60">#66ffffff</color>
     <color name="j_white_a55">#73ffffff</color>
     <color name="j_white_a50">#80ffffff</color>
-    <color name="j_white_a45">#0Dffffff</color>
+    <color name="j_white_a45">#8Cffffff</color>
     <color name="j_white_a40">#8Cffffff</color>
     <color name="j_white_a35">#A6ffffff</color>
     <color name="j_white_a30">#B3ffffff</color>

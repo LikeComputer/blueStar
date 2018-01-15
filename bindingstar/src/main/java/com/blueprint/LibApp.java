@@ -107,6 +107,7 @@ public class LibApp {
 
             @Override
             public void onTrimMemory(int level){
+                //https://user-gold-cdn.xitu.io/2018/1/9/160d86decf686a79?imageView2/0/w/1280/h/960/format/webp/ignore-error/1
                 //                TRIM_MEMORY_RUNNING_MODERATE
                 //                你的应用正在运行，并且不会被杀死，但设备已经处于低内存状态，并且开始杀死LRU缓存里的内存。
                 //                TRIM_MEMORY_RUNNING_LOW

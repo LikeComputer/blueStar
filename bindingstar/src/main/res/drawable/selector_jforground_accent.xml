@@ -2,5 +2,5 @@
     <item android:drawable="?attr/colorAccent" android:state_pressed="true"/>
     <!--5.0 以下找不到-->
     <!--<item android:state_pressed="true" android:color="?attr/colorControlHighlight"/>-->
-    <item android:drawable="@android:color/transparent"/>
+    <!--<item android:drawable="@android:color/transparent"/>-->
 </selector>

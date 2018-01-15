@@ -31,7 +31,7 @@
     </data>
 
     <jonas.jlayout.MultiStateLayout
-        android:id="@+id/joutter_multl"
+        android:id="@+id/joutter_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         bind:layoutChange="@{pageViewModel}"

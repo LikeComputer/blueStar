@@ -63,7 +63,6 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
     private boolean mNeedExpend = false;
     private int mItemTvColor = Color.RED;
     private ColorStateList mItemTvColorSelector;
-    private LayoutParams mItemLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, dip2px(28));
     private int mTextSize = 13;
     private StateListDrawable mItemBgselector;
     private int mItemBg_ids = Consistent.DEFAULTERROR;
@@ -368,7 +367,13 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
         return this;
     }
 
-    // 初始化条件布局
+
+    /**
+     * 初始化条件布局
+     * item的宽高 同步背景设置pading完成
+     * @param content
+     * @return
+     */
     public CheckedTextView newCheckedItem(String content){
         CheckedTextView box = new CheckedTextView(getContext());
         if(mItemTvColorSelector == null) {
@@ -376,7 +381,6 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
         }else {
             box.setTextColor(mItemTvColorSelector);
         }
-        box.setLayoutParams(mItemLayoutParams);
         if(mItemBgselector != null) {
             box.setBackground(mItemBgselector);
         }else if(mItemBg_ids != Consistent.DEFAULTERROR) {
@@ -448,11 +452,6 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
 
     public JFlowLayout setItemTvColorSelector(@Size(value = 3) @ColorInt int... colors){
         mItemTvColorSelector = getColorStateList2(colors);
-        return this;
-    }
-
-    public JFlowLayout setItemLayoutParams(LayoutParams itemLayoutParams){
-        mItemLayoutParams = itemLayoutParams;
         return this;
     }
 
