@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 
 import static com.blueprint.helper.DpHelper.dp2px;
-import static com.blueprint.helper.DpHelper.dp2pxCeilInt;
+import static com.blueprint.helper.DpHelper.dp2px2;
 import static com.blueprint.helper.StatusBarHelper.getStatusBarHeight;
 import static com.blueprint.helper.StrHelper.safeObject2Str;
 
@@ -91,7 +91,7 @@ public class JTitleBar extends RelativeLayout implements DoubleClickAble, Gestur
         sa.recycle();
 
         TypedArray sa1 = context.obtainStyledAttributes(attrs, ATTRS);
-        mTextSize = sa1.getDimensionPixelSize(0, dp2px(getContext(), mTextSize));
+        mTextSize = sa1.getDimensionPixelSize(0, dp2px2(mTextSize));
         mTextColor = sa1.getColor(1, Color.WHITE);
         mIsfitsSystemWindows = sa1.getBoolean(2, true);
         sa1.recycle();
@@ -270,7 +270,7 @@ public class JTitleBar extends RelativeLayout implements DoubleClickAble, Gestur
     public TextView replaceLeftAsTextView(String rightContent){
         TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER_VERTICAL);
-        textView.setPadding(dp2pxCeilInt(14), 0, 0, 0);
+        textView.setPadding(dp2px2(14), 0, 0, 0);
         textView.setText(rightContent);
         return (TextView)( mCustomLeftView = textView );
     }
@@ -292,7 +292,7 @@ public class JTitleBar extends RelativeLayout implements DoubleClickAble, Gestur
     public TextView replaceRightAsTextView(String rightContent){
         TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER_VERTICAL);
-        textView.setPadding(0, 0, dp2pxCeilInt(14), 0);
+        textView.setPadding(0, 0, dp2px2(14), 0);
         textView.setText(rightContent);
         return (TextView)( mCustomRightView = textView );
     }
@@ -304,7 +304,7 @@ public class JTitleBar extends RelativeLayout implements DoubleClickAble, Gestur
     public CheckBox replaceRightAsCheckBox(String rightContent){
         CheckBox textView = new CheckBox(getContext());
         textView.setGravity(Gravity.CENTER_VERTICAL);
-        textView.setPadding(0, 0, dp2pxCeilInt(14), 0);
+        textView.setPadding(0, 0, dp2px2(14), 0);
         textView.setText(rightContent);
         return (CheckBox)( mCustomRightView = textView );
     }

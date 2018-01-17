@@ -1,80 +1,151 @@
 package com.blueprint.basic.frgmt;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
-
+import android.view.ViewGroup;
+import april.yun.JPagerSlidingTabStrip;
+import april.yun.other.JTabStyleDelegate;
 import com.blueprint.R;
 import com.blueprint.adapter.frgmt.BaseFrgmtFractory;
 import com.blueprint.adapter.frgmt.TabAdapter;
-import com.blueprint.basic.JBasePresenter;
 import com.blueprint.helper.UIhelper;
-
-import april.yun.JPagerSlidingTabStrip;
-import april.yun.other.JTabStyleDelegate;
+import com.blueprint.widget.JToolbar;
 
 /**
  * @author 江祖赟.
  * @date 2017/6/7
  * @des [具体内容由viewpager的fragment展示 此fragment只做容器装tabstrip + viewpager]
  */
-public abstract class JBaseTabVpStateFrgmt extends JBaseTitleStateFrgmt {
-
-    public JPagerSlidingTabStrip mSecTabStrip;
-    public ViewPager mSecViewpager;
-
+public abstract class JBaseTabVpStateFrgmt extends JBaseFragment {
     /**
-     * 不会在firstvisibility中自动触发presenter.subscribe
-     * @return
+     * ContentView中 最外层 父容器
      */
-    @Override
-    protected JBasePresenter initPresenter(){
-        return null;
-    }
+    protected JToolbar mToolBar;
+    public JPagerSlidingTabStrip mBaseTabStrip;
+    public ViewPager mBaseViewpager;
+    protected BaseFrgmtFractory mBaseFrgmtFractory;
+    protected String[] mTabTitles;
+    private View mContentView;
 
-    @Override
-    protected void onCreateContent(LayoutInflater inflater, RelativeLayout fmContent){
-        View rootView = inflater.inflate(R.layout.jbasic_tab_vp_layout, fmContent);
-        mSecTabStrip = rootView.findViewById(R.id.jbase_tab_strip);
-        mSecViewpager = rootView.findViewById(R.id.jbase_viewpager);
+    @Nullable @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(setContentLayout4Frgmt(), container, false);
+        mToolBar = rootView.findViewById(R.id.jbase_toolbar);
+        mContentView = rootView.findViewById(R.id.jbase_tab_state);
+        mBaseTabStrip = (JPagerSlidingTabStrip) rootView.findViewById(R.id.jbase_tab_strip);
+        mBaseViewpager = (ViewPager) rootView.findViewById(R.id.jbase_viewpager);
+        if(requestNoTitleBar()) {
+            mToolBar.setVisibility(View.GONE);
+        } else {
+            initToolBar();
+            reConfigToolBar(mToolBar);
+            if(setContentBelowTitleBar()) {
+                stateLayoutBelowTitleBar();
+            }
+        }
         initTabStrip();
         setupAdapter();
+        return rootView;
     }
 
-    private void setupAdapter(){
-        // http://blog.csdn.net/a1274624994/article/details/53575976
-        //getFragmentManager()有问题 浪费好多时间：getChildFragmentManager  T_T
-        mSecViewpager.setAdapter(new TabAdapter(getChildFragmentManager(), setTabTitles(), setFrgmtProvider()));
-        mSecViewpager.setOffscreenPageLimit(setTabTitles().length);
-        if(mSecViewpager.getAdapter() instanceof TabAdapter) {
+
+    protected void reConfigToolBar(JToolbar toolBar) {}
+
+
+    protected int setContentLayout4Frgmt() {
+        return R.layout.jbasic_state_tab_vp_layout;
+    }
+
+
+    /**
+     * 内容在toolbar的下面
+     */
+    public boolean setContentBelowTitleBar() {
+        return true;
+    }
+
+
+    protected void stateLayoutBelowTitleBar() {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mContentView.getLayoutParams();
+        layoutParams.topToBottom = R.id.jbase_toolbar;
+    }
+
+
+    /**
+     * 默认 没有titlebar
+     */
+    protected boolean requestNoTitleBar() {
+        return true;
+    }
+
+
+    protected void initToolBar() {
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                doTitleBarLeftClick();
+            }
+        });
+    }
+
+
+    protected void doTitleBarLeftClick() {
+    }
+
+
+    protected void setupAdapter() {
+        mBaseViewpager.setAdapter(
+                new TabAdapter(getChildFragmentManager(), mTabTitles = setTabTitles(), mBaseFrgmtFractory = setFrgmtProvider()));
+        //        mBaseViewpager.setAdapter(new TabFrgmtAdapter(getFragmentManager(), setTabTitles(), setFrgmtProvider()));
+        mBaseViewpager.setOffscreenPageLimit(offScreenPageLimit());
+        //不需要加载数据 直接显示内容
+        if(mBaseViewpager.getAdapter() instanceof TabAdapter) {
             //在onsizechange之后设置导致indicator不显示
-            mSecTabStrip.bindViewPager(mSecViewpager);
-        }else {
-            mSecTabStrip.setVisibility(View.GONE);
+            mBaseTabStrip.bindViewPager(mBaseViewpager);
+        } else {
+            mBaseTabStrip.setVisibility(View.GONE);
         }
     }
 
-    private void initTabStrip(){
-//        //        2，拿TabStyleDelegate
-//        JTabStyleDelegate tabStyleDelegate = mBaseTabStrip.getTabStyleDelegate();
-//        //        3, 用TabStyleDelegate设置属性
-//        tabStyleDelegate.setShouldExpand(false)
-//                //也可以直接传字符串的颜色，第一个颜色表示checked状态的颜色第二个表示normal状态
-//                .setTextColor(Color.parseColor("#45C01A"), Color.GRAY)
-//                .setTabTextSize(LibApp.findDimens(R.dimen.tab_top_textsize)).setTabPadding(LibApp.findDimens(R.dimen.tab_pading))
-//                .setDividerPadding(0)//tab之间分割线 的上下pading
-//                .setTabPadding(0).setUnderlineHeight(0)//底部横线的高度
-//                .setIndicatorHeight(8).setIndicatorColor(Color.parseColor("#45C01A"));
-        reConfigTabStrip(UIhelper.initTabStrip(mSecTabStrip.getTabStyleDelegate()).setNeedTabTextColorScrollUpdate(true));
+
+    protected int offScreenPageLimit() {
+        return mTabTitles.length;
     }
 
-    protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate){
 
+    protected void initTabStrip() {
+        reConfigTabStrip(UIhelper.initTabStrip(mBaseTabStrip.getTabStyleDelegate()).setNeedTabTextColorScrollUpdate(true));
+        //        //        2，拿TabStyleDelegate
+        //        JTabStyleDelegate tabStyleDelegate = mBaseTabStrip.getTabStyleDelegate();
+        //        //        3, 用TabStyleDelegate设置属性
+        //        tabStyleDelegate.setShouldExpand(false)
+        //                //也可以直接传字符串的颜色，第一个颜色表示checked状态的颜色第二个表示normal状态
+        //                .setTextColor(findColor(R.color.colorPrimary), findColor(R.color.jforground_trans_gray))
+        //                .setTabTextSize(findDimens(R.dimen.tab_top_textsize)).setTabPadding(findDimens(R.dimen.tab_pading))
+        //                .setDividerPadding(0)//tab之间分割线 的上下pading
+        //                .setTabPadding(0).setUnderlineHeight(0)//底部横线的高度
+        //                .setIndicatorHeight(findDimens(R.dimen.tab_indicator_height))
+        //                .setUnderlineHeight(findDimens(R.dimen.tab_underline_height))
+        //                .setUnderlineColor(Color.parseColor("#e6e6e6")).setIndicatorColor(findColor(R.color.colorPrimary));
+        //        reConfigTabStrip(tabStyleDelegate);
     }
+
+
+    public void setTitle(CharSequence title) {
+        if(mToolBar != null) {
+            mToolBar.setTitle(title);
+        }
+    }
+
+
+    protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate) {
+    }
+
 
     protected abstract BaseFrgmtFractory setFrgmtProvider();
 
     protected abstract String[] setTabTitles();
-
 }

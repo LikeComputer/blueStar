@@ -1,4 +1,4 @@
-include ':app', ':easybindpagelist', ':bindingstar'
+include ':app', ':easybindpagelist', ':bindingstar', ':juimodel'
 
 //include 'binding-collection-adapter-master'
 //project(':binding-collection-adapter-master').projectDir = file('/binding-collection-adapter-master/app')

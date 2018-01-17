@@ -1,18 +1,17 @@
 package com.blueprint.basic.activity;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
-
+import april.yun.JPagerSlidingTabStrip;
+import april.yun.other.JTabStyleDelegate;
 import com.blueprint.R;
 import com.blueprint.adapter.frgmt.BaseFrgmtFractory;
 import com.blueprint.adapter.frgmt.TabAdapter;
-import com.blueprint.basic.JBasePresenter;
 import com.blueprint.helper.UIhelper;
-
-import april.yun.JPagerSlidingTabStrip;
-import april.yun.other.JTabStyleDelegate;
+import com.blueprint.widget.JToolbar;
 
 /**
  * @author 江祖赟.
@@ -20,35 +19,87 @@ import april.yun.other.JTabStyleDelegate;
  * @des [具体内容由viewpager的fragment展示 此fragment只做容器装tabstrip + viewpager]</p>
  * <h>在onCreate里面会对tabStrip和viewpager进行一系列设置，所以子类需要在super之前获取相关数据</h>
  */
-public abstract class JBaseTabVpActivity extends JBaseTitleActivity {
-
+public abstract class JBaseTabVpActivity extends JBaseActivity {
+    /**
+     * ContentView中 最外层 父容器
+     */
+    protected JToolbar mToolBar;
     public JPagerSlidingTabStrip mBaseTabStrip;
     public ViewPager mBaseViewpager;
     protected BaseFrgmtFractory mBaseFrgmtFractory;
     protected String[] mTabTitles;
+    private View mContentView;
 
-    @Override
-    protected JBasePresenter initPresenter(){
-        //只是容器不需要 presenter
-        return null;
-    }
 
-    /**
-     * <h>在onCreate--onVreateContent里面会对tabStrip和viewpager进行一系列设置，所以子类需要在super.onCreate之前获取相关数据</h>
-     *
-     * @param inflater
-     * @param fmContent
-     */
-    @Override
-    protected void onCreateContent(LayoutInflater inflater, RelativeLayout fmContent){
-        View rootView = inflater.inflate(R.layout.jbasic_tab_vp_layout, fmContent);
-        mBaseTabStrip = (JPagerSlidingTabStrip)rootView.findViewById(R.id.jbase_tab_strip);
-        mBaseViewpager = (ViewPager)rootView.findViewById(R.id.jbase_viewpager);
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(setContentLayout4Act());
+        mContentView=mBaseTabStrip = (JPagerSlidingTabStrip) findViewById(R.id.jbase_tab_strip);
+        mBaseViewpager = (ViewPager) findViewById(R.id.jbase_viewpager);
+        if(!requestNoToolBar()) {
+            mToolBar = findViewById(R.id.jbase_toolbar);
+            initToolBar();
+            reConfigToolBar(mToolBar);
+            if(setContentBelowTitleBar()) {
+                stateLayoutBelowTitleBar();
+            }
+        }
         initTabStrip();
         setupAdapter();
     }
 
-    protected void setupAdapter(){
+
+    protected void reConfigToolBar(JToolbar toolBar) {}
+
+
+    protected int setContentLayout4Act() {
+        if(requestNoToolBar()) {
+            return R.layout.jbasic_tab_vp_layout;
+        } else {
+            return R.layout.jbasic_toolbar_tab_vp_layout;
+        }
+    }
+
+
+    /**
+     * 内容在toolbar的下面
+     */
+    public boolean setContentBelowTitleBar() {
+        return true;
+    }
+
+
+    protected void stateLayoutBelowTitleBar() {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mContentView.getLayoutParams();
+        layoutParams.topToBottom = R.id.jbase_toolbar;
+    }
+
+
+    /**
+     * 默认 有titlebar
+     */
+    protected boolean requestNoToolBar() {
+        return false;
+    }
+
+
+    protected void initToolBar() {
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                doTitleBarLeftClick();
+            }
+        });
+    }
+
+
+    protected void doTitleBarLeftClick() {
+        finish();
+    }
+
+
+    protected void setupAdapter() {
         mBaseViewpager.setAdapter(new TabAdapter(getSupportFragmentManager(), mTabTitles = setTabTitles(),
                 mBaseFrgmtFractory = setFrgmtProvider()));
         //        mBaseViewpager.setAdapter(new TabFrgmtAdapter(getFragmentManager(), setTabTitles(), setFrgmtProvider()));
@@ -57,18 +108,19 @@ public abstract class JBaseTabVpActivity extends JBaseTitleActivity {
         if(mBaseViewpager.getAdapter() instanceof TabAdapter) {
             //在onsizechange之后设置导致indicator不显示
             mBaseTabStrip.bindViewPager(mBaseViewpager);
-        }else {
+        } else {
             mBaseTabStrip.setVisibility(View.GONE);
         }
     }
 
-    protected int offScreenPageLimit(){
+
+    protected int offScreenPageLimit() {
         return mTabTitles.length;
     }
 
-    protected void initTabStrip(){
-        reConfigTabStrip(
-                UIhelper.initTabStrip(mBaseTabStrip.getTabStyleDelegate()).setNeedTabTextColorScrollUpdate(true));
+
+    protected void initTabStrip() {
+        reConfigTabStrip(UIhelper.initTabStrip(mBaseTabStrip.getTabStyleDelegate()).setNeedTabTextColorScrollUpdate(true));
         //        //        2，拿TabStyleDelegate
         //        JTabStyleDelegate tabStyleDelegate = mBaseTabStrip.getTabStyleDelegate();
         //        //        3, 用TabStyleDelegate设置属性
@@ -84,16 +136,12 @@ public abstract class JBaseTabVpActivity extends JBaseTitleActivity {
         //        reConfigTabStrip(tabStyleDelegate);
     }
 
-    protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate){
 
+    protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate) {
     }
+
 
     protected abstract BaseFrgmtFractory setFrgmtProvider();
 
     protected abstract String[] setTabTitles();
-
-    @Override
-    protected void toSubscribeData(){
-        //不需要获取数据
-    }
 }

@@ -17,6 +17,7 @@ import com.blueprint.JSettingCenter;
 import com.blueprint.LibApp;
 import com.blueprint.crash.ui.CatchActivity;
 import com.blueprint.crash.ui.PatchDialogActivity;
+import com.blueprint.helper.CheckHelper;
 import com.blueprint.helper.LogHelper;
 
 import java.io.PrintWriter;
@@ -59,7 +60,8 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
     private boolean mAutoRestart = true;
     public static boolean catchDefaultUncaughtException = true;
 
-    public static void restartApp(){
+
+    public static void restartApp() {
         Log.d("CrashWrapper", "=========Restart=======");
         Intent intent = sContext.getPackageManager().getLaunchIntentForPackage(sContext.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -69,24 +71,25 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         System.exit(0);
     }
 
-    private CrashWrapper(){
+
+    private CrashWrapper() {
         crashing = false;
         initContextResources();
     }
 
-    public static CrashWrapper get(){
+
+    public static CrashWrapper get() {
         sContext = LibApp.getContext();
         return new CrashWrapper();
     }
+
 
     /**
      * 当主线程或子线程抛出异常时会调用exceptionHandler.handlerException(Thread thread, Throwable throwable)
      * exceptionHandler.handlerException可能运行在非UI线程中。
      * 若设置了Thread.setDefaultUncaughtExceptionHandler则可能无法捕获子线程异常。
-     *
-     * @param exceptionInterceptor
      */
-    public synchronized void watching(UncaughtExceptionInterceptor exceptionInterceptor){
+    public synchronized void watching(UncaughtExceptionInterceptor exceptionInterceptor) {
         if(sInstalled || !catchDefaultUncaughtException) {
             //不捕获异常关闭
             return;
@@ -95,12 +98,11 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         sExceptionInterceptor = exceptionInterceptor;
         if(!mIsDebug) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run(){
-                    while(true) {
+                @Override public void run() {
+                    while (true) {
                         try {
                             Looper.loop();
-                        }catch(Throwable e) {
+                        } catch (Throwable e) {
                             if(isInstanceOfNullQuitCockroachException(e)) {
                                 //终结循环
                                 return;
@@ -110,9 +112,9 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
                             if(isInstanceOfSQLiteException(e)) {
                                 //如果是数据库 异常就强力清除应用数据 退出应用
                                 JSettingCenter.strongClearAppCache();
-                            }else if(isInstanceOfOutOfMemoryError(e) || isInstanceOfNullPointerException(e)) {
+                            } else if(isInstanceOfOutOfMemoryError(e) || isInstanceOfNullPointerException(e)) {
                                 restartApp();
-                            }else {
+                            } else {
                                 if(sExceptionInterceptor != null) {
                                     sExceptionInterceptor.onhandlerException(Looper.getMainLooper().getThread(), e);
                                 }
@@ -126,47 +128,52 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    public static boolean isInstanceOfSQLiteException(Throwable e){
+
+    public static boolean isInstanceOfSQLiteException(Throwable e) {
         if(e instanceof SQLiteException) {
             return true;
-        }else if(e.getCause() != null) {
+        } else if(e.getCause() != null) {
             return isInstanceOfSQLiteException(e.getCause());
-        }else {
+        } else {
             return false;
         }
     }
 
-    public static boolean isInstanceOfOutOfMemoryError(Throwable e){
+
+    public static boolean isInstanceOfOutOfMemoryError(Throwable e) {
         if(e instanceof OutOfMemoryError) {
             return true;
-        }else if(e.getCause() != null) {
+        } else if(e.getCause() != null) {
             return isInstanceOfSQLiteException(e.getCause());
-        }else {
+        } else {
             return false;
         }
     }
 
-    public static boolean isInstanceOfNullPointerException(Throwable e){
+
+    public static boolean isInstanceOfNullPointerException(Throwable e) {
         if(e instanceof NullPointerException) {
             return true;
-        }else if(e.getCause() != null) {
+        } else if(e.getCause() != null) {
             return isInstanceOfSQLiteException(e.getCause());
-        }else {
+        } else {
             return false;
         }
     }
 
-    public static boolean isInstanceOfNullQuitCockroachException(Throwable e){
+
+    public static boolean isInstanceOfNullQuitCockroachException(Throwable e) {
         if(e instanceof QuitCockroachException) {
             return true;
-        }else if(e.getCause() != null) {
+        } else if(e.getCause() != null) {
             return isInstanceOfSQLiteException(e.getCause());
-        }else {
+        } else {
             return false;
         }
     }
 
-    public synchronized void giveup(){
+
+    public synchronized void giveup() {
         if(!sInstalled) {
             return;
         }
@@ -175,22 +182,20 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         //卸载后恢复默认的异常处理逻辑，否则主线程再次抛出异常后将导致ANR，并且无法捕获到异常位置
         Thread.setDefaultUncaughtExceptionHandler(this);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run(){
+            @Override public void run() {
                 throw new QuitCockroachException("Quit CrashWrapper.....");//主线程抛出异常，迫使 while (true) {}结束
             }
         });
-
     }
 
-    @Override
-    public synchronized void uncaughtException(Thread thread, Throwable throwable){
+
+    @Override public synchronized void uncaughtException(Thread thread, Throwable throwable) {
         // Don't re-enter, avoid infinite loops if crash-handler crashes.
         if(crashing) {
-            Log.e("CrashWrapper", "re-enter uncaughtException: \n"+Log.getStackTraceString(throwable));
+            Log.e("CrashWrapper", "re-enter uncaughtException: \n" + Log.getStackTraceString(throwable));
             if(mAutoRestart) {
                 restartApp();
-            }else {
+            } else {
                 System.exit(0);
             }
             return;
@@ -206,39 +211,42 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         if(!success && mOrignUncaughtExceptionHandler != null) {
             if(mAutoRestart) {
                 restartApp();
-            }else {
+            } else {
                 mOrignUncaughtExceptionHandler.uncaughtException(thread, throwable);
             }
-        }else {
+        } else {
             System.exit(0);
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 
-    private void crashLogSaveCheck(Throwable throwable){
+
+    private void crashLogSaveCheck(Throwable throwable) {
         if(mAutoSaveLog) {
             saveCrashToSdcard(sContext, throwable);
         }
     }
 
-    private boolean handleException(Throwable throwable){
+
+    private boolean handleException(Throwable throwable) {
         try {
             if(handleMode == SHOW_CRASH_PAGE) {
                 crashCatchActivity(throwable);
-            }else if(handleMode == SHOW_CRASH_DIALG) {
+            } else if(handleMode == SHOW_CRASH_DIALG) {
                 patchDialogMessage = getTopCause(throwable);
                 crashCatchDialog();
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    public static String getTopCause(Throwable throwable){
+
+    public static String getTopCause(Throwable throwable) {
         String topCauseMessage = Log.getStackTraceString(throwable);
         if(TextUtils.isEmpty(topCauseMessage)) {
-            while(throwable.getCause() != null) {
+            while (throwable.getCause() != null) {
                 throwable = throwable.getCause();
                 topCauseMessage = Log.getStackTraceString(throwable);
             }
@@ -246,10 +254,11 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         return topCauseMessage;
     }
 
-    public static Throwable getTopCauseThrowable(Throwable throwable){
+
+    public static Throwable getTopCauseThrowable(Throwable throwable) {
         String topCauseMessage = Log.getStackTraceString(throwable);
         if(TextUtils.isEmpty(topCauseMessage)) {
-            while(throwable.getCause() != null) {
+            while (throwable.getCause() != null) {
                 throwable = throwable.getCause();
                 topCauseMessage = Log.getStackTraceString(throwable);
             }
@@ -257,20 +266,22 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         return throwable;
     }
 
-    private void crashCatchDialog(){
-        Intent intent = PatchDialogActivity
-                .newIntent(sContext, getApplicationName(sContext), patchDialogMessage, patchDialogUrlToOpen);
+
+    private void crashCatchDialog() {
+        Intent intent = PatchDialogActivity.newIntent(sContext, getApplicationName(sContext), patchDialogMessage,
+                patchDialogUrlToOpen);
         sContext.startActivity(intent);
     }
 
-    private void crashCatchActivity(Throwable throwable){
+
+    private void crashCatchActivity(Throwable throwable) {
         String traces = getStackTrace(throwable);
         Intent intent = new Intent();
         intent.setClass(sContext, CatchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String[] strings = traces.split("\n");
         String[] logs = new String[strings.length];
-        for(int i = 0; i<strings.length; i++) {
+        for (int i = 0; i < strings.length; i++) {
             logs[i] = strings[i].trim();
         }
         intent.putStringArrayListExtra(CatchActivity.EXTRA_HIGHLIGHT_KEYS, keys);
@@ -280,7 +291,8 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         sContext.startActivity(intent);
     }
 
-    public static String getStackTrace(Throwable throwable){
+
+    public static String getStackTrace(Throwable throwable) {
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
         throwable.printStackTrace(printWriter);
@@ -288,27 +300,30 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         return writer.toString();
     }
 
-    public static SpannableString formatStr(String text, int style){
+
+    public static SpannableString formatStr(String text, int style) {
         SpannableString spannableString = new SpannableString(text);
         spannableString.setSpan(new TextAppearanceSpan(sContext, style), 0, text.length(), 0);
         return spannableString;
     }
 
-    private String getApplicationName(Context context){
+
+    private String getApplicationName(Context context) {
         PackageManager packageManager = context.getPackageManager();
         ApplicationInfo applicationInfo = null;
         String name = null;
         try {
             applicationInfo = packageManager.getApplicationInfo(context.getApplicationInfo().packageName, 0);
-            name = (String)packageManager.getApplicationLabel(applicationInfo);
-        }catch(final PackageManager.NameNotFoundException e) {
+            name = (String) packageManager.getApplicationLabel(applicationInfo);
+        } catch (final PackageManager.NameNotFoundException e) {
             String[] packages = context.getPackageName().split(SPLIT_DOT);
-            name = packages[packages.length-1];
+            name = packages[packages.length - 1];
         }
         return name;
     }
 
-    private void initContextResources(){
+
+    private void initContextResources() {
         this.keys.add(this.sContext.getPackageName());
         //        try {
         //            PackageInfo info = sContext.getPackageManager().getPackageInfo(sContext.getPackageName(), 0);
@@ -318,71 +333,83 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
         //        }
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({SHOW_CRASH_PAGE, SHOW_CRASH_DIALG})
-    public @interface CrashHandleMode {
+
+    @Retention(RetentionPolicy.SOURCE) @IntDef({ SHOW_CRASH_PAGE, SHOW_CRASH_DIALG }) public @interface CrashHandleMode {
         public static final int SHOW_CRASH_PAGE = 1;
         public static final int SHOW_CRASH_DIALG = 2;
     }
 
+
     /**
      * For setting more highlight keys except package name
      *
-     * @param keys
-     *         highlight keys except package name
+     * @param keys highlight keys except package name
      * @return itself
      */
-    public CrashWrapper withKeys(final String... keys){
-        this.keys.addAll(Arrays.asList(keys));
+    public CrashWrapper withKeys(final String... keys) {
+        if(CheckHelper.checkArrays(keys)) {
+            this.keys.addAll(Arrays.asList(keys));
+        }
         return this;
     }
 
-    public int getHandleMode(){
+
+    public int getHandleMode() {
         return handleMode;
     }
 
-    public CrashWrapper setHandleMode(@CrashHandleMode int handleMode){
+
+    public CrashWrapper setHandleMode(@CrashHandleMode int handleMode) {
         this.handleMode = handleMode;
         return this;
     }
 
-    public String getPatchDialogMessage(){
+
+    public String getPatchDialogMessage() {
         return patchDialogMessage;
     }
 
-    public CrashWrapper setPatchDialogMessage(String patchDialogMessage){
+
+    public CrashWrapper setPatchDialogMessage(String patchDialogMessage) {
         this.patchDialogMessage = patchDialogMessage;
         return this;
     }
 
-    public String getPatchDialogUrlToOpen(){
+
+    public String getPatchDialogUrlToOpen() {
         return patchDialogUrlToOpen;
     }
 
-    public CrashWrapper setPatchDialogUrlToOpen(String patchDialogUrlToOpen){
+
+    public CrashWrapper setPatchDialogUrlToOpen(String patchDialogUrlToOpen) {
         this.patchDialogUrlToOpen = patchDialogUrlToOpen;
         return this;
     }
 
-    public boolean isDebug(){
+
+    public boolean isDebug() {
         return mIsDebug;
     }
 
-    public CrashWrapper setDebug(boolean debug){
+
+    public CrashWrapper setDebug(boolean debug) {
         mIsDebug = debug;
         return this;
     }
 
-    public boolean isAutoSaveLog(){
+
+    public boolean isAutoSaveLog() {
         return mAutoSaveLog;
     }
 
-    public CrashWrapper setAutoSaveLog(boolean autoSaveLog){
+
+    public CrashWrapper setAutoSaveLog(boolean autoSaveLog) {
         mAutoSaveLog = autoSaveLog;
         return this;
     }
 
-    public CrashWrapper setAutoRestart(boolean autoRestart){
+
+    public CrashWrapper setAutoRestart(boolean autoRestart) {
         mAutoRestart = autoRestart;
         return this;
     }

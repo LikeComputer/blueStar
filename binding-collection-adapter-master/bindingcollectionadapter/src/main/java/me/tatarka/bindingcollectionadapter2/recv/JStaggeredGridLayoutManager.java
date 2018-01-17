@@ -11,20 +11,31 @@ import android.util.Log;
  * @date 2017/12/14.
  */
 public class JStaggeredGridLayoutManager extends StaggeredGridLayoutManager {
-    public JStaggeredGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes){
+    public JStaggeredGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public JStaggeredGridLayoutManager(int spanCount, int orientation){
+
+    public JStaggeredGridLayoutManager(int spanCount, int orientation) {
         super(spanCount, orientation);
     }
 
-    @Override
-    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state){
+
+    @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler, state);
-        }catch(IndexOutOfBoundsException e) {
-            Log.e("JLinearLayoutManager", Log.getStackTraceString(e));
+        } catch (Exception e) {
+            Log.e("JStaggeredLayoutManager", Log.getStackTraceString(e));
+        }
+    }
+
+
+    @Override public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
+        try {
+            return super.scrollVerticallyBy(dy, recycler, state);
+        } catch (Exception e) {
+            Log.e("JStaggeredLayoutManager", Log.getStackTraceString(e));
+            return 0;
         }
     }
 }

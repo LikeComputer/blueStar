@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import com.blueprint.BR;
 import com.blueprint.R;
 import jonas.jlayout.MultiStateLayout;
-import jzy.easybindpagelist.loadmorehelper.LoadMoreObjectViewModel;
+import jzy.easybindpagelist.loadmorehelper.LoadMoreViewModel;
 
 /**
  * @author 江祖赟.
  * @date 2017/6/7
  * @des [推荐]
  */
-public abstract class JAbsListFrgmt<VM extends LoadMoreObjectViewModel> extends JBaseVMFrgmt<VM, ViewDataBinding> {
+public abstract class JAbsDiffListFrgmt<VM extends LoadMoreViewModel> extends JBaseVMFrgmt<VM, ViewDataBinding> {
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public abstract class JAbsListFrgmt<VM extends LoadMoreObjectViewModel> extends 
 
 
     @Override protected int resetFrgmtLayoutRes() {
-        return R.layout.jbasic_abslist_swipe_layout;
+        return R.layout.jbasic_abslist_swipe_layout_diff;
     }
 
 

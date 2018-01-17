@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <jonas.jlayout.MultiStateLayout
+        android:id="@+id/jbase_tab_state"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="0dp">
+
+        <april.yun.JPagerSlidingTabStrip
+            android:id="@+id/jbase_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/jbase_tabstrip_high"/>
+
+        <com.blueprint.widget.ViewPagerFixed
+            android:id="@+id/jbase_viewpager"
+            android:layout_below="@+id/jbase_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </jonas.jlayout.MultiStateLayout>
+
+    <com.blueprint.widget.JToolbar
+        android:id="@+id/jbase_toolbar"
+        android:layout_width="match_parent"
+        tools:layout_height="45dp"
+        android:layout_height="?actionBarSize"/>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+        android:color="?attr/colorControlHighlight">
+    <item android:id="@android:id/mask">
+        <!--限制区域 没有则无解-->
+        <color android:color="@color/jselector_default_bg_color"/>
+    </item>
+    <item android:drawable="@color/jselector_default_bg_color"/>
+</ripple>

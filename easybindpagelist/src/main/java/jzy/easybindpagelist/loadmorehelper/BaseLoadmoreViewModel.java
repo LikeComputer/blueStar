@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -206,7 +207,8 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
 
     protected void checkOrignParam(){
         if(mOrignParam == null) {
-            throw new RuntimeException(" oops! you need to putOrignParam(orignParam) in onSubscribeData(orignParam) ...you have to");
+            Log.e("BaseLoadmoreViewModel", "******** 传入的参数为null ********");
+            //throw new RuntimeException(" oops! you need to putOrignParam(orignParam) in onSubscribeData(orignParam) ...you have to");
         }
     }
 
@@ -372,6 +374,16 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
             }
         }
         hideLoading();
+    }
+
+    protected void refreshedAll2Finish(List<ID> newData, boolean detectMoves){
+        refreshedAllData(newData, detectMoves);
+        mLoadmoreControl.loadmoreFinished();
+    }
+
+    protected void refreshedAll2Finish(List<ID> newData) {
+        refreshedAllData(newData);
+        mLoadmoreControl.loadmoreFinished();
     }
 
     /**

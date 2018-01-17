@@ -8,13 +8,10 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-
 import com.blueprint.LibApp;
 import com.blueprint.MemoryConstants;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -75,7 +72,7 @@ public final class ConvertHelper {
      * @return 字节数组
      */
     public static byte[] hexString2Bytes(String hexString){
-        if(isSpace(hexString)) {
+        if(TextUtils.isEmpty(hexString)) {
             return null;
         }
         int len = hexString.length();
@@ -414,7 +411,7 @@ public final class ConvertHelper {
      * @return 字符串
      */
     public static String inputStream2String(final InputStream is, final String charsetName){
-        if(is == null || isSpace(charsetName)) {
+        if(is == null || TextUtils.isEmpty(charsetName)) {
             return null;
         }
         try {
@@ -435,7 +432,7 @@ public final class ConvertHelper {
      * @return 输入流
      */
     public static InputStream string2InputStream(final String string, final String charsetName){
-        if(string == null || isSpace(charsetName)) {
+        if(string == null || TextUtils.isEmpty(charsetName)) {
             return null;
         }
         try {
@@ -456,7 +453,7 @@ public final class ConvertHelper {
      * @return 字符串
      */
     public static String outputStream2String(final OutputStream out, final String charsetName){
-        if(out == null || isSpace(charsetName)) {
+        if(out == null || TextUtils.isEmpty(charsetName)) {
             return null;
         }
         try {
@@ -477,7 +474,7 @@ public final class ConvertHelper {
      * @return 输入流
      */
     public static OutputStream string2OutputStream(final String string, final String charsetName){
-        if(string == null || isSpace(charsetName)) {
+        if(string == null|| TextUtils.isEmpty(charsetName)) {
             return null;
         }
         try {
@@ -601,80 +598,5 @@ public final class ConvertHelper {
         }
         view.draw(canvas);
         return ret;
-    }
-
-    /**
-     * dp转px
-     *
-     * @param dpValue
-     *         dp值
-     * @return px值
-     */
-    public static int dp2px(final float dpValue){
-        final float scale = LibApp.getContext().getResources().getDisplayMetrics().density;
-        return (int)( dpValue*scale+0.5f );
-    }
-
-    /**
-     * px转dp
-     *
-     * @param pxValue
-     *         px值
-     * @return dp值
-     */
-    public static int px2dp(final float pxValue){
-        final float scale = LibApp.getContext().getResources().getDisplayMetrics().density;
-        return (int)( pxValue/scale+0.5f );
-    }
-
-    /**
-     * sp转px
-     *
-     * @param spValue
-     *         sp值
-     * @return px值
-     */
-    public static int sp2px(final float spValue){
-        final float fontScale = LibApp.getContext().getResources().getDisplayMetrics().scaledDensity;
-        return (int)( spValue*fontScale+0.5f );
-    }
-
-    /**
-     * px转sp
-     *
-     * @param pxValue
-     *         px值
-     * @return sp值
-     */
-    public static int px2sp(final float pxValue){
-        final float fontScale = LibApp.getContext().getResources().getDisplayMetrics().scaledDensity;
-        return (int)( pxValue/fontScale+0.5f );
-    }
-
-    /**
-     * 判断字符串是否为null或全为空白字符
-     *
-     * @param s
-     *         待校验字符串
-     * @return {@code true}: null或全空白字符<br> {@code false}: 不为null且不全空白字符
-     */
-    public static boolean isSpace(final String s){
-        if(s == null) {
-            return true;
-        }
-        for(int i = 0, len = s.length(); i<len; ++i) {
-            if(!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static View layout2View(int layoutid){
-        return LayoutInflater.from(LibApp.getContext()).inflate(layoutid, null);
-    }
-
-    public static View layout2View(int layoutid, ViewGroup root){
-        return LayoutInflater.from(root.getContext()).inflate(layoutid, root, false);
     }
 }

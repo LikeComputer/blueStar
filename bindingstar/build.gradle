@@ -31,6 +31,7 @@ dependencies {
     implementation deps.support.recyclerview
     implementation deps.support.app_compat
     implementation deps.support.design
+    implementation deps.support.constraint
     implementation deps.logger
     implementation deps.jtabstrip
     implementation deps.rxbinding
@@ -38,7 +39,6 @@ dependencies {
     implementation deps.rxjava2
     implementation deps.rx_android
     implementation deps.jstatelayout
-    implementation deps.constraint_layout
     compileOnly deps.lifecycle.runtime
     compileOnly deps.lifecycle.extensions
     annotationProcessor deps.lifecycle.compiler

@@ -19,9 +19,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_below="@+id/jbase_tab_strip"/>
 
-    <com.blueprint.widget.JToolbar
-        android:id="@+id/jbase_toolbar"
-        android:layout_width="match_parent"
-        tools:layout_height="45dp"
-        android:layout_height="?actionBarSize"/>
 </android.support.constraint.ConstraintLayout>

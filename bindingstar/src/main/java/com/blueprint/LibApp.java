@@ -41,9 +41,7 @@ import java.util.List;
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static com.blueprint.helper.ToastHelper.toastLongSafeDebug;
 
-
 public class LibApp {
-
 
     private static final String TAG = LibApp.class.getSimpleName();
     @SuppressLint("StaticFieldLeak") protected static Activity sCurrentActivity;
@@ -53,60 +51,80 @@ public class LibApp {
     protected static Activity sMainActivity;
     //需要可调
     public static boolean JELLYLIST = false;
+    private static LibApplicationStateCallbacks sCallbacks;
+
 
     //todo 权衡下看看是否需要添加 https://www.jianshu.com/p/006fb4fb0f0c
-    public static CrashWrapper takeCare(Application context, final boolean inDebug){
+    public static CrashWrapper takeCare(Application context, final boolean inDebug) {
         sContext = context.getApplicationContext();
         sInDebug = inDebug;
-        JELLYLIST = (boolean)new SpHelper("libConfig").get("JELLYLIST", false);
+        JELLYLIST = (boolean) new SpHelper("libConfig").get("JELLYLIST", false);
         context.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle bundle){
+            @Override public void onActivityCreated(Activity activity, Bundle bundle) {
                 sCurrentActivity = activity;
+                if(sCallbacks != null) {
+                    sCallbacks.onActivityCreated(activity,bundle);
+                }
             }
 
-            @Override
-            public void onActivityStarted(Activity activity){
+
+            @Override public void onActivityStarted(Activity activity) {
                 sCurrentActivity = activity;
+                if(sCallbacks != null) {
+                    sCallbacks.onActivityStarted(activity);
+                }
             }
 
-            @Override
-            public void onActivityResumed(Activity activity){
+
+            @Override public void onActivityResumed(Activity activity) {
                 sCurrentActivity = activity;
+                if(sCallbacks != null) {
+                    sCallbacks.onActivityResumed(activity);
+                }
             }
 
-            @Override
-            public void onActivityPaused(Activity activity){
 
+            @Override public void onActivityPaused(Activity activity) {
+                if(sCallbacks != null) {
+                    sCallbacks.onActivityPaused(activity);
+                }
             }
 
-            @Override
-            public void onActivityStopped(Activity activity){
+
+            @Override public void onActivityStopped(Activity activity) {
+                if(sCallbacks != null) {
+                    sCallbacks.onActivityStopped(activity);
+                }
             }
 
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle bundle){
 
+            @Override public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+                if(sCallbacks != null) {
+                    sCallbacks.onActivitySaveInstanceState(activity,bundle);
+                }
             }
 
-            @Override
-            public void onActivityDestroyed(Activity activity){
+
+            @Override public void onActivityDestroyed(Activity activity) {
                 sCurrentActivity = sMainActivity;
             }
         });
         context.registerComponentCallbacks(new ComponentCallbacks2() {
-            @Override
-            public void onConfigurationChanged(Configuration newConfig){
-
+            @Override public void onConfigurationChanged(Configuration newConfig) {
+                if(sCallbacks != null) {
+                    sCallbacks.onConfigurationChanged(newConfig);
+                }
             }
 
-            @Override
-            public void onLowMemory(){
 
+            @Override public void onLowMemory() {
+                if(sCallbacks != null) {
+                    sCallbacks.onLowMemory();
+                }
             }
 
-            @Override
-            public void onTrimMemory(int level){
+
+            @Override public void onTrimMemory(int level) {
                 //https://user-gold-cdn.xitu.io/2018/1/9/160d86decf686a79?imageView2/0/w/1280/h/960/format/webp/ignore-error/1
                 //                TRIM_MEMORY_RUNNING_MODERATE
                 //                你的应用正在运行，并且不会被杀死，但设备已经处于低内存状态，并且开始杀死LRU缓存里的内存。
@@ -124,8 +142,11 @@ public class LibApp {
                 //                系统运行在低内存状态，如果系统没有恢复内存，你的进程是首先被杀死的进程之一。你应该释放所有不重要的资源来恢复你的app状态。
                 //                因为onTrimMemory()是在API 14里添加的，你可以在老版本里使用onLowMemory()回调，大致跟TRIM_MEMORY_COMPLETE事件相同。
                 //                提示：当系统开始杀死LRU缓存里的进程时，尽管它主要从下往上工作，它同时也考虑了哪些进程消耗更多的内存，如果杀死它们，系统会得到更多的可用内存。所以，在LRU整个列表中，你消耗越少的内存，留在列表里的机会就更大。
-                if(level<TRIM_MEMORY_UI_HIDDEN) {
+                if(level < TRIM_MEMORY_UI_HIDDEN) {
                     LibApp.onLowMemory();
+                }
+                if(sCallbacks != null) {
+                    sCallbacks.onLowMemory();
                 }
             }
         });
@@ -136,27 +157,34 @@ public class LibApp {
         //            builder.detectFileUriExposure();
         //        }
         Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override
-            public boolean isLoggable(int priority, String tag){
+            @Override public boolean isLoggable(int priority, String tag) {
                 return inDebug;
             }
         });
         return CrashWrapper.get().setDebug(inDebug);
     }
 
-    public static boolean checkRuntimeFreeMemory(){
-        long freeMemory = Runtime.getRuntime().freeMemory();
-        long size_kb = freeMemory/1024;
-        long size_km = size_kb/1024;
-        return size_km==0;
+
+    public static void registerLibApplicationStateCallbacks(LibApplicationStateCallbacks callbacks) {
+        sCallbacks = callbacks;
     }
 
-    public static Context getContext(){
+
+    public static boolean checkRuntimeFreeMemory() {
+        long freeMemory = Runtime.getRuntime().freeMemory();
+        long size_kb = freeMemory / 1024;
+        long size_km = size_kb / 1024;
+        return size_km == 0;
+    }
+
+
+    public static Context getContext() {
         checkContext();
         return sContext;
     }
 
-    public static File getCacheDir(){
+
+    public static File getCacheDir() {
         checkContext();
         File externalCacheDir = sContext.getExternalCacheDir();
         if(externalCacheDir == null) {
@@ -165,7 +193,8 @@ public class LibApp {
         return externalCacheDir;
     }
 
-    public static File getAppFileDir(String type){
+
+    public static File getAppFileDir(String type) {
         checkContext();
         File externalCacheDir = sContext.getExternalFilesDir(type);
         if(externalCacheDir == null) {
@@ -175,140 +204,160 @@ public class LibApp {
         return externalCacheDir;
     }
 
-    public static String getPackageName(){
+
+    public static String getPackageName() {
         checkContext();
         return sContext.getPackageName();
     }
 
-    private static void checkContext(){
+
+    private static void checkContext() {
         if(sContext == null) {
             Log.e(TAG, "需要先调用 takeCare 初始化context");
             throw new RuntimeException("必须 先调用 takeCare 初始化context");
         }
     }
 
+
     /**
-     * @param textView
-     * @param path
-     *         字体再asset下的路径
+     * @param path 字体再asset下的路径
      */
-    public static void setTypeFace(TextView textView, String path){
+    public static void setTypeFace(TextView textView, String path) {
         Typeface mTypeFace = Typeface.createFromAsset(sContext.getAssets(), path);
         textView.setTypeface(mTypeFace);
     }
 
+
     /**
      * 加粗汉子
-     *
-     * @param tv
      */
-    public static void blobChinese(TextView tv){
+    public static void blobChinese(TextView tv) {
         tv.getPaint().setFakeBoldText(true);
     }
 
+
     /** 获取资源 */
-    public static Resources findResources(){
+    public static Resources findResources() {
         return sContext.getResources();
     }
 
+
     /** 获取文字 */
-    public static String findString(int resId){
+    public static String findString(int resId) {
         return findResources().getString(resId);
     }
 
+
     /** 获取文字 占位符 */
-    public static String findString(int resId, Object... formatArgs){
+    public static String findString(int resId, Object... formatArgs) {
         return findResources().getString(resId, formatArgs);
     }
 
-    public static int findInteger(int id){
+
+    public static int findInteger(int id) {
         return findResources().getInteger(id);
     }
 
+
     /** 获取文字数组 */
-    public static String[] findStringArray(int resId){
+    public static String[] findStringArray(int resId) {
         return findResources().getStringArray(resId);
     }
 
+
     /** 获取dimen */
-    public static int findDimens(int resId){
+    public static int findDimens(int resId) {
         return findResources().getDimensionPixelSize(resId);
     }
 
+
     /** 获取drawable */
-    public static Drawable findDrawable(int resId){
+    public static Drawable findDrawable(int resId) {
         return ContextCompat.getDrawable(sContext, resId);
     }
 
+
     /** 获取颜色 */
-    public static int findColor(int resId){
+    public static int findColor(int resId) {
         return ContextCompat.getColor(sContext, resId);
     }
 
+
     /** 获取颜色 */
-    public static boolean findBoolen(int resId){
+    public static boolean findBoolen(int resId) {
         return sContext.getResources().getBoolean(resId);
     }
 
+
     /** 获取颜色 */
-    public static int findColor(Context context, int resId){
+    public static int findColor(Context context, int resId) {
         return ContextCompat.getColor(context, resId);
     }
 
+
     /** 获取颜色状态器 */
-    public static ColorStateList findColorStateList(int resId){
+    public static ColorStateList findColorStateList(int resId) {
         return ContextCompat.getColorStateList(sContext, resId);
     }
 
-    public static void setTextView(View rootView, int id, CharSequence charSequence){
+
+    public static void setTextView(View rootView, int id, CharSequence charSequence) {
         if(!TextUtils.isEmpty(charSequence)) {
-            ( (TextView)rootView.findViewById(id) ).setText(charSequence);
+            ((TextView) rootView.findViewById(id)).setText(charSequence);
         }
     }
 
-    public static void setTextContent(TextView tv, Object contentObject){
+
+    public static void setTextContent(TextView tv, Object contentObject) {
         if(CheckHelper.checkObjects(tv, contentObject)) {
             if(contentObject instanceof Integer) {
-                tv.setText(( (Integer)contentObject ));
-            }else if(contentObject instanceof CharSequence) {
-                tv.setText((CharSequence)contentObject);
+                tv.setText(((Integer) contentObject));
+            } else if(contentObject instanceof CharSequence) {
+                tv.setText((CharSequence) contentObject);
             }
         }
     }
 
-    public static void setTextView(TextView tv, CharSequence charSequence){
+
+    public static void setTextView(TextView tv, CharSequence charSequence) {
         if(tv != null && !TextUtils.isEmpty(charSequence)) {
             tv.setText(charSequence);
         }
     }
 
-    public static void setImageSrc(ImageView iv, Drawable drawable){
+
+    public static void setImageSrc(ImageView iv, Drawable drawable) {
         if(iv != null && drawable != null) {
             iv.setImageDrawable(drawable);
         }
     }
 
-    public static void setTextView(@NonNull View rootView, int id, int resStr){
-        setTextView((TextView)rootView.findViewById(id), findString(resStr));
+
+    public static void setTextView(@NonNull View rootView, int id, int resStr) {
+        setTextView((TextView) rootView.findViewById(id), findString(resStr));
     }
 
-    public static void setImageSrc(@NonNull View rootView, int id, @DrawableRes int draIds){
-        setImageSrc((ImageView)rootView.findViewById(id), ContextCompat.getDrawable(getContext(), draIds));
+
+    public static void setImageSrc(@NonNull View rootView, int id, @DrawableRes int draIds) {
+        setImageSrc((ImageView) rootView.findViewById(id), ContextCompat.getDrawable(getContext(), draIds));
     }
 
-    public static void setDebugConfig(boolean inDebug){
+
+    public static void setDebugConfig(boolean inDebug) {
         sInDebug = inDebug;
     }
 
-    public static boolean isInDebug(){
+
+    public static boolean isInDebug() {
         return sInDebug;
     }
+
 
     /**
      * whether application is in background
      */
-    public static boolean isApplicationInBackground(){
-        ActivityManager am = (ActivityManager)sContext.getSystemService(Context.ACTIVITY_SERVICE);
+    public static boolean isApplicationInBackground() {
+        ActivityManager am = (ActivityManager) sContext.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskList = am.getRunningTasks(1);
         if(taskList != null && !taskList.isEmpty()) {
             ComponentName topActivity = taskList.get(0).topActivity;
@@ -319,46 +368,50 @@ public class LibApp {
         return false;
     }
 
-    public static String getBaseUrl(){
+
+    public static String getBaseUrl() {
         return sBaseUrl;
     }
 
-    public static String getChannel(String key){
+
+    public static String getChannel(String key) {
         //BuildConfig.FLAVOR 就可以了
         PackageManager packageManager = LibApp.getContext().getPackageManager();
         String channel = "debug";
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(LibApp.getPackageName(), GET_META_DATA);
             channel = applicationInfo.metaData.getString(key);
-        }catch(PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             LogHelper.slog_e("getChannel", Log.getStackTraceString(e));
         }
         return channel;
     }
 
-    public static void setBaseUrl(String baseUrl){
+
+    public static void setBaseUrl(String baseUrl) {
         sBaseUrl = baseUrl;
     }
 
-    @Nullable
-    public static Activity getCurrentActivity(){
+
+    @Nullable public static Activity getCurrentActivity() {
         return sCurrentActivity;
     }
 
-    @Nullable
-    public static void setMainActivity(Activity mainActivity){
+
+    @Nullable public static void setMainActivity(Activity mainActivity) {
         sMainActivity = mainActivity;
     }
 
-    @Nullable
-    public static void releaseMainActivity(){
+
+    @Nullable public static void releaseMainActivity() {
         sMainActivity = null;
     }
 
-    @Nullable
-    public static void setCurrentActivity(Activity currentActivity){
+
+    @Nullable public static void setCurrentActivity(Activity currentActivity) {
         sCurrentActivity = currentActivity;
     }
+
 
     /**
      * http://blog.csdn.net/liuxu0703/article/details/70145168
@@ -366,21 +419,27 @@ public class LibApp {
      * views hosted on floating window like dialog and toast will sure return null.
      *
      * @return host activity; or null if not available
-     *
      * @from: https://stackoverflow.com/questions/8276634/android-get-hosting-activity-from-a-view/32973351#32973351
      */
-    public static Activity getActivityFromView(View view){
+    public static Activity getAct4View(View view) {
         Context context = view.getContext();
-        while(context instanceof ContextWrapper) {
+        while (context instanceof ContextWrapper) {
             if(context instanceof Activity) {
-                return (Activity)context;
+                return (Activity) context;
             }
-            context = ( (ContextWrapper)context ).getBaseContext();
+            context = ((ContextWrapper) context).getBaseContext();
         }
         return sMainActivity;
     }
 
-    public static void toLaunch(){
+    public static void startAct4View(View view,Intent intent) {
+        Activity act4View = getAct4View(view);
+        if(act4View != null) {
+            act4View.startActivity(intent);
+        }
+    }
+
+    public static void toLaunch() {
         if(sMainActivity != null) {
             Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
             launcherIntent.addCategory(Intent.CATEGORY_HOME);
@@ -388,19 +447,51 @@ public class LibApp {
         }
     }
 
-    public static Activity getMainActivity(){
+
+    public static Activity getMainActivity() {
         return sMainActivity;
     }
 
-    public static void toggleJellylist(){
+
+    public static void toggleJellylist() {
         new SpHelper("libConfig").put("JELLYLIST", JELLYLIST = !JELLYLIST);
     }
 
-    public static void onLowMemory(){
+
+    public static void onLowMemory() {
         if(sMainActivity != null) {
             //可见但内存不足
             sMainActivity.onLowMemory();
             toastLongSafeDebug("处于低内存环境onTrimMemory");
         }
+    }
+
+
+    public static class LibApplicationStateCallbacks {
+        void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+
+
+        void onActivityStarted(Activity activity) {}
+
+
+        void onActivityResumed(Activity activity) {}
+
+
+        void onActivityPaused(Activity activity) {}
+
+
+        void onActivityStopped(Activity activity) {}
+
+
+        void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+
+
+        void onActivityDestroyed(Activity activity) {}
+
+        void onConfigurationChanged(Configuration newConfig){}
+
+        void onLowMemory(){}
+
+        void onTrimMemory(int level){}
     }
 }

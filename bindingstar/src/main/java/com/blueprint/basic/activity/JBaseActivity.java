@@ -17,7 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.blueprint.LibApp;
 import com.blueprint.R;
 import com.blueprint.helper.Damping;
@@ -25,14 +24,12 @@ import com.blueprint.helper.KeyboardHelper;
 import com.blueprint.helper.LogHelper;
 import com.blueprint.helper.NetHelper;
 import com.blueprint.helper.ToastHelper;
-
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import java.util.concurrent.TimeUnit;
 
 import static com.blueprint.LibApp.toLaunch;
 

@@ -1,11 +1,8 @@
 package com.blueprint.helper;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.WindowManager;
-
 import com.blueprint.LibApp;
 
 public class DpHelper {
@@ -22,35 +19,32 @@ public class DpHelper {
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, px, dm);
     }
+
     /**
      * dip转为PX
      */
-    public static int dp2px(Context context, float dipValue) {
-        float fontScale = context.getResources().getDisplayMetrics().density;
+    public static int dp2px2(float dipValue) {
+        float fontScale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * fontScale + 0.5f);
     }
     /**
      * 根据手机的分辨率从 px 的单位 转成为 dp
      */
-    public static int px2dp(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int px2dp2(float pxValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
-
-    public static int dp2pxCeilInt(float dp) {
-        return (int) (dp2px(dp) + 0.5f);
-    }
-
 
     /**
      * 获取屏幕的宽度px
      * @return 屏幕宽px
      */
     public static int getScreenWidth() {
-        WindowManager windowManager = (WindowManager) LibApp.getContext().getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.widthPixels;
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        //WindowManager windowManager = (WindowManager) LibApp.getContext().getSystemService(Context.WINDOW_SERVICE);
+        //DisplayMetrics displayMetrics = new DisplayMetrics();
+        //windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 
     /**
@@ -59,10 +53,11 @@ public class DpHelper {
      * @return 屏幕高px
      */
     public static int getScreenHeight() {
-        WindowManager windowManager = (WindowManager) LibApp.getContext().getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.heightPixels;
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        //WindowManager windowManager = (WindowManager) LibApp.getContext().getSystemService(Context.WINDOW_SERVICE);
+        //DisplayMetrics displayMetrics = new DisplayMetrics();
+        //windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.heightPixels;
     }
 
     public static int getStatusBarHeight() {

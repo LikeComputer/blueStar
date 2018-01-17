@@ -71,18 +71,31 @@ public class Utils {
         }
     }
 
-    public static void startActivity(View view, Intent intent){
+    /**
+     * http://blog.csdn.net/liuxu0703/article/details/70145168
+     * try get host activity from view.
+     * views hosted on floating window like dialog and toast will sure return null.
+     *
+     * @return host activity; or null if not available
+     * @from: https://stackoverflow.com/questions/8276634/android-get-hosting-activity-from-a-view/32973351#32973351
+     */
+    public static Activity getAct4View(View view) {
         Context context = view.getContext();
-        while(context instanceof ContextWrapper) {
+        while (context instanceof ContextWrapper) {
             if(context instanceof Activity) {
-                ( (Activity)context ).startActivity(intent);
-                return;
+                return (Activity) context;
             }
-            context = ( (ContextWrapper)context ).getBaseContext();
+            context = ((ContextWrapper) context).getBaseContext();
         }
-        Log.e(TAG, "无法从View中跳转activity，没有找到View依附的Activity");
+        return null;
     }
 
+    public static void startAct4View(View view,Intent intent) {
+        Activity act4View = getAct4View(view);
+        if(act4View != null) {
+            act4View.startActivity(intent);
+        }
+    }
 
     /**
      * dip转为PX
@@ -94,11 +107,10 @@ public class Utils {
 
     /**
      * px转dip
-     * @param context
      * @param pxValue
      * @return
      */
-    public static int px2dp(Context context, float pxValue) {
+    public static int px2dp(float pxValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }

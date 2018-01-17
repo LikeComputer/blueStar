@@ -93,13 +93,10 @@ public class TimeHelper {
 
     /**
      * 计算与当前的时间差相差多少时间
-     * strTimestamp单位秒
+     * strTimestamp 单位毫秒
      */
-    public static String dateDistance2(String strTimestamp){
-        if(TextUtils.isEmpty(strTimestamp) || strTimestamp.equals("null") && !isNumeric(strTimestamp)) {
-            return "时间错误："+strTimestamp;
-        }
-        long timestamp = Long.parseLong(strTimestamp)*1000;
+    public static String dateDistance2(long milliseconds){
+        long timestamp = milliseconds;
         long timeLong = System.currentTimeMillis()-timestamp;
         if(timeLong<60*1000) {
             return "刚刚";
@@ -125,11 +122,8 @@ public class TimeHelper {
      * 计算与当前的时间差相差多少时间
      * strTimestamp单位秒
      */
-    public static String dateDistance(String strTimestamp){
-        if(TextUtils.isEmpty(strTimestamp) || strTimestamp.equals("null") && !isNumeric(strTimestamp)) {
-            return "时间错误："+strTimestamp;
-        }
-        long timestamp = Long.parseLong(strTimestamp)*1000;
+    public static String dateDistance(long milliseconds){
+        long timestamp = milliseconds;
         long timeLong = System.currentTimeMillis()-timestamp;
         if(timeLong<1*1000) {
             return "刚刚";

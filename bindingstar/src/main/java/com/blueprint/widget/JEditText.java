@@ -22,7 +22,7 @@ import com.blueprint.helper.KeyboardHelper;
 import java.lang.ref.WeakReference;
 
 import static com.blueprint.helper.DpHelper.dp2px;
-import static com.blueprint.helper.DpHelper.dp2pxCeilInt;
+import static com.blueprint.helper.DpHelper.dp2px2;
 
 /**
  * @another 江祖赟
@@ -93,7 +93,7 @@ public class JEditText extends AutoCompleteTextView implements TextWatcher {
         mDelClickArea = new RectF(mDelRectf.left-dp2px(4), 0, mW-dp2px(2), mH);
         //不让输入内容 超过删除图标  超过长度会滚动 导致x也跟着滚动 bug
         //        setPadding(getPaddingLeft(), getPaddingTop(), (int)( mW-mDelRectf.left+dp2px(8) ), getPaddingBottom());
-        setPadding(getPaddingLeft(), getPaddingTop(), dp2pxCeilInt(9), getPaddingBottom());
+        setPadding(getPaddingLeft(), getPaddingTop(), dp2px2(9), getPaddingBottom());
     }
 
     @Override

@@ -31,7 +31,6 @@ public class BindingViewPagerAdapter<T> extends PagerAdapter implements BindingC
     private ItemBinding<T> itemBinding;
     private JObservableList<T> items;
     private PageTitles<T> pageTitles;
-    private SparseArray<LinkedList<ViewDataBinding>> mViewDataBinds = new SparseArray<>(1);
     private SparseArray<LinkedList<ViewDataBinding>> mItemBindings = new SparseArray<>(1);
 
     @Override

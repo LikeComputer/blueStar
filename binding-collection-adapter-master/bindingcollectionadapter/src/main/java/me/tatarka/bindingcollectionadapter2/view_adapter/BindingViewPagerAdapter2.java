@@ -6,13 +6,9 @@ import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.LinkedList;
-
 import me.tatarka.bindingcollectionadapter2.BindingCollectionAdapter;
 import me.tatarka.bindingcollectionadapter2.ItemBinding;
 import me.tatarka.bindingcollectionadapter2.OnItemBind;
@@ -29,7 +25,6 @@ public class BindingViewPagerAdapter2<T> extends PagerAdapter implements Binding
     private ItemBinding<T> itemBinding;
     private JObservableList<T> items;
     private PageTitles<T> pageTitles;
-    private SparseArray<LinkedList<ViewDataBinding>> mViewDataBinds = new SparseArray<>(1);
 
     @Override
     public void setItemBinding(ItemBinding<T> itemBinding){
@@ -92,7 +87,6 @@ public class BindingViewPagerAdapter2<T> extends PagerAdapter implements Binding
 
     @Override
     public Object instantiateItem(ViewGroup container, int position){
-
         T item = items.get(position);
         itemBinding.updateItemLayoutRes(position, item);
         ViewDataBinding binding = onCreateBinding(LayoutInflater.from(container.getContext()), itemBinding.layoutRes(), container);

@@ -29,8 +29,18 @@ public class JGridLayoutManager extends GridLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state){
         try {
             super.onLayoutChildren(recycler, state);
-        }catch(IndexOutOfBoundsException e) {
-            Log.e("JLinearLayoutManager", Log.getStackTraceString(e));
+        }catch(Exception e) {
+            Log.e("JGridLayoutManager", Log.getStackTraceString(e));
+        }
+    }
+
+    @Override
+    public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state){
+        try {
+            return super.scrollVerticallyBy(dy, recycler, state);
+        }catch(Exception e) {
+            Log.e("JGridLayoutManager", Log.getStackTraceString(e));
+            return 0;
         }
     }
 }

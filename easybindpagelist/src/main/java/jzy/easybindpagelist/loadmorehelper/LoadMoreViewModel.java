@@ -19,14 +19,14 @@ import me.tatarka.bindingcollectionadapter2.itembindings.ExtrasBindViewModel;
  */
 public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<IRecvDataDiff> {
 
-    private HashMap mOrignMapParam;
+    private HashMap<String,Object> mOrignMapParam;
 
-    public void toSubscribeData(HashMap mapParam){
+    public void toSubscribeData(HashMap<String,Object> mapParam){
         mOrignMapParam = mapParam;
         onSubscribeData(mOrignMapParam);
     }
 
-    public LoadMoreViewModel registOrignParam(HashMap mapParam){
+    public LoadMoreViewModel registOrignParam(HashMap<String,Object> mapParam){
         putOrignParam(mapParam);
         mOrignMapParam = mapParam;
         return this;
@@ -75,7 +75,7 @@ public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<IRecvDataDi
      * <li>数据异常(空/网络异常) ，直接调用{@link #showPageStateError(int)},或者 {@link #showPageStateError(int, String)}
      * <br>要显示的错误状态{PAGE_STATE_EMPTY,PAGE_STATE_EMPTY}具体看{@link jzy.easybindpagelist.statehelper.PageDiffState}</li>
      */
-    protected abstract void toGetData(HashMap mapParam);
+    protected abstract void toGetData(HashMap<String,Object> mapParam);
 
     @Override
     protected void refreshedAllData(List<IRecvDataDiff> newData){

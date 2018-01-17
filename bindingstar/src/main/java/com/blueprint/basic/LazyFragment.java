@@ -29,8 +29,17 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            parseArguments(arguments);
+        }
+    }
+
+
+    protected void parseArguments(Bundle arguments) {
 
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
@@ -71,7 +80,8 @@ public abstract class LazyFragment extends Fragment {
 
     /**
      * 其实没有必要 只要使用MultiStateLayout的状态即可
-     * 初始状态STATE_UNMODIFY才需要加载数据其他不用自动加载数据
+     * 初始状态STATE_UNMODIFY才需要加载数据其他不用自动加载数据<BR>
+     * <B color="red">通过布局中fragment 加载fragment不会调用{@link #setUserVisibleHint}</B>
      */
     public abstract void firstUserVisibile();
 }

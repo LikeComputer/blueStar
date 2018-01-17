@@ -17,9 +17,9 @@ import jzy.easybindpagelist.statehelper.StateDiffViewModel;
  */
 public abstract class LoadMoreObjectViewModel extends AbsLoadMoreViewModel<Object> {
 
-    private HashMap mOrignMapParam;
+    private HashMap<String,Object> mOrignMapParam;
 
-    public void toSubscribeData(HashMap mapParam){
+    public void toSubscribeData(HashMap<String,Object> mapParam){
         mOrignMapParam = mapParam;
         onSubscribeData(mOrignMapParam);
     }
@@ -31,7 +31,7 @@ public abstract class LoadMoreObjectViewModel extends AbsLoadMoreViewModel<Objec
      *
      * @param mapParam
      */
-    public LoadMoreObjectViewModel registOrignParam(HashMap mapParam){
+    public LoadMoreObjectViewModel registOrignParam(HashMap<String,Object> mapParam){
         putOrignParam(mapParam);
         mOrignMapParam = mapParam;
         return this;
@@ -82,6 +82,6 @@ public abstract class LoadMoreObjectViewModel extends AbsLoadMoreViewModel<Objec
      * <br>要显示的错误状态{PAGE_STATE_EMPTY,PAGE_STATE_EMPTY}具体看{@link jzy.easybindpagelist.statehelper.PageDiffState}</li>
      * <br>推荐使用{@link android.arch.lifecycle.LiveData},在数据模块直接返回liveData,不要保留为成员变量
      */
-    protected abstract void toGetData(HashMap mapParam);
+    protected abstract void toGetData(HashMap<String,Object> mapParam);
 
 }

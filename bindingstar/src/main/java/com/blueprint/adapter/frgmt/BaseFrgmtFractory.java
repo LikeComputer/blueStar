@@ -9,20 +9,43 @@ import android.util.SparseArray;
  * @des [一句话描述]
  */
 public abstract class BaseFrgmtFractory {
-    public SparseArray<Fragment> fmCache = new SparseArray<Fragment>();
+    protected SparseArray<Fragment> mFrgmtCache = new SparseArray<Fragment>();
 
     {
-        initFrgment();
+        initFrgment(mFrgmtCache);
     }
 
-    protected void initFrgment(){
+
+    protected void initFrgment(SparseArray<Fragment> frgmtCache) {
     }
 
-    public Fragment createFragment(int position){
-        return fmCache.get(position);
+
+    protected final Fragment privodeFrgmt(int position) {
+        Fragment fragment = getFrgmt(position);
+        if(fragment == null) {
+            fragment = createFragment(position);
+            putFrgmt(position, fragment);
+        }
+        return fragment;
     }
 
-    public void removeFragment(int position){
-        fmCache.remove(position);
+
+    protected Fragment createFragment(int position) {
+        return mFrgmtCache.get(position);
+    }
+
+
+    protected Fragment getFrgmt(int position) {
+        return mFrgmtCache.get(position);
+    }
+
+
+    protected void putFrgmt(int key, Fragment frgmt) {
+        mFrgmtCache.put(key, frgmt);
+    }
+
+
+    public SparseArray<Fragment> getFrgmtCache() {
+        return mFrgmtCache;
     }
 }

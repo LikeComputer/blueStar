@@ -22,5 +22,11 @@
             layout="@layout/object_pagelist_layout"
             bind:pageViewModel="@{pageViewModel}"/>
 
+        <com.blueprint.widget.JToolbar
+            android:id="@+id/jbase_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:drawableLeft="@drawable/icon_btn_back"/>
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -16,6 +16,27 @@
         android:id="@+id/root_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--android:fitsSystemWindows="true"-->
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/jbase_swipe"
+            android:onRefresh="@{jbaseStateViewModel}"
+            bind:enableRefresh="@{jbaseStateViewModel.enableSwipeRefresh}"
+            bind:isRefreshing="@{jbaseStateViewModel.down2Refreshing}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <jonas.jlayout.MultiStateLayout
+                android:id="@+id/jbase_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:onRetryListener="@{jbaseStateViewModel}"
+                bind:registEmpty="@{jbaseStateViewModel.pageEmptyRes}"
+                bind:registError="@{jbaseStateViewModel.pageErrorRes}"
+                bind:registLoading="@{jbaseStateViewModel.pageLoadingRes}"
+                bind:loadingColor="@{jbaseStateViewModel.pageLoadingColorInt}"
+                bind:showState="@{jbaseStateViewModel.pageState}"
+                android:animateLayoutChanges="true"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <com.blueprint.widget.JToolbar
             android:id="@+id/jbase_toolbar"
@@ -23,26 +44,5 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:drawableLeft="@drawable/icon_btn_back"/>
-        <!--android:fitsSystemWindows="true"-->
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/jbase_swipe"
-            android:onRefresh="@{pageViewModel}"
-            bind:enableRefresh="@{pageViewModel.enableSwipeRefresh}"
-            bind:isRefreshing="@{pageViewModel.down2Refreshing}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <jonas.jlayout.MultiStateLayout
-                android:id="@+id/jbase_state_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                bind:onRetryListener="@{pageViewModel}"
-                bind:registEmpty="@{pageViewModel.pageEmptyRes}"
-                bind:registError="@{pageViewModel.pageErrorRes}"
-                bind:registLoading="@{pageViewModel.pageLoadingRes}"
-                bind:loadingColor="@{pageViewModel.pageLoadingColorInt}"
-                bind:showState="@{pageViewModel.pageState}"
-                android:animateLayoutChanges="true"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>

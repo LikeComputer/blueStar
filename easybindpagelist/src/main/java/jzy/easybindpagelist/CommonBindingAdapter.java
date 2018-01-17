@@ -10,6 +10,7 @@ import android.view.View;
 import jonas.jlayout.MultiStateLayout;
 import jonas.jlayout.OnStateClickListener;
 import jzy.easybindpagelist.loadmorehelper.BaseLoadmoreViewModel;
+import jzy.easybindpagelist.statehelper.BaseDiffSteteViewModel;
 
 import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_UNMODIFY;
 
@@ -19,29 +20,37 @@ import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_UNMODIFY;
  */
 public class CommonBindingAdapter {
     public static final int NON_VALUE = -1;
+
+
     /**
      * Reloads the data when the pull-to-refresh is triggered.
      * Creates the {@code android:onRefresh} for a {@link SwipeRefreshLayout}.
      */
     @BindingAdapter("android:onRefresh")
-    public static void setSwipeRefreshLayoutOnRefreshListener(final SwipeRefreshLayout view, final BaseLoadmoreViewModel viewModel){
+    public static void setSwipeRefreshLayoutOnRefreshListener(final SwipeRefreshLayout view, final BaseLoadmoreViewModel viewModel) {
         view.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh(){
+            @Override public void onRefresh() {
                 viewModel.onRefresh(view);
             }
         });
     }
 
+
+    @BindingAdapter("android:onRefresh")
+    public static void setSwipeRefreshLayoutOnRefreshListener2(final SwipeRefreshLayout view, final BaseDiffSteteViewModel viewModel) {
+        view.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                viewModel.onRefresh(view);
+            }
+        });
+    }
+
+
     /**
      * 没有必要使用 因为 手动下拉 触发onRefresh之后 isRefreshing值不会自动为true 需要隐藏的时候 设置为false 不会出发notify，因为isRefreshing的值没变
-     *
-     * @param view
-     * @param isRefreshing
-     * @param enableRefresh
      */
-    @BindingAdapter(value = {"isRefreshing", "enableRefresh"}, requireAll = false)
-    public static void configSwipeRefreshLayout(final SwipeRefreshLayout view, boolean isRefreshing, boolean enableRefresh){
+    @BindingAdapter(value = { "isRefreshing", "enableRefresh" }, requireAll = false)
+    public static void configSwipeRefreshLayout(final SwipeRefreshLayout view, boolean isRefreshing, boolean enableRefresh) {
         view.setRefreshing(isRefreshing);
         view.setEnabled(enableRefresh);
     }
@@ -56,27 +65,32 @@ public class CommonBindingAdapter {
     //        });
     //    }
 
+
     @BindingAdapter("swipeRefreshLayout")
-    public static void attachToSwipeRefreshLayout(final RecyclerView view, final ScrollChildSwipeRefreshLayout swipeRefreshLayout){
+    public static void attachToSwipeRefreshLayout(final RecyclerView view, final ScrollChildSwipeRefreshLayout swipeRefreshLayout) {
         swipeRefreshLayout.setScrollUpChild(view);
     }
 
-    @BindingAdapter(value = {"showState", "onRetryListener"}, requireAll = false)
-    public static void showState(final MultiStateLayout multiStateLayout, int state, OnStateClickListener stateClickListener){
+
+    @BindingAdapter(value = { "showState", "onRetryListener" }, requireAll = false)
+    public static void showState(final MultiStateLayout multiStateLayout, int state, OnStateClickListener stateClickListener) {
         multiStateLayout.showStateLayout(state);
         multiStateLayout.setOnStateClickListener(stateClickListener);
     }
 
-    @BindingAdapter("layoutChange")
-    public static void setLayoutChangeListener(View view, View.OnLayoutChangeListener newValue){
+
+    @BindingAdapter("layoutChange") public static void setLayoutChangeListener(View view, View.OnLayoutChangeListener newValue) {
         if(newValue != null) {
             view.addOnLayoutChangeListener(newValue);
         }
     }
 
+
     //============== MultiStateLayout ====================
-    @BindingAdapter(value = {"registLoading", "registEmpty", "registError", "loadingColor"}, requireAll = false)
-    public static void configMultiStateLayout(MultiStateLayout view, @LayoutRes int loadingRes, @LayoutRes int emptyRes, @LayoutRes int errorRes, @ColorInt int loadingColor){
+    @BindingAdapter(value = { "registLoading", "registEmpty", "registError", "loadingColor" }, requireAll = false)
+    public static void configMultiStateLayout(MultiStateLayout view,
+                                              @LayoutRes int loadingRes,
+                                              @LayoutRes int emptyRes, @LayoutRes int errorRes, @ColorInt int loadingColor) {
         if(loadingRes != STATE_UNMODIFY) {
             view.registStateLayout(loadingRes, MultiStateLayout.LayoutState.STATE_LOADING);
         }
