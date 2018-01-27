@@ -18,7 +18,7 @@ import jzy.easybindpagelist.loadmorehelper.LoadMoreObjectViewModel;
  * @date 2017/6/7
  * @des [推荐]
  */
-public abstract class JAbsListActivity<VM extends LoadMoreObjectViewModel> extends JBaseVMActivity<VM, ViewDataBinding> {
+public abstract class JAbsListActivity<VM extends LoadMoreObjectViewModel> extends JBaseVMActivity<VM> {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +36,9 @@ public abstract class JAbsListActivity<VM extends LoadMoreObjectViewModel> exten
     }
 
 
-    @Override protected ViewDataBinding onCreateContent(LayoutInflater layoutInflater, ViewGroup containerLayout) {
-        return null;
+    @Override
+    protected int setContentLayoutId(){
+        return 0;
     }
 
 

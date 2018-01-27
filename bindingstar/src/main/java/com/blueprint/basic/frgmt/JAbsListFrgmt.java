@@ -18,7 +18,7 @@ import jzy.easybindpagelist.loadmorehelper.LoadMoreObjectViewModel;
  * @date 2017/6/7
  * @des [推荐]
  */
-public abstract class JAbsListFrgmt<VM extends LoadMoreObjectViewModel> extends JBaseVMFrgmt<VM, ViewDataBinding> {
+public abstract class JAbsListFrgmt<VM extends LoadMoreObjectViewModel> extends JBaseVMFrgmt<VM> {
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,10 +31,10 @@ public abstract class JAbsListFrgmt<VM extends LoadMoreObjectViewModel> extends 
     }
 
 
-    @Override protected final ViewDataBinding onCreateContent(LayoutInflater inflater, ViewGroup container) {
-        return null;
+    @Override
+    protected int setContentLayoutId(){
+        return 0;
     }
-
 
     @Override protected void findStatbleViews(View rootView) {
         mContentView = rootView.findViewById(R.id.jbase_list_content);

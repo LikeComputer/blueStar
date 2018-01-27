@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.blueprint.R;
 import com.blueprint.widget.JToolbar;
 
@@ -17,7 +18,7 @@ import com.blueprint.widget.JToolbar;
  * @another 江祖赟
  * @date 2018/1/17.
  */
-public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBinding> extends JBaseFragment {
+public abstract class JBaseVMFrgmt<VM extends ViewModel> extends JBaseFragment {
 
     /**
      * ContentView中 外层 父容器
@@ -36,15 +37,16 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     protected View mContentView;
 
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         mViewModel = ViewModelProviders.of(this).get(initViewModel());
 
         ViewDataBinding rootViewDataBinding = setContentLayout4Frgmt(inflater, container);
         //查找固定的控件
         findStatbleViews(rootViewDataBinding.getRoot());
         //子类设置的 要显示的布局内容
-        DBI contentViewDatabinding = onCreateContent(inflater, mContainerLayout);
+        ViewDataBinding contentViewDatabinding = onCreateContent(inflater, mContainerLayout);
         if(contentViewDatabinding != null) {
             mContentView = contentViewDatabinding.getRoot();
             if(mContentView.getParent() != mContainerLayout) {
@@ -53,7 +55,7 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
             layoutViews();
             contentViewDatabinding.setVariable(setContentVariableId(), mViewModel);
             setMoreVariableView(contentViewDatabinding);
-        } else if(requestNoTitleBar() && mToolBar != null) {
+        }else if(requestNoTitleBar() && mToolBar != null) {
             mToolBar.setVisibility(View.GONE);
         }
         int variableId = setRootVariableId();
@@ -69,17 +71,17 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     /**
      * toolbar标题栏/containerLayout内容布局容器
      */
-    protected void findStatbleViews(View rootView) {
+    protected void findStatbleViews(View rootView){
         mLayoutBelowToolbar = mContainerLayout = rootView.findViewById(R.id.jbase_container);
         mToolBar = rootView.findViewById(R.id.jbase_toolbar);
     }
 
 
-    protected void layoutViews() {
+    protected void layoutViews(){
         if(mToolBar != null) {
             if(requestNoTitleBar()) {
                 mToolBar.setVisibility(View.GONE);
-            } else {
+            }else {
                 initToolBar();
                 reConfigToolBar(mToolBar);
                 if(setContentBelowToolBar()) {
@@ -90,8 +92,8 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     }
 
 
-    protected void layoutContentBelowToolbar() {
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mLayoutBelowToolbar.getLayoutParams();
+    protected void layoutContentBelowToolbar(){
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)mLayoutBelowToolbar.getLayoutParams();
         layoutParams.topToBottom = R.id.jbase_toolbar;
         layoutParams.bottomToBottom = R.id.parent;
     }
@@ -100,7 +102,7 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     /**
      * 内容在toolbar的下面
      */
-    public boolean setContentBelowToolBar() {
+    public boolean setContentBelowToolBar(){
         return true;
     }
 
@@ -108,17 +110,17 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     /**
      * 默认 没有titlebar
      */
-    protected boolean requestNoTitleBar() {
+    protected boolean requestNoTitleBar(){
         return true;
     }
 
 
     //================== for  toolbar =================
-    protected void initToolBar() {
+    protected void initToolBar(){
     }
 
 
-    public void setTitle(CharSequence title) {
+    public void setTitle(CharSequence title){
         if(mToolBar != null) {
             mToolBar.setTitle(title);
         }
@@ -128,20 +130,22 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     /**
      * 复写 更新titlebar样式
      */
-    protected void reConfigToolBar(JToolbar titleBar) {}
+    protected void reConfigToolBar(JToolbar titleBar){
+    }
 
 
-    protected void setClicks() {
+    protected void setClicks(){
         //左边的点击事件
     }
 
 
-    protected void doTitleBarLeftClick() {}
+    protected void doTitleBarLeftClick(){
+    }
 
     //---------------- about binding ===============
 
 
-    protected int setRootVariableId() {
+    protected int setRootVariableId(){
         return 0;
     }
 
@@ -149,7 +153,8 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     /**
      * 内容ViewBinding的更多数据绑定或者 其余配置
      */
-    protected void setMoreVariableView(DBI viewDataBinding) {}
+    protected void setMoreVariableView(ViewDataBinding viewDataBinding){
+    }
 
 
     protected abstract Class<VM> initViewModel();
@@ -158,7 +163,7 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
     /**
      * 需改最外层layout ，同时需要配置{@link #setRootVariableId()},{@link #layoutContentBelowToolbar()},{@link #findStatbleViews(View)}
      */
-    protected ViewDataBinding setContentLayout4Frgmt(LayoutInflater inflater, ViewGroup container) {
+    protected ViewDataBinding setContentLayout4Frgmt(LayoutInflater inflater, ViewGroup container){
         return DataBindingUtil.inflate(inflater, resetFrgmtLayoutRes(), container, false);
     }
 
@@ -172,7 +177,16 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
      * ViewDataBinding binding = DataBindingUtil.bindTo(viewRoot, layoutId);<br/>
      * setViewModel
      */
-    protected abstract DBI onCreateContent(LayoutInflater layoutInflater, ViewGroup containerLayout);
+    protected ViewDataBinding onCreateContent(LayoutInflater layoutInflater, ViewGroup containerLayout){
+        int contentLayoutId = setContentLayoutId();
+        if(contentLayoutId != 0) {
+            return DataBindingUtil.inflate(layoutInflater, contentLayoutId, containerLayout, true);
+        }else {
+            return null;
+        }
+    }
+
+    protected abstract int setContentLayoutId();
 
     protected abstract int setContentVariableId();
 
@@ -181,5 +195,6 @@ public abstract class JBaseVMFrgmt<VM extends ViewModel, DBI extends ViewDataBin
      * 只有 通过fragment标签从布局创建的fragment需要通过该方法 来获取数据之外<BR>
      * 其他情况下都通过{@link #firstUserVisibile()} 里面获取数据{@link #mViewModel}
      */
-    protected void toSubscribeData(VM viewModel) {}
+    protected void toSubscribeData(VM viewModel){
+    }
 }

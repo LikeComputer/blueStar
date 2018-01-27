@@ -1,10 +1,11 @@
 package com.blueprint.basic.activity;
 
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+
 import com.blueprint.R;
+
 import jzy.easybindpagelist.statehelper.StateDiffViewModel;
 
 /**
@@ -14,8 +15,8 @@ import jzy.easybindpagelist.statehelper.StateDiffViewModel;
  * 在 onAttachtoWindow会获取数据
  * onContentChanged在setContentView内部调用 然后基类才获取各种控件，所以在onContentChanged中可以获取intent中的数据，就不需要在super.onCreate之前获取数据
  */
-public abstract class JBaseTitleActivity<D, VM extends StateDiffViewModel<D>, DBI extends ViewDataBinding>
-        extends JBaseVMActivity<VM, DBI> {
+public abstract class JBaseTitleActivity<D, VM extends StateDiffViewModel<D>>
+        extends JBaseVMActivity<VM> {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

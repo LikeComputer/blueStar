@@ -37,6 +37,12 @@ public abstract class LoadMoreObjectViewModel extends AbsLoadMoreViewModel<Objec
         return this;
     }
 
+    @Override
+    protected void toSearchFromService(String key){
+//        mOrignMapParam.put("keyWord", CURRENT_SEARCH_KEY); 请求参数添加搜索字段
+        super.toSearchFromService(key);
+    }
+
     /**
      * {@link #subscribeData(Object)}保留 请求参数之后 会回掉
      *

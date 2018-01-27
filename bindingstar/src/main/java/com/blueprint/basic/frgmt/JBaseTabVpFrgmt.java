@@ -7,13 +7,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import april.yun.JPagerSlidingTabStrip;
-import april.yun.other.JTabStyleDelegate;
+
 import com.blueprint.R;
 import com.blueprint.adapter.frgmt.BaseFrgmtFractory;
 import com.blueprint.adapter.frgmt.TabAdapter;
 import com.blueprint.helper.UIhelper;
 import com.blueprint.widget.JToolbar;
+
+import april.yun.JPagerSlidingTabStrip;
+import april.yun.other.JTabStyleDelegate;
 
 /**
  * @author 江祖赟.
@@ -60,7 +62,6 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
         return true;
     }
 
-
     public boolean setContentBelowTitleBar() {
         return true;
     }
@@ -77,6 +78,11 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
 
     }
 
+    public void setTitle(CharSequence title) {
+        if(mToolBar != null) {
+            mToolBar.setTitle(title);
+        }
+    }
 
     protected int setContentLayout4Frgmt() {
         if(requestNoToolBar()) {
@@ -123,13 +129,18 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
     protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate) {
     }
 
-    public void setTitle(CharSequence title) {
-        if(mToolBar != null) {
-            mToolBar.setTitle(title);
-        }
-    }
-
     protected abstract BaseFrgmtFractory setFrgmtProvider();
 
     protected abstract String[] setTabTitles();
+
+//    protected void setupAdapter(){
+//        if(!mIsFirstVisibile) {
+//            super.setupAdapter();
+//        }
+//    }
+//
+    @Override
+    public void firstUserVisibile(){
+//        setupAdapter();
+    }
 }

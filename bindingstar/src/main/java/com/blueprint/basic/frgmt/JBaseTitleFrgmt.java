@@ -1,8 +1,9 @@
 package com.blueprint.basic.frgmt;
 
-import android.databinding.ViewDataBinding;
 import android.view.View;
+
 import com.blueprint.R;
+
 import jzy.easybindpagelist.statehelper.BaseDiffSteteViewModel;
 
 /**
@@ -11,8 +12,8 @@ import jzy.easybindpagelist.statehelper.BaseDiffSteteViewModel;
  * @des [标题+状态界面  有统一处理 basePresenter的subscribe和unsubscribe]
  * onCreate中获取 getArguments数据
  */
-public abstract class JBaseTitleFrgmt<VM extends BaseDiffSteteViewModel, DBI extends ViewDataBinding>
-        extends JBaseVMFrgmt<VM, DBI> {
+public abstract class JBaseTitleFrgmt<VM extends BaseDiffSteteViewModel>
+        extends JBaseVMFrgmt<VM> {
 
     @Override protected boolean requestNoTitleBar() {
         return true;

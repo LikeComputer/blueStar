@@ -18,7 +18,7 @@ import jzy.easybindpagelist.loadmorehelper.LoadMoreViewModel;
  * @date 2017/6/7
  * @des [推荐]
  */
-public abstract class JAbsDiffListActivity<VM extends LoadMoreViewModel> extends JBaseVMActivity<VM, ViewDataBinding> {
+public abstract class JAbsDiffListActivity<VM extends LoadMoreViewModel> extends JBaseVMActivity<VM> {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +36,9 @@ public abstract class JAbsDiffListActivity<VM extends LoadMoreViewModel> extends
     }
 
 
-    @Override protected ViewDataBinding onCreateContent(LayoutInflater layoutInflater, ViewGroup containerLayout) {
-        return null;
+    @Override
+    protected int setContentLayoutId(){
+        return 0;
     }
 
 

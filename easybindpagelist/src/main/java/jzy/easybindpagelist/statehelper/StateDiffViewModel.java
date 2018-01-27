@@ -138,7 +138,7 @@ public abstract class StateDiffViewModel<SD> extends ExtrasBindViewModel impleme
      *
      * @param data
      */
-    public void showPageStateSuccess(SD data){
+    protected void showPageStateSuccess(SD data){
         hideLoading();
     }
 

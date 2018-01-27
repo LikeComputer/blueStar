@@ -81,10 +81,12 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      * 静态全局的搜索关键字，简化搜索开发，偷个懒~
      */
     public static String CURRENT_SEARCH_KEY = "";
-    /**
-     * 存储上一次搜索的关键字，主要用于判断多次执行的搜索动作的关键字是不是同一个
-     */
-    private String mLastSearchKey;
+
+//    /**
+//     * 存储上一次搜索的关键字，主要用于判断多次执行的搜索动作的关键字是不是同一个
+//     */
+//    private String mLastSearchKey;
+
     /**
      * 当前页码，调接口传参需要
      */
@@ -215,6 +217,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
 
     /**
      * 过滤了空数据
+     *
      * @param key
      */
     public void search(String key){
@@ -225,28 +228,39 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
 
 
     /**
-     * 不过滤空数据 空数据可以用来清除搜索
+     * 不过滤空数据 空数据可以用来清除搜索<BR>
+     *      同时更新 当前正搜索的关键字{@link #CURRENT_SEARCH_KEY}
+     *
      * @param editText
-     * @param key
+     * @param key 不要为null
      */
     public void search(EditText editText, @NonNull String key){
-        CURRENT_SEARCH_KEY = key;
-        if(!key.equals(mLastSearchKey)) {
+        if(!key.equals(CURRENT_SEARCH_KEY)) {
             mCurrentPage = FIRST_PAGE;
+            CURRENT_SEARCH_KEY = key;
             showPageStateLoading();
             reset4Search();
+            beforeSearchFromService(key);
             toSearchFromService(key);
         }else {
             theSameSearchKey(key);
         }
-        mLastSearchKey = key;
+    }
+
+    /**
+     * 可以用来做一些其他的事情，比如：请求参数中添加搜索关键字
+     * @param key
+     */
+    protected void beforeSearchFromService(String key){
+
     }
 
 
     /**
-     * 搜索新关键字的时候 清空列表
+     * 搜索新关键字的时候 清空列表 <BR>
+     * 搜索的时候不清空列表的话 复写该方法即可
      */
-    protected void reset4Search() {
+    protected void reset4Search(){
         mDataLists.clear();
     }
 
@@ -256,7 +270,11 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
      * 搜索 关键字 复写方法<br>
      * <li>{@link #CURRENT_SEARCH_KEY} 会保存 当前的搜索关键字</li>
      * <li>默认 回掉 {@link #onSubscribeData(Object)}</li>
-     * <br>搜索的时候也可以上啦加载 有搜索关键字的时候 上啦加载会处罚
+     * <B>搜索的时候也可以上拉加载 有搜索关键字的时候 上拉加载会触发<br>
+     * {@link #up2LoadMoreData(RecyclerView)}--->{@link #toSearchFromService(String)}-->{@link #onSubscribeData(Object)}</B><br>
+     * <B>无搜索的上拉加载 直接回掉{@link #onSubscribeData(Object)}<br>
+     * {@link #up2LoadMoreData(RecyclerView)}--->{@link #onSubscribeData(Object)}</B><br>
+     *
      * @param key
      */
     protected void toSearchFromService(String key){
@@ -381,7 +399,7 @@ public abstract class BaseLoadmoreViewModel<ID> extends StateDiffViewModel<List<
         mLoadmoreControl.loadmoreFinished();
     }
 
-    protected void refreshedAll2Finish(List<ID> newData) {
+    protected void refreshedAll2Finish(List<ID> newData){
         refreshedAllData(newData);
         mLoadmoreControl.loadmoreFinished();
     }

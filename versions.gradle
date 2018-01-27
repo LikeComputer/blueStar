@@ -4,7 +4,7 @@
  **/
 ext.deps = [:]
 def versions = [:]
-versions.arch = hasProperty("ARCH_VERSION") ? getProperty("ARCH_VERSION") : "1.0.0"
+versions.arch = hasProperty("ARCH_VERSION") ? getProperty("ARCH_VERSION") : "1.1.0"
 versions.support = "27.0.2"
 versions.okhttp = "3.9.1"
 versions.dagger = "2.11"
@@ -34,7 +34,7 @@ versions.gson = "2.8.2"
 versions.logger = "2.1.1"
 
 versions.jstatelayout="0.1.11"
-versions.jtabstrip="0.1.16"
+versions.jtabstrip="0.1.18"
 versions.bindingcollectionadapter="1.0.1"
 versions.bindingstar="0.1.14"
 versions.bindPagelist="0.1.15"
@@ -118,7 +118,6 @@ deps.rxbinding = "com.jakewharton.rxbinding2:rxbinding:$versions.rxbinding"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.butterKnife = "com.jakewharton:butterknife:$versions.butterKnife"
 deps.okhttp = "com.squareup.okhttp3:okhttp:$versions.okhttp"
-deps.retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 
 deps.fresco = "com.facebook.fresco:fresco:$versions.fresco"
 // 支持 GIF 动图，需要添加

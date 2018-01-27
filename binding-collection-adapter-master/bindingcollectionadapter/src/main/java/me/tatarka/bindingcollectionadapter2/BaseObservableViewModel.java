@@ -1,6 +1,7 @@
 package me.tatarka.bindingcollectionadapter2;
 
 import android.arch.lifecycle.ViewModel;
+import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
@@ -9,6 +10,7 @@ import android.databinding.PropertyChangeRegistry;
  * @date 2017/12/23.
  */
 public class BaseObservableViewModel extends ViewModel implements Observable {
+
     private transient PropertyChangeRegistry mCallbacks;
 
     public BaseObservableViewModel() {
