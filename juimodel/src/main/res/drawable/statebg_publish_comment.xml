@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/spacing_5"/>
+            <solid android:color="#f5f5fa"/>
+        </shape>
+    </item>
+    <!--selected true 为 更新评论-->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/spacing_5"/>
+            <gradient android:startColor="#4db360"
+                android:endColor="#59cf65"/>
+        </shape>
+    </item>
+
+    <item >
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/spacing_5"/>
+            <gradient android:startColor="#ff8814"
+                android:endColor="#ffbe4e"/>
+        </shape>
+    </item>
+</selector>

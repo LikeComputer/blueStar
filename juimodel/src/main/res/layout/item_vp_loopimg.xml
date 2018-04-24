@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="me.tatarka.bindingcollectionadapter2.recv.LayoutManagers"/>
+
+        <import type="android.support.v7.widget.LinearLayoutManager"/>
+
+        <variable
+            name="loopImg"
+            type="com.yun.juimodel.ui.home.vm.ItemLoopImgViewModel"/>
+
+    </data>
+
+    <com.yun.widget.LoopMZViewPager
+        android:layout_width="match_parent"
+        bind:loopItems="@{loopImg.items}"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:minHeight="180dp"
+        android:layout_height="164dp"/>
+</layout>

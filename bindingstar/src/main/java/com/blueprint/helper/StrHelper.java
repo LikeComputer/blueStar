@@ -61,7 +61,7 @@ public class StrHelper {
      * compare two string
      */
     public static boolean isEquals(String actual, String expected){
-        return CheckHelper.checkObjects(actual, expected) && expected.equals(actual);
+        return CheckHelper.safeObjects(actual, expected) && expected.equals(actual);
     }
 
 
@@ -280,7 +280,7 @@ public class StrHelper {
 
     public static String buildStrArrays2Str(String[] clickText){
         StringBuilder stringBuilder = new StringBuilder();
-        if(CheckHelper.checkArrays(clickText)) {
+        if(CheckHelper.safeArrays(clickText)) {
             for(String s : clickText) {
                 stringBuilder.append(s).append(SPLIT_DOS);
             }

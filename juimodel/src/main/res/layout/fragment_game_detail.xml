@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="gameDetail"
+            type="com.yun.juimodel.ui.home.m.GameDetail.DetailBean"/>
+
+        <import type="android.support.v7.widget.LinearLayoutManager"/>
+
+        <import type="com.yun.juimodel.ui.home.vm.gamedetail.GameDetailViewModel"/>
+
+        <import type="me.tatarka.bindingcollectionadapter2.recv.LayoutManagers"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <jonas.jlayout.MultiStateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/top_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:background="@color/divide_line_color"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/game_detail_recy"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:layout_width="match_parent"
+                    bind:layout_constraintTop_toBottomOf="@+id/top_line"
+                    android:layout_height="146dp"
+                    bind:dataList="@{gameDetail.gamePics}"
+                    bind:itemBinding="@{GameDetailViewModel.gameDetailBinding}"
+                    bind:layout_constraintStart_toStartOf="parent"
+                    android:paddingStart="@dimen/normal_16dp"
+                    android:paddingLeft="@dimen/normal_16dp"
+                    android:clipToPadding="false"
+                    bind:layoutManager="@{LayoutManagers.linear(LinearLayoutManager.HORIZONTAL,false)}"/>
+
+                <View
+                    android:id="@+id/divider0"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_recy"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:background="@color/divide_line_color"/>
+
+                <TextView
+                    android:id="@+id/game_detail_tv_desc"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintTop_toBottomOf="@id/divider0"
+                    android:layout_margin="@dimen/normal_16dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_2e33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="简介"/>
+
+                <TextView
+                    android:id="@+id/game_detail_game_desc"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintTop_toBottomOf="@id/game_detail_tv_desc"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_width="wrap_content"
+                    android:lineSpacingExtra="@dimen/common_line_spac"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    android:layout_height="wrap_content"
+                    android:text="@{gameDetail.describe}"
+                    tools:text="详细信息"/>
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_game_desc"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:background="@color/divide_line_color"/>
+
+                <TextView
+                    android:id="@+id/game_detail_tv_detail"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintTop_toBottomOf="@id/divider1"
+                    android:layout_margin="@dimen/normal_16dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_2e33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="详细信息"/>
+
+                <TextView
+                    android:id="@+id/game_detail_developer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    bind:layout_constraintRight_toRightOf="@+id/game_detail_tv_detail"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_tv_detail"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:text="@string/game_detail_developer"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    bind:layout_constraintLeft_toRightOf="@+id/game_detail_developer"
+                    bind:layout_constraintTop_toTopOf="@+id/game_detail_developer"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    tools:text="开发商"
+                    android:textSize="14dp"
+                    android:textColor="@color/tv_orign_ff88"
+                    android:text="@{gameDetail.developer}"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/game_detail_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    bind:layout_constraintRight_toRightOf="@+id/game_detail_developer"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_developer"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:text="@string/game_detail_version"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    bind:layout_constraintLeft_toRightOf="@+id/game_detail_version"
+                    bind:layout_constraintTop_toTopOf="@+id/game_detail_version"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    tools:text="版本号"
+                    android:text="@{gameDetail.version}"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/game_detail_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    bind:layout_constraintRight_toRightOf="@+id/game_detail_version"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_version"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:text="@string/game_detail_size"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    bind:layout_constraintLeft_toRightOf="@+id/game_detail_size"
+                    bind:layout_constraintTop_toTopOf="@+id/game_detail_size"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    tools:text="大小"
+                    android:text="@{gameDetail.size}"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/game_detail_update_t"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    bind:layout_constraintRight_toRightOf="@+id/game_detail_size"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_size"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:text="@string/game_detail_update_t"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    bind:layout_constraintLeft_toRightOf="@+id/game_detail_update_t"
+                    bind:layout_constraintTop_toTopOf="@+id/game_detail_update_t"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    tools:text="日期"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    android:text="@{gameDetail.updateTime}"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/game_detail_launguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    bind:layout_constraintRight_toRightOf="@+id/game_detail_update_t"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_update_t"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    android:text="@string/game_detail_launguage"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    bind:layout_constraintLeft_toRightOf="@+id/game_detail_launguage"
+                    bind:layout_constraintTop_toTopOf="@+id/game_detail_launguage"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:text="@{gameDetail.language}"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    tools:text="语言"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/game_detail_dimession"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    bind:layout_constraintRight_toRightOf="@+id/game_detail_launguage"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_launguage"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:text="@string/game_detail_dimession"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    bind:layout_constraintLeft_toRightOf="@+id/game_detail_dimession"
+                    bind:layout_constraintTop_toTopOf="@+id/game_detail_dimession"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:text="@{gameDetail.authority}"
+                    tools:text="开发商"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_dimession"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    android:background="@color/divide_line_color"/>
+
+                <TextView
+                    bind:layout_constraintTop_toBottomOf="@+id/divider2"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_margin="@dimen/normal_16dp"
+                    android:id="@+id/game_detail_tv_upd"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_2e33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="更新内容"/>
+
+                <TextView
+                    android:id="@+id/game_detail_tv_upd_content"
+                    android:layout_width="wrap_content"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    tools:text="更新内容"
+                    android:textSize="14dp"
+                    android:textColor="@color/gray_8b8b"
+                    android:layout_margin="@dimen/normal_16dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_tv_upd"
+                    android:layout_height="wrap_content"
+                    android:text="@{gameDetail.updateContent}"/>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_tv_upd_content"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:background="@color/divide_line_color"/>
+
+                <TextView
+                    bind:layout_constraintTop_toBottomOf="@+id/divider3"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_margin="@dimen/normal_16dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_2e33"
+                    android:id="@+id/game_detail_tv_recom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="相关推荐"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/game_detail_recom_recv"
+                    android:layout_width="match_parent"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_tv_recom"
+                    android:layout_height="wrap_content"
+                    bind:dataList="@{gameDetail.recimGames}"
+                    bind:itemBinding="@{GameDetailViewModel.gameDetailBinding}"
+                    bind:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    android:paddingStart="@dimen/normal_16dp"
+                    android:paddingLeft="@dimen/normal_16dp"
+                    android:clipToPadding="false"
+                    bind:layoutManager="@{LayoutManagers.linear(LinearLayoutManager.HORIZONTAL,false)}"/>
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/game_detail_recom_recv"
+                    android:layout_marginTop="@dimen/normal_16dp"
+                    bind:layout_constraintLeft_toLeftOf="parent"
+                    bind:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="@dimen/normal_16dp"
+                    android:layout_marginRight="@dimen/normal_16dp"
+                    android:background="@color/divide_line_color"/>
+
+                <TextView
+                    android:id="@+id/end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    bind:layout_constraintTop_toBottomOf="@+id/divider4"
+                    android:padding="@dimen/normal_16dp"
+                    android:text="已经到底啦~"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    bind:layout_constraintTop_toBottomOf="@+id/end"
+                    bind:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@color/divide_line_color"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </jonas.jlayout.MultiStateLayout>
+</layout>
+
+<!--<RelativeLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_alignParentBottom="true"-->
+<!--android:background="@color/j_white"-->
+<!--android:layout_height="48dp">-->
+
+<!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0.5dp"-->
+    <!--android:background="@color/divide_line_color"/>-->
+
+<!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:text="下载"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_marginLeft="@dimen/normal_16dp"-->
+    <!--android:layout_marginRight="@dimen/normal_16dp"-->
+    <!--android:gravity="center"-->
+    <!--android:onClick="gameDownloadStart"-->
+    <!--android:textSize="15dp"-->
+    <!--android:textColor="@color/j_white"-->
+    <!--android:background="@drawable/btn_orign_round_5"-->
+    <!--android:layout_height="36dp"/>-->
+<!--</RelativeLayout>-->

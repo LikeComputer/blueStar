@@ -30,16 +30,16 @@ public class BindingCollectionAdapters {
     public static <T> void setAdapter(AdapterView adapterView, ItemBinding<T> itemBinding, Integer itemTypeCount,
                                       JObservableList items, BindingListViewAdapter<T> adapter, @LayoutRes int itemDropDownLayout,
                                       BindingListViewAdapter.ItemIds<? super T> itemIds,
-                                      BindingListViewAdapter.ItemIsEnabled<? super T> itemIsEnabled){
-        if(itemBinding == null) {
+                                      BindingListViewAdapter.ItemIsEnabled<? super T> itemIsEnabled) {
+        if (itemBinding == null) {
             throw new IllegalArgumentException("updateItemLayoutRes must not be null");
         }
-        BindingListViewAdapter<T> oldAdapter = (BindingListViewAdapter<T>)unwrapAdapter(adapterView.getAdapter());
-        if(adapter == null) {
-            if(oldAdapter == null) {
+        BindingListViewAdapter<T> oldAdapter = (BindingListViewAdapter<T>) unwrapAdapter(adapterView.getAdapter());
+        if (adapter == null) {
+            if (oldAdapter == null) {
                 int count = itemTypeCount != null ? itemTypeCount : 1;
                 adapter = new BindingListViewAdapter<>(count);
-            }else {
+            } else {
                 adapter = oldAdapter;
             }
         }
@@ -49,7 +49,7 @@ public class BindingCollectionAdapters {
         adapter.setItemIds(itemIds);
         adapter.setItemIsEnabled(itemIsEnabled);
 
-        if(oldAdapter != adapter) {
+        if (oldAdapter != adapter) {
             adapterView.setAdapter(adapter);
         }
     }
@@ -59,9 +59,9 @@ public class BindingCollectionAdapters {
      * Unwraps any {@link android.widget.WrapperListAdapter}, commonly {@link
      * android.widget.HeaderViewListAdapter}.
      */
-    private static Adapter unwrapAdapter(Adapter adapter){
+    private static Adapter unwrapAdapter(Adapter adapter) {
         return adapter instanceof WrapperListAdapter ? unwrapAdapter(
-                ( (WrapperListAdapter)adapter ).getWrappedAdapter()) : adapter;
+                ((WrapperListAdapter) adapter).getWrappedAdapter()) : adapter;
     }
 
 
@@ -70,15 +70,15 @@ public class BindingCollectionAdapters {
     @BindingAdapter(value = {"itemBinding", "dataList", "adapter", "pageTitles"}, requireAll = false)
     public static <T> void setAdapter(ViewPager viewPager, ItemBinding<T> itemBinding, JObservableList items,
                                       BindingViewPagerAdapter<T> adapter,
-                                      BindingViewPagerAdapter.PageTitles<T> pageTitles){
-        if(itemBinding == null) {
+                                      BindingViewPagerAdapter.PageTitles<T> pageTitles) {
+        if (itemBinding == null) {
             throw new IllegalArgumentException("updateItemLayoutRes must not be null");
         }
-        BindingViewPagerAdapter<T> oldAdapter = (BindingViewPagerAdapter<T>)viewPager.getAdapter();
-        if(adapter == null) {
-            if(oldAdapter == null) {
+        BindingViewPagerAdapter<T> oldAdapter = (BindingViewPagerAdapter<T>) viewPager.getAdapter();
+        if (adapter == null) {
+            if (oldAdapter == null) {
                 adapter = new BindingViewPagerAdapter<>();
-            }else {
+            } else {
                 adapter = oldAdapter;
             }
         }
@@ -86,20 +86,20 @@ public class BindingCollectionAdapters {
         adapter.setItems(items);
         adapter.setPageTitles(pageTitles);
 
-        if(oldAdapter != adapter) {
+        if (oldAdapter != adapter) {
             viewPager.setAdapter(adapter);
         }
     }
 
 
     @BindingConversion
-    public static <T> ItemBinding<T> toItemBinding(OnItemBind<T> onItemBind){
+    public static <T> ItemBinding<T> toItemBinding(OnItemBind<T> onItemBind) {
         return ItemBinding.of(onItemBind);
     }
 
 
     @BindingConversion
-    public static ColorDrawable convertColorToDrawable(int color){
+    public static ColorDrawable convertColorToDrawable(int color) {
         return new ColorDrawable(color);
     }
 
@@ -107,51 +107,55 @@ public class BindingCollectionAdapters {
     //=============================  recyeleView  ============================================
     // RecyclerView
     @SuppressWarnings("unchecked")
-    @BindingAdapter(value = {"layoutManager", "itemBinding", "dataList", "adapter", "itemIds", "viewHolder", "loadmoreControl"}, requireAll = false)
+    @BindingAdapter(value = {"recycledViewPool", "layoutManager", "itemBinding", "dataList", "adapter", "itemIds", "viewHolder", "loadmoreControl"}, requireAll = false)
     public static <T> void setAdapter(RecyclerView recyclerView,
+                                      RecyclerView.RecycledViewPool recycledViewPool,
                                       LayoutManagers.LayoutManagerFactory layoutManagerFactory,
                                       ItemBinding<T> itemBinding, JObservableList items, BindingRecyclerViewAdapter adapter,
                                       BindingRecyclerViewAdapter.ItemIds<? super T> itemIds,
                                       BindingRecyclerViewAdapter.ViewHolderFactory viewHolderFactory,
-                                      LoadMoreWrapperAdapter.OnLoadmoreControl loadmoreControl){
-        if(itemBinding == null) {
+                                      LoadMoreWrapperAdapter.OnLoadmoreControl loadmoreControl) {
+        if (itemBinding == null) {
             throw new IllegalArgumentException("itemBinding must not be null");
         }
 
-        BindingRecyclerViewAdapter oldAdapter = (BindingRecyclerViewAdapter)recyclerView.getAdapter();
-        if(adapter == null) {
-            if(oldAdapter == null) {
-                if(loadmoreControl == null) {
+        BindingRecyclerViewAdapter oldAdapter = (BindingRecyclerViewAdapter) recyclerView.getAdapter();
+        if (adapter == null) {
+            if (oldAdapter == null) {
+                if (loadmoreControl == null) {
                     adapter = new BindingRecyclerViewAdapter<>();
-                }else {
+                } else {
                     adapter = new LoadMoreWrapperAdapter(loadmoreControl);
                 }
-            }else {
+            } else {
                 adapter = oldAdapter;
             }
         }
-        if(layoutManagerFactory != null) {
+        if (layoutManagerFactory != null) {
             //note 该方法会被多次调用
-            if(recyclerView.getLayoutManager() == null) {
+            if (recyclerView.getLayoutManager() == null) {
                 RecyclerView.LayoutManager layoutManager = layoutManagerFactory.create(recyclerView);
                 recyclerView.setLayoutManager(layoutManager);
                 adapter.configLayoutManager(layoutManager);
             }
-        }else {
-            LOG("LayoutManager 为空,请在布局配置 layoutManager熟悉");
+        } else {
+            LOG("LayoutManager 为空,请在布局配置 layoutManager");
         }
         adapter.setItemBinding(itemBinding);
         adapter.setItems(items);
         adapter.setItemIds(itemIds);
         adapter.setViewHolderFactory(viewHolderFactory);
-        if(oldAdapter != adapter) {
+        if (oldAdapter != adapter) {
+            if (recycledViewPool != null) {
+                recyclerView.setRecycledViewPool(recycledViewPool);
+            }
             recyclerView.setAdapter(adapter);
         }
     }
 
 
     @BindingAdapter("paddingLR")
-    public static void setPaddingLeft(View view, float padding){
+    public static void setPaddingLeft(View view, float padding) {
         view.setPadding(Math.round(padding), view.getPaddingTop(), Math.round(padding), view.getPaddingBottom());
     }
 }

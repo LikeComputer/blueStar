@@ -1,0 +1,38 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme"
+        parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="comment_zan_act">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@drawable/comm_detail_act_tvcolor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/spacing_8</item>
+        <item name="android:paddingBottom">@dimen/normal_16dp</item>
+    </style>
+
+    <style name="game_msg_zscore">
+        <item name="android:textColor">@color/tv_orign_ff88</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="game_detail_zscore">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/spacing_6</item>
+        <item name="android:layout_marginTop">@dimen/spacing_6</item>
+        <item name="android:textColor">@color/j_white</item>
+        <item name="android:textSize">11dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/j_black_a20</item>
+        <item name="android:padding">@dimen/spacing_5</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>

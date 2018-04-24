@@ -371,7 +371,7 @@ public class SpanHelper {
      * @return
      */
     public static SpannableString hightLightStrParser(@NonNull SpannableString orign, String key, int keyColor){
-        if(CheckHelper.checkStrings(orign, key)) {
+        if(CheckHelper.safeStrings(orign, key)) {
             try {
                 Pattern p = Pattern.compile(key);
                 Matcher m = p.matcher(orign);

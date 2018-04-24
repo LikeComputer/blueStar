@@ -71,7 +71,7 @@ public class LoadmoreFootViewModel extends ExtrasBindViewModel implements Layout
      *
      * @param loadingTips
      */
-    private void switch2Loading(CharSequence loadingTips){
+    public void switch2Loading(CharSequence loadingTips){
         mTips = loadingTips;
         moreload_fail = ( false );
         notifyPropertyChanged(jzy.easybindpagelist.BR.moreload_fail);

@@ -28,6 +28,11 @@ public class ItemViewModel extends ExtrasBindViewModel {
         this.content = content;
     }
 
+    @Bindable
+    public String getShowThing() {
+         return content+"---"+checked;
+    }
+
     public void clickShow(View v, String show) {
         Toast.makeText(v.getContext(), show, Toast.LENGTH_SHORT).show();
     }
@@ -49,5 +54,11 @@ public class ItemViewModel extends ExtrasBindViewModel {
         else {
             return true;
         }
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+//        notifyPropertyChanged(BR.content);
+        notifyPropertyChanged(BR.showThing);
     }
 }

@@ -48,6 +48,7 @@ public class BindingViewPagerAdapter<T> extends PagerAdapter implements BindingC
         if(this.items == items) {
             return;
         }
+        mItemBindings.clear();
         this.items = items;
         this.items.addOnListChangedCallback2(this);
         notifyDataSetChanged();

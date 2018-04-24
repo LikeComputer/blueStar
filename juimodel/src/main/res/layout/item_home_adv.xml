@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="gamAdv"
+            type="com.yun.juimodel.ui.home.m.Home.AdvertisementBean"/>
+    </data>
+
+    <!--android:background="@drawable/home_round_conor_bg"-->
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/normal_16dp"
+        android:onClick="@{gamAdv::showDetail}"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/home_item_gamefind_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/normal_16dp"
+            android:textColor="@color/black_2e33"
+            android:textSize="15dp"
+            android:paddingLeft="@dimen/normal_16dp"
+            android:text="@string/home_item_adv"/>
+
+        <TextView
+            android:textSize="12dp"
+            android:textColor="#babacc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="广告"
+            android:drawablePadding="@dimen/spacing_12"
+            android:drawableRight="@drawable/btn_close_22_darkgray"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:onClick="@{gamAdv::close}"
+            android:paddingRight="@dimen/normal_16dp"
+            android:src="@mipmap/ic_launcher"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/home_item_adv_pic"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_gamefind_tag"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:pressedStateOverlayImage="@color/common_state_press"
+            android:layout_margin="@dimen/normal_16dp"
+            android:layout_width="match_parent"
+            bind:loadRoundImageUrl="@{gamAdv.link}"
+            bind:round="@{@dimen/spacing_8}"
+            android:layout_height="119dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:maxLines="1"
+            tools:text="广告描述"
+            android:textColor="@color/j_white"
+            android:textSize="@dimen/spacing_12"
+            android:padding="@dimen/spacing_12"
+            android:text="@{gamAdv.describe}"
+            android:background="@drawable/bg_gradient_black_botton_round8"
+            bind:layout_constraintLeft_toLeftOf="@+id/home_item_adv_pic"
+            bind:layout_constraintRight_toRightOf="@+id/home_item_adv_pic"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_adv_pic"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divide_line"
+            android:layout_marginTop="@dimen/normal_16dp"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_adv_pic"
+            android:background="@color/divide_line_color"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

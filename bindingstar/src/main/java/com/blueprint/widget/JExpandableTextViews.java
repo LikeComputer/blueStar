@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.blueprint.helper.LogHelper;
 
+import static com.blueprint.helper.DrawHelper.getFontHeight;
+
 /**
  * @another 江祖赟
  * @date 2017/7/7.
@@ -539,11 +541,6 @@ public class JExpandableTextViews extends FrameLayout implements View.OnClickLis
             }
         }
         return this;
-    }
-
-    public float getFontHeight(Paint paint){
-        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
-        return -fontMetrics.top-fontMetrics.bottom;
     }
 
     @Override

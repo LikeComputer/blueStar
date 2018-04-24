@@ -11,7 +11,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.functions.Action;
 
-import static com.blueprint.helper.CheckHelper.checkObjects;
+import static com.blueprint.helper.CheckHelper.safeObjects;
 
 /**
  * @author yun.
@@ -131,7 +131,7 @@ public class AndroidBug5497JRX {
 
 
     private void possiblyResizeChildOfContent(){
-        if(checkObjects(mE,mKeyboardHWraper,mActivityWeakReference.get())) {
+        if(safeObjects(mE,mKeyboardHWraper,mActivityWeakReference.get())) {
             int usableButtomNow = computeUsableButtom();
             mKeyboardHWraper.height = orignButtom-usableButtomNow;
             if(dirtydata != mKeyboardHWraper.height) {

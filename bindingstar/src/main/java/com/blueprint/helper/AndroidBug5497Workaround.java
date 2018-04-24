@@ -8,7 +8,7 @@ import android.view.ViewTreeObserver;
 
 import java.lang.ref.WeakReference;
 
-import static com.blueprint.helper.CheckHelper.checkObjects;
+import static com.blueprint.helper.CheckHelper.safeObjects;
 
 /**
  * @author yun.
@@ -50,7 +50,7 @@ public class AndroidBug5497Workaround {
 
     private AndroidBug5497Workaround(Activity safeActivity, View resizeView){
         mResizeViewReference = new WeakReference<>(resizeView);
-        if(checkObjects(mResizeViewReference, mActivityWeakReference) && checkObjects(mResizeViewReference.get(),
+        if(safeObjects(mResizeViewReference, mActivityWeakReference) && safeObjects(mResizeViewReference.get(),
                 mActivityWeakReference.get())) {
             //Rect rect = new Rect();
             //mContent.getGlobalVisibleRect(rect);
@@ -69,7 +69,7 @@ public class AndroidBug5497Workaround {
 
 
     private void possiblyResizeChildOfContent(){
-        if(checkObjects(mResizeViewReference, mActivityWeakReference) && checkObjects(mResizeViewReference.get(),
+        if(safeObjects(mResizeViewReference, mActivityWeakReference) && safeObjects(mResizeViewReference.get(),
                 mActivityWeakReference.get())) {
             int usableHeightNow = computeUsableHeight();
             if(usableHeightNow != frameLayoutParams.height) {
@@ -81,7 +81,7 @@ public class AndroidBug5497Workaround {
 
 
     private int computeUsableHeight(){
-        if(checkObjects(mResizeViewReference, mActivityWeakReference) && checkObjects(mResizeViewReference.get(),
+        if(safeObjects(mResizeViewReference, mActivityWeakReference) && safeObjects(mResizeViewReference.get(),
                 mActivityWeakReference.get())) {
             //可见部分
             mActivityWeakReference.get().findViewById(android.R.id.content).getWindowVisibleDisplayFrame(r);

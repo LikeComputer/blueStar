@@ -3,8 +3,6 @@ package com.blueprint.rx;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SparseArrayCompat;
 
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

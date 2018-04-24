@@ -1,0 +1,91 @@
+// at the top of file
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+    defaultConfig {
+        applicationId "com.a4399.juimodel"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dependencies {
+        kapt "com.android.databinding:compiler:3.1.1"
+
+    }
+
+    kapt {
+        generateStubs = true
+        javacOptions {
+            // 增加注解处理器的最大错误次数
+            // 默认为 100。
+            option("-Xmaxerrs", 500)
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.kotlin.stdlib
+    implementation deps.support.cardview
+//    implementation deps.support.recyclerview
+//    implementation deps.support.design
+//    implementation deps.support.app_compat
+//    implementation deps.support.constraint
+//    implementation deps.rxbinding
+//    implementation deps.rxjava2
+//    implementation deps.rx_android
+//    implementation deps.jstatelayout
+//    implementation deps.jtabstrip
+//    implementation deps.gson
+//
+//    //图片 支持 GIF 动图，需要添加
+//    implementation deps.fresco_gif
+//    implementation deps.fresco
+//
+//    // Java8 support for Lifecycles
+//    implementation deps.lifecycle.java8
+//    // ViewModel and LiveData
+//    implementation deps.lifecycle.extensions
+//    annotationProcessor deps.lifecycle.compiler
+//    // ReactiveStreams support for LiveData
+//    implementation deps.lifecycle.reactivestreams
+//    // Test helpers for LiveData
+//    testImplementation deps.lifecycle.core_testing
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    // Test helpers for Room
+    testImplementation "android.arch.persistence.room:testing:1.0.0"
+    // RxJava support for Room
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+
+    implementation project(':bindingcollectionadapter')
+    implementation project(':easybindpagelist')
+    implementation project(':bindingstar')
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+      文件描述：头条页面
+      Created by zhanlinjian2888 on 2017/12/14.
+      E-mail:zhanlinjian@4399inc.com
+-->
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="headlinesViewModel"
+            type="com.yun.juimodel.ui.headline.vm.HeadlinesViewModel"/>
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/com_pagelist_layout"
+            layout="@layout/object_pagelist_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:pageViewModel="@{headlinesViewModel}"/>
+    </RelativeLayout>
+</layout>

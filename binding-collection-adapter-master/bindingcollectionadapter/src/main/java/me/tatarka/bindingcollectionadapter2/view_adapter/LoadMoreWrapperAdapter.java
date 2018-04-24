@@ -47,12 +47,13 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
 
         //上拉加载更多的开关
         private boolean mEnableUp2LoadMore = true;
+        private int mUp2loadmoreMinDataSize;
 
-        public boolean isEnableUp2LoadMore(){
+        public boolean isEnableUp2LoadMore() {
             return mEnableUp2LoadMore;
         }
 
-        public void setEnableUp2LoadMore(boolean enableUp2LoadMore){
+        public void setEnableUp2LoadMore(boolean enableUp2LoadMore) {
             mEnableUp2LoadMore = enableUp2LoadMore;
         }
 
@@ -61,7 +62,8 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
          * <li>外部 手动调整 下拉刷新 需要重置为 false 调用{@link #forceDown2Refresh()}</li>
          * <li>外部 手动调整 接口数据表示没有下一页 需要设置为 true 调用{@link #loadmoreFinished()} ,{@link #loadmoreFinished(CharSequence)}</li>
          */
-        @Bindable public boolean loadmoreFinished = false;
+        @Bindable
+        public boolean loadmoreFinished = false;
         /**
          * 是否 是 处于 上拉加载 失败的状态
          * <br>
@@ -71,7 +73,8 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
          * <li>外部 手动调整 上拉加载失败为 true 调用 {@link #loadMoreFail()}, {@link #loadMoreFail(CharSequence)} </li>
          * <li>上拉加载成功 false  不需要外部手动调用，在adapter中监听到插入数据就会回掉，还有重启上拉刷新{@link #forceDown2Refresh()}也会回掉  调用 {@link #loadmoreSucceed()} </li>
          */
-        @Bindable private boolean loadmoreFailed = false;
+        @Bindable
+        private boolean loadmoreFailed = false;
         public CharSequence mLoadFailTips;
         public CharSequence mLoadFinishTips;
         public CharSequence mLoadingTips;
@@ -81,34 +84,37 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
          * 上拉加载 成功/上拉加载的loading状态<br>
          * 在adapter中监听到插入数据{@link #onItemRangeInserted(JObservableList, int, int)} 就表示成功拿到数据 就是加载成功 会调用该方法
          */
-        public void loadmoreSucceed(){
+        public void loadmoreSucceed() {
             setLoadmoreFailed(false, null);
         }
 
         /**
          * 上拉加载失败
          */
-        public void loadMoreFail(){
+        public void loadMoreFail() {
             setLoadmoreFailed(true, null);
         }
 
         /**
          * 上拉加载失败
          */
-        public void loadMoreFail(CharSequence tips){
+        public void loadMoreFail(CharSequence tips) {
             setLoadmoreFailed(true, tips);
+        }
+
+        public void configLoadingTips(CharSequence tips) {
+            mLoadingTips = tips;
         }
 
         /**
          * 加载成功之后 不要忘了 设置false
          * 上拉加载 开关 同时 清除 自定义提示信息
          *
-         * @param fail
-         *         设置 加载 成功/失败
+         * @param fail 设置 加载 成功/失败
          */
-        private void setLoadmoreFailed(boolean fail, CharSequence tips){
+        private void setLoadmoreFailed(boolean fail, CharSequence tips) {
             mLoadFailTips = tips;
-            if(!loadmoreFinished && loadmoreFailed != fail) {
+            if (!loadmoreFinished && loadmoreFailed != fail) {
                 LOG("OnLoadmoreControl", "跟新底部loading状态: loadmoreFailed", fail);
                 //上拉加载成功和失败的切换
                 loadmoreFailed = fail;
@@ -116,15 +122,15 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
             }
         }
 
-        public boolean isLoadmoreFailed(){
+        public boolean isLoadmoreFailed() {
             return loadmoreFailed;
         }
 
         /**
          * 上拉加载结束之后 下拉刷新 重新重置底部loading状态为loading状态
          */
-        public void forceDown2Refresh(){
-            if(loadmoreFinished) {
+        public void forceDown2Refresh() {
+            if (loadmoreFinished) {
                 mLoadFinishTips = null;
                 loadmoreFinished = false;
                 loadmoreSucceed();//在上拉加载失败后 重新下拉刷新 时 设置底部loading处于加载数据状态
@@ -135,8 +141,8 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
         /**
          * 上拉加载 结束 之后上拉不再检测是否加载数据
          */
-        public void loadmoreFinished(){
-            if(!loadmoreFinished) {
+        public void loadmoreFinished() {
+            if (!loadmoreFinished) {
                 mLoadFinishTips = null;
                 loadmoreFinished = true;
                 notifyPropertyChanged(BR.loadmoreFinished);
@@ -146,35 +152,40 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
         /**
          * 上拉加载 结束 之后上拉不再检测是否加载数据
          */
-        public void loadmoreFinished(CharSequence finishTips){
+        public void loadmoreFinished(CharSequence finishTips) {
             loadmoreFinished();
             mLoadFinishTips = finishTips;
         }
 
-        public void setLoadmoreFinished(boolean finished, CharSequence finishTips){
-            mLoadFinishTips = finishTips;
-            if(loadmoreFinished != finished) {
-                mLoadFinishTips = null;
+        public void setLoadmoreFinished(boolean finished, CharSequence finishTips) {
+            mLoadFinishTips = null;
+            if (loadmoreFinished != finished) {
+                mLoadFinishTips = finishTips;
                 this.loadmoreFinished = finished;
                 notifyPropertyChanged(BR.loadmoreFinished);
             }
         }
 
-        public boolean isLoadmoreFinished(){
+        public boolean isLoadmoreFinished() {
             return loadmoreFinished;
         }
 
         /**
          * 发起请求 加载更多数据//注意被多次调用的可能
+         * <li>当list的数据被删除部分之后会检测是否需要上拉加载</li>
+         * <li>手动上拉加载</li>
+         *
+         * @param recyclerView
+         * @param lastPosition -1：点击重试，other:最后的可见的index
          */
-        protected abstract void onUp2Loadmore(RecyclerView recyclerView);
+        protected abstract void onUp2Loadmore(RecyclerView recyclerView, int lastPosition);
 
         /**
          * 底部loading的重试 按钮<br>
          * loadmoreFailed=true && loadmoreFinished=false<br>
          * <li>jfoot_loadmore_holder.xml 布局中的点击触发</li>
          */
-        public final void retryLoadMore(){
+        public final void retryLoadMore() {
             loadmoreSucceed();
             onLoadmoreRetry();
         }
@@ -184,39 +195,51 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
          * loadmoreFailed=true && loadmoreFinished=false<br>
          * <li>jfoot_loadmore_holder.xml 布局中的点击触发</li>
          */
-        public void onLoadmoreRetry(){
-            loadmoreSucceed();
-            onUp2Loadmore(null);
+        public void onLoadmoreRetry() {
+            onUp2Loadmore(null, -1);
         }
 
         @Override
-        public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback){
+        public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
             mCallback = callback;
             super.addOnPropertyChangedCallback(callback);
         }
 
-        public void removeCallBack(){
+        public void removeCallBack() {
             removeOnPropertyChangedCallback(mCallback);
+        }
+
+        /**
+         * 当列表item数量少于{@link #mUp2loadmoreMinDataSize}的时候不检测
+         *
+         * @return
+         */
+        public void setUp2loadmoreMinDataSize(int mUp2loadmoreMinDataSize) {
+            this.mUp2loadmoreMinDataSize = mUp2loadmoreMinDataSize;
+        }
+
+        public int getup2loadmoreMinDataSize() {
+            return mUp2loadmoreMinDataSize;
         }
     }
 
     public int mLastCheckDataSize;
 
 
-    public LoadMoreWrapperAdapter(OnLoadmoreControl listener){
+    public LoadMoreWrapperAdapter(OnLoadmoreControl listener) {
         mLoadmoreControl = listener;
     }
 
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView){
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState){
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     //滑动停止 才检查
                     checkUp2loadMore();
                 }
@@ -239,48 +262,48 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         //如果只有一条数据 就是底部的loading 不现实
-        return items == null ? 0 : items.size()>FOOT_LOAD_HOLDER ? items.size() : 0;
+        return items == null ? 0 : items.size() > FOOT_LOAD_HOLDER ? items.size() : 0;
     }
 
     /**
      * <p>只在停止滚动的状态检测</p>
      * 检查 是否loadingholder可见，可见则回掉监听的onup2LoadingMore 去加载下一页数据
      */
-    private synchronized void checkUp2loadMore(){
-        if(mLoadmoreControl.isEnableUp2LoadMore()) {
+    private synchronized void checkUp2loadMore() {
+        if (mLoadmoreControl.isEnableUp2LoadMore() && checkUp2loadMoreCondition()) {
             LOG("checkUp2loadMore()-> mInLoadingState 当前列表的是否处于加载状态(加载状态不检测上拉加载)", mInLoadingState);
-            if(!mLoadmoreControl.loadmoreFinished && getItemCount() == 1) {
+            if (!mLoadmoreControl.loadmoreFinished && getItemCount() == 1) {
                 //清空到 只剩下一个 底部loading 则重启 上拉加载
                 mLoadmoreControl.forceDown2Refresh();
                 //当前状态为停止滑动状态SCROLL_STATE_IDLE时   getItemCount()-1去掉底部 loading
-            }else if(!mInLoadingState && !mLoadmoreControl.loadmoreFinished && getItemCount()-1>0) {
+            } else if (!mInLoadingState && !mLoadmoreControl.loadmoreFinished && getItemCount() - 1 > 0) {
                 //1 上拉加载 没结束的时候 上拉加载
                 //2 mInLoadingState 为false 即没有处于 加载数据ing 状态的时候 允许检测
                 //3 处于错误状态的时候 没有监听到数据的增删改 mInLoadingState会 一直为false （回到 第2点）
                 //4 下拉刷新 更新数据之后 会出现增删改的情况 但是 数据都一样就不会 触发增删改 也就是没有检查上拉请求过数据checkUp2loadMore()没走 mInLoadingState为false
                 int lastPosition = 0;
                 RecyclerView.LayoutManager layoutManager = this.recyclerView.getLayoutManager();
-                if(layoutManager instanceof GridLayoutManager) {
+                if (layoutManager instanceof GridLayoutManager) {
                     //通过LayoutManager找到当前显示的最后的item的position
-                    lastPosition = ( (GridLayoutManager)layoutManager ).findLastVisibleItemPosition();
-                }else if(layoutManager instanceof LinearLayoutManager) {
-                    lastPosition = ( (LinearLayoutManager)layoutManager ).findLastVisibleItemPosition();
-                }else if(layoutManager instanceof StaggeredGridLayoutManager) {
+                    lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                } else if (layoutManager instanceof LinearLayoutManager) {
+                    lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
                     //因为StaggeredGridLayoutManager的特殊性可能导致最后显示的item存在多个，所以这里取到的是一个数组
                     //得到这个数组后再取到数组中position值最大的那个就是最后显示的position值了
-                    int[] lastPositions = new int[( (StaggeredGridLayoutManager)layoutManager ).getSpanCount()];
-                    ( (StaggeredGridLayoutManager)layoutManager ).findLastVisibleItemPositions(lastPositions);
+                    int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                    ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(lastPositions);
                     lastPosition = findMax(lastPositions);
                 }
                 //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
                 //如果相等则说明已经滑动到最后了
-                if(lastPosition>=getItemCount()-1) {
+                if (lastPosition >= getItemCount() - 1) {
                     Log.d(TAG, "loading 上拉提示 item 可见");
-                    if(mLoadmoreControl != null) {
+                    if (mLoadmoreControl != null) {
                         mInLoadingState = true;
-                        mLoadmoreControl.onUp2Loadmore(this.recyclerView);
+                        mLoadmoreControl.onUp2Loadmore(this.recyclerView, lastPosition);
                     }
                 }
 
@@ -295,17 +318,25 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
                 //                        System.out.println(visiRect.toString());
                 //                    }
             }
-        }else {
+        } else {
             LOG("  TT TT  外部关闭了 上拉加载 TT  TT  TT  TT");
         }
     }
 
+    /**
+     * 当列表item数量少于{最小值}的时候不检测
+     *
+     * @return
+     */
+    private boolean checkUp2loadMoreCondition() {
+        return getItemCount() > mLoadmoreControl.getup2loadmoreMinDataSize();
+    }
 
     //找到数组中的最大值
-    private int findMax(int[] lastPositions){
+    private int findMax(int[] lastPositions) {
         int max = lastPositions[0];
-        for(int value : lastPositions) {
-            if(value>max) {
+        for (int value : lastPositions) {
+            if (value > max) {
                 max = value;
             }
         }
@@ -313,34 +344,34 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
     }
 
 
-    public LoadMoreWrapperAdapter setOnMoreloadListener(OnLoadmoreControl listener){
+    public LoadMoreWrapperAdapter setOnMoreloadListener(OnLoadmoreControl listener) {
         mLoadmoreControl = listener;
         return this;
     }
 
     @Override
-    public void onChanged(JObservableList ts, int position, int count, Object payload){
+    public void onChanged(JObservableList ts, int position, int count, Object payload) {
         super.onChanged(ts, position, count, payload);
         mInLoadingState = false;
         //数据数量 变化了才需要判断  mLastCheckDataSize > 0不是第一次change
-        if(!mLoadmoreControl.loadmoreFinished && mLastCheckDataSize>0 && getItemCount() != mLastCheckDataSize) {
+        if (!mLoadmoreControl.loadmoreFinished && mLastCheckDataSize > 0 && getItemCount() != mLastCheckDataSize) {
             LOG("load_more 数据发生变化同时数据数量发生变化 检测是否需要触发上拉加载", mLastCheckDataSize = getItemCount());
             checkUp2loadMore();
         }
     }
 
     @Override
-    public void onItemRangeInserted(JObservableList<Object> ts, int positionStart, int itemCount){
+    public void onItemRangeInserted(JObservableList<Object> ts, int positionStart, int itemCount) {
         super.onItemRangeInserted(ts, positionStart, itemCount);
         mInLoadingState = false;
         //上拉加载成功 一定是插入数据 不会删改数据
         mLoadmoreControl.loadmoreSucceed();//上拉加载成功//下拉刷新成功
-        checkUp2loadMore();//删除数据后检查 是否要自动拉取数据
+        //checkUp2loadMore();//删除数据后检查 是否要自动拉取数据
         LOG(TAG, itemCount, " 条数据变化 (观察者) onItemRangeInserted --> finished?", mLoadmoreControl.loadmoreFinished);
     }
 
     @Override
-    public void onItemRangeRemoved(JObservableList ts, int positionStart, int itemCount){
+    public void onItemRangeRemoved(JObservableList ts, int positionStart, int itemCount) {
         super.onItemRangeRemoved(ts, positionStart, itemCount);
         LOG(TAG, items.size(), " 清除数据 onItemRangeMoved ", itemCount);
         mInLoadingState = false;
@@ -349,7 +380,7 @@ public class LoadMoreWrapperAdapter extends BindingRecyclerViewAdapter<Object> {
     }
 
     @Override
-    public void onMoved(JObservableList ts, int fromPosition, int toPosition){
+    public void onMoved(JObservableList ts, int fromPosition, int toPosition) {
         super.onMoved(ts, fromPosition, toPosition);
         LOG(TAG, items.size(), " 数据移动 onMoved ", fromPosition, toPosition);
         mInLoadingState = false;

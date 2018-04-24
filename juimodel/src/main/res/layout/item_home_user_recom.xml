@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="userRecom"
+            type="com.yun.juimodel.ui.home.m.Home.UserRecommendBean"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:background="@drawable/selector_bg_press"
+        android:layout_width="match_parent"
+        android:onClick="@{userRecom::showDetail}"
+        android:paddingLeft="@dimen/normal_16dp"
+        android:paddingRight="@dimen/normal_16dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/home_item_userrecom_title"
+            android:layout_width="wrap_content"
+            android:visibility="@{userRecom.isFirst?View.VISIBLE:View.GONE}"
+            android:layout_height="wrap_content"
+            android:text="玩家推荐"
+            android:textSize="@dimen/spacing_15"
+            android:textColor="@color/black_2e33"
+            android:paddingTop="@dimen/normal_16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:visibility="@{userRecom.isFirst?View.VISIBLE:View.GONE}"
+            android:layout_height="wrap_content"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:textSize="13dp"
+            android:textColor="@color/gray_8b8b"
+            android:text="更多"
+            android:onClick="@{userRecom::showMore}"
+            android:paddingTop="@dimen/normal_16dp"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/home_item_userrecom_game_detail"
+            android:paddingTop="@dimen/spacing_11"
+            android:paddingRight="@dimen/spacing_11"
+            android:paddingLeft="@dimen/spacing_11"
+            android:paddingBottom="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_16"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_userrecom_title"
+            android:layout_width="match_parent"
+            android:background="@drawable/img_commendbg_lightgray"
+            android:layout_height="wrap_content">
+
+            <!--bind:overlayImage="@drawabg_gradient_blackrlay"-->
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/home_item_userrecom_pic"
+                android:layout_width="118dp"
+                android:layout_height="76dp"
+                bind:layout_constraintEnd_toEndOf="parent"
+                bind:round="@{@dimen/spacing_3}"
+                loadRoundImageUrl="@{userRecom.pic}"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:lineSpacingExtra="@dimen/common_line_spac"
+                tools:text="名字"
+                bind:layout_constraintRight_toLeftOf="@+id/home_item_userrecom_pic"
+                bind:layout_constraintLeft_toLeftOf="parent"
+                bind:layout_constraintTop_toTopOf="parent"
+                android:maxLines="3"
+                android:paddingRight="11dp"
+                android:paddingBottom="@dimen/spacing_11"
+                android:ellipsize="end"
+                bind:layout_constraintBottom_toTopOf="@+id/home_item_userrecom_replynum"
+                android:text="@{userRecom.nickname}"/>
+
+            <TextView
+                android:id="@+id/home_item_userrecom_replynum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="@string/home_item_userrecom_replynum"
+                android:textColor="@color/gray_8b8b"
+                android:textSize="11dp"
+                android:drawableLeft="@drawable/btn_comment_26_darkgray"
+                bind:layout_constraintRight_toLeftOf="@+id/home_item_userrecom_pic"
+                bind:layout_constraintLeft_toLeftOf="parent"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:drawablePadding="@dimen/spacing_4"
+                bind:layout_constraintBottom_toBottomOf="@+id/home_item_userrecom_pic"
+                android:text="@{@string/home_item_userrecom_replynum(userRecom.commentNum)}"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <com.yun.widget.AvatorImageView
+            android:id="@+id/home_item_userrecom_avator"
+            android:layout_width="24dp"
+            android:layout_marginTop="@dimen/spacing_6"
+            android:layout_height="24dp"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_userrecom_game_detail"
+            bind:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="@dimen/spacing_12"
+            loadAvator="@{userRecom.avator}"/>
+
+        <TextView
+            android:id="@+id/home_item_userrecom_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="名字"
+            android:textSize="11dp"
+            android:layout_marginLeft="@dimen/spacing_6"
+            android:textColor="@color/tv_orign_ff88"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_userrecom_avator"
+            android:text="@{userRecom.nickname}"/>
+
+        <TextView
+            android:id="@+id/home_item_userrecom_pj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11dp"
+            android:textColor="@color/black_2e33"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_userrecom_user_name"
+            android:text=" 评价 "/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="游戏名字"
+            android:textSize="11dp"
+            android:textColor="@color/tv_orign_ff88"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_userrecom_pj"
+            android:text="@{userRecom.gameName}"/>
+
+        <TextView
+            android:id="@+id/home_item_userrecom_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="shijian"
+            android:textSize="@dimen/spacing_11"
+            android:textColor="@color/gray_baba"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_userrecom_avator"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:text="@{userRecom.publishTime}"/>
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/divide_line"-->
+        <!--bind:layout_constraintLeft_toLeftOf="parent"-->
+        <!--android:layout_marginLeft="@dimen/normal_16dp"-->
+        <!--bind:layout_constraintTop_toBottomOf="@+id/home_item_userrecom_pic"-->
+        <!--android:visibility="@{userRecom.isLast?View.GONE:View.VISIBLE}"-->
+        <!--android:layout_marginTop="@dimen/normal_16dp"-->
+        <!--android:background="@color/divide_line_color"/>-->
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/divide_line"-->
+        <!--bind:layout_constraintLeft_toLeftOf="parent"-->
+        <!--android:visibility="@{userRecom.isLast?View.VISIBLE:View.GONE}"-->
+        <!--bind:layout_constraintTop_toBottomOf="@+id/home_item_userrecom_pic"-->
+        <!--android:layout_marginTop="@dimen/normal_16dp"-->
+        <!--android:background="@color/divide_line_color"/>-->
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

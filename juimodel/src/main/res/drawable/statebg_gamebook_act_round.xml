@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="105dp"/>
+            <solid android:color="#babacc"/>
+        </shape>
+    </item>
+    <!--selected true 为 我要玩状态 -->
+    <item android:state_selected="true">
+        <!--<shape android:shape="rectangle">-->
+            <!--<corners android:radius="105dp"/>-->
+            <!--<gradient android:startColor="#4db360"-->
+                <!--android:endColor="#59cf65"/>-->
+        <!--</shape>-->
+        <shape android:shape="rectangle">
+            <corners android:radius="105dp"/>
+            <gradient android:startColor="#ff8814"
+                android:endColor="#ffbe4e"/>
+        </shape>
+    </item>
+
+    <item >
+        <shape android:shape="rectangle">
+            <corners android:radius="105dp"/>
+            <gradient android:startColor="#307feb"
+                android:endColor="#4ebaff"/>
+        </shape>
+    </item>
+</selector>

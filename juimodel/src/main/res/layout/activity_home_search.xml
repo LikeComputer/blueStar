@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <jonas.jlayout.MultiStateLayout
+        android:id="@+id/home_search_statelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                bind:elevation="0dp"
+                android:shadowColor="@android:color/transparent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/spacing_19"
+                    android:layout_marginLeft="@dimen/spacing_16"
+                    bind:layout_scrollFlags="scroll|enterAlways|snap"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/home_search_cancel"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:text="取消"
+                        android:onClick="searchCancel"
+                        android:paddingRight="@dimen/spacing_16"
+                        android:layout_marginLeft="@dimen/spacing_16"
+                        android:textColor="@color/tv_orign_ff88"
+                        android:gravity="center"
+                        android:layout_height="26dp"/>
+
+                    <EditText
+                        android:id="@+id/search_et_key"
+                        android:layout_toLeftOf="@+id/home_search_cancel"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/search_round_bg"
+                        android:paddingLeft="@dimen/spacing_12"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/gray_8b8b"
+                        android:textSize="@dimen/spacing_13"
+                        android:textColorHint="@color/gray_baba"
+                        tools:hint="@string/more_search_wealfare_gameres"
+                        android:drawablePadding="@dimen/spacing_8"
+                        android:paddingRight="@dimen/spacing_25"
+                        android:hint="@string/home_search"
+                        android:drawableLeft="@drawable/btn_search_26_lightgray"
+                        android:layout_height="26dp"/>
+
+                    <ImageView
+                        android:id="@+id/search_clear"
+                        tools:visibility="visible"
+                        android:layout_toLeftOf="@+id/home_search_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:onClick="searchClear"
+                        android:visibility="gone"
+                        android:src="@drawable/btn_close_22_darkgray"
+                        android:paddingLeft="@dimen/spacing_3"
+                        android:paddingRight="@dimen/spacing_10"
+                        android:layout_height="match_parent"/>
+                </RelativeLayout>
+            </android.support.design.widget.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/home_search_content"
+                android:layout_width="match_parent"
+                bind:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </jonas.jlayout.MultiStateLayout>
+</layout>

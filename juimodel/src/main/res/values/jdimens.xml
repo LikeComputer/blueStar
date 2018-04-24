@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="game_detail_prewpic_width_h">200dp</dimen>
+    <dimen name="game_detail_prewpic_width_v">50dp</dimen>
+</resources>

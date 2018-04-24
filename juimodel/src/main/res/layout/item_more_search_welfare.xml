@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="wealfare"
+            type="com.yun.juimodel.ui.home.m.Home.WelfareBean"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        bind:padingltr="@{@dimen/normal_16dp}"
+        android:background="@drawable/selector_bg_press"
+        android:onClick="@{wealfare::showDetail}"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/more_wealfare_icon"
+            android:layout_width="60dp"
+            tools:background="#f0f0"
+            bind:loadRoundImageUrl="@{wealfare.icon}"
+            android:layout_marginRight="@dimen/normal_16dp"
+            bind:round="@{@dimen/spacing_8}"
+            android:layout_height="60dp"/>
+
+        <TextView
+            android:id="@+id/more_wealfare_name"
+            bind:layout_constraintLeft_toRightOf="@+id/more_wealfare_icon"
+            bind:layout_constraintTop_toTopOf="@+id/more_wealfare_icon"
+            android:layout_marginLeft="10dp"
+            android:includeFontPadding="false"
+            tools:text="高级礼包"
+            android:text="@{wealfare.title}"
+            android:textSize="@dimen/spacing_15"
+            android:textColor="@color/black_2e33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/more_wealfare_game"
+            bind:layout_constraintLeft_toLeftOf="@+id/more_wealfare_name"
+            bind:layout_constraintTop_toTopOf="@+id/more_wealfare_icon"
+            bind:layout_constraintBottom_toBottomOf="@+id/more_wealfare_icon"
+            android:textSize="@dimen/spacing_13"
+            tools:text="高级礼包"
+            android:text="@{wealfare.gameName}"
+            android:textColor="@color/tv_orign_ff88"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/more_wealfare_detail"
+            bind:layout_constraintLeft_toLeftOf="@+id/more_wealfare_name"
+            bind:layout_constraintBottom_toBottomOf="@+id/more_wealfare_icon"
+            tools:text="@string/more_wealfare_detail"
+            android:textSize="@dimen/spacing_11"
+            android:text="@{wealfare.detail2More}"
+            android:textColor="@color/gray_8b8b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintBottom_toBottomOf="@+id/more_wealfare_icon"
+            android:text="去领取"
+            android:gravity="center"
+            android:background="@drawable/statebg_attenact"
+            bind:layout_constraintTop_toTopOf="@+id/more_wealfare_icon"
+            android:textSize="@dimen/spacing_14"
+            android:textColor="@drawable/statebg_attenact_tvcolor"
+            android:layout_width="60dp"
+            android:layout_height="26dp"/>
+            <!--bind:wealfareState="@{wealfare.isObtain}"-->
+
+        <View
+            bind:layout_constraintTop_toBottomOf="@+id/more_wealfare_icon"
+            android:layout_marginTop="@dimen/spacing_16"
+            android:layout_width="match_parent"
+            android:background="@color/divide_line_color"
+            android:layout_height="0.5dp"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

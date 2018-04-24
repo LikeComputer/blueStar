@@ -30,6 +30,7 @@ import io.reactivex.SingleOnSubscribe;
 import io.reactivex.annotations.NonNull;
 
 import static com.blueprint.helper.LogHelper.slog_d;
+import static com.blueprint.helper.PackageHelper.getPackageName;
 
 /**
  * Created by _SOLID
@@ -446,7 +447,7 @@ public class FileHelper {
 
     @NonNull
     public static String getNewAppName(String new_version){
-        return LibApp.getPackageName()+"_"+new_version+".apk";
+        return getPackageName()+"_"+new_version+".apk";
     }
 
     @NonNull

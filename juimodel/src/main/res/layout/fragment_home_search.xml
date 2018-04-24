@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="hotHisViewModel"
+            type="com.yun.juimodel.ui.home.vm.search.HomeSearchHotHisViewModel"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/spacing_16"
+        android:paddingRight="@dimen/spacing_16"
+        android:animateLayoutChanges="true"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/home_search_hot_title"
+            android:layout_width="wrap_content"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:visibility="@{hotHisViewModel.hotlist.empty?View.GONE:View.VISIBLE}"
+            bind:layout_constraintTop_toTopOf="parent"
+            android:textSize="14dp"
+            android:textColor="@color/black_2e33"
+            android:layout_marginTop="@dimen/spacing_19"
+            android:layout_height="wrap_content"
+            android:text="热门搜索"/>
+
+        <com.blueprint.widget.JFlowLayout
+            android:id="@+id/home_search_hot_list"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/spacing_19"
+            tools:background="#f0f"
+            bind:selectListener="@{hotHisViewModel}"
+            bind:keyList="@{hotHisViewModel.hotlist}"
+            bind:layout_constraintTop_toBottomOf="@+id/home_search_hot_title"
+            android:minHeight="24dp"
+            android:visibility="@{hotHisViewModel.hotlist.empty?View.GONE:View.VISIBLE}"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:id="@+id/home_search_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/spacing_19"
+            tools:visibility="visible"
+            android:visibility="@{hotHisViewModel.hotlist.empty?View.GONE:View.VISIBLE}"
+            bind:layout_constraintTop_toBottomOf="@+id/home_search_hot_list"
+            android:background="@color/divide_line_color"/>
+
+        <TextView
+            android:id="@+id/home_search_his_title"
+            android:layout_width="wrap_content"
+            bind:layout_constraintTop_toBottomOf="@+id/home_search_divider"
+            android:visibility="@{hotHisViewModel.localHislist.empty?View.GONE:View.VISIBLE}"
+            android:textSize="14dp"
+            android:textColor="@color/black_2e33"
+            android:layout_marginTop="@dimen/spacing_19"
+            android:layout_height="wrap_content"
+            android:text="热门搜索"/>
+
+        <april.yun.widget.PromptImageView
+            android:layout_width="wrap_content"
+            bind:layout_constraintTop_toTopOf="@+id/home_search_his_title"
+            bind:layout_constraintBottom_toBottomOf="@id/home_search_his_title"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:paddingLeft="@dimen/spacing_8"
+            android:onClick="@{()->hotHisViewModel.clearLocalHis()}"
+            android:layout_height="@dimen/spacing_19"
+            android:visibility="@{hotHisViewModel.localHislist.empty?View.GONE:View.VISIBLE}"
+            android:src="@drawable/btn_clean_38_darkgray"/>
+
+        <com.blueprint.widget.JFlowLayout
+            android:id="@+id/home_search_his_list"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/spacing_19"
+            bind:keyList="@{hotHisViewModel.localHislist}"
+            bind:selectListener="@{hotHisViewModel}"
+            tools:background="#f0f"
+            android:visibility="@{hotHisViewModel.localHislist.empty?View.GONE:View.VISIBLE}"
+            bind:layout_constraintTop_toBottomOf="@+id/home_search_his_title"
+            android:minHeight="24dp"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:visibility="gone"
+            bind:layout_constraintTop_toTopOf="parent"
+            bind:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:background="#0f0"
+            android:layout_height="0dp"></RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>

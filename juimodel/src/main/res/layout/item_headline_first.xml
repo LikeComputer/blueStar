@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="msgCardBean"
+            type="com.yun.juimodel.data.commbean.MsgCardBean"/>
+
+        <import type="android.view.View"/>
+
+        <import type="com.yun.helper.Data2UIhelper"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/spacing_15"
+        android:onClick="@{msgCardBean::showDetail}"
+        android:background="@drawable/selector_bg_press"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:layout_marginLeft="@dimen/spacing_15"
+            android:ellipsize="end"
+            tools:text="高清画质来袭"
+            bind:layout_constraintRight_toLeftOf="@+id/headline_msgcard_pic"
+            android:layout_marginRight="15dp"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/black_2e33"
+            android:textSize="@dimen/spacing_15"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            android:text="@{msgCardBean.title}"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headline_msgcard_pic"
+            android:layout_width="90dp"
+            android:layout_height="65dp"
+            tools:background="#f0f"
+            loadRoundImageUrl="@{msgCardBean.pic}"
+            round="@{@dimen/spacing_5}"
+            android:layout_marginRight="@dimen/spacing_15"
+            bind:layout_constraintRight_toRightOf="parent"/>
+
+        <ImageView
+            android:layout_width="90dp"
+            bind:layout_constraintLeft_toLeftOf="@+id/headline_msgcard_pic"
+            android:scaleType="center"
+            android:visibility="@{msgCardBean.videoType?View.VISIBLE:View.GONE}"
+            bind:layout_constraintTop_toTopOf="@+id/headline_msgcard_pic"
+            android:src="@drawable/img_play_orange"
+            android:layout_height="65dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="高清画质来袭"
+            android:layout_marginLeft="@dimen/spacing_15"
+            bind:layout_constraintBottom_toBottomOf="@+id/headline_msgcard_pic"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/gray_8b8b"
+            android:textSize="@dimen/spacing_11"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            android:text="@{Data2UIhelper.dateDistance2(msgCardBean.date)}"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="高清画质来袭"
+            bind:layout_constraintBottom_toBottomOf="@+id/headline_msgcard_pic"
+            android:textColor="@color/gray_8b8b"
+            android:layout_marginRight="@dimen/spacing_15"
+            bind:layout_constraintRight_toLeftOf="@+id/headline_msgcard_pic"
+            android:textSize="@dimen/spacing_11"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            android:text="@{@string/headline_home_card_views(msgCardBean.views)}"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            bind:layout_constraintTop_toBottomOf="@+id/headline_msgcard_pic"
+            android:layout_marginTop="@dimen/spacing_15"
+            android:background="@color/divide_line_color"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

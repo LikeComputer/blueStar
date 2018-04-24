@@ -15,9 +15,9 @@ import static com.blueprint.Consistent.ErrorCode.HTTP404;
 public class Consistent {
     public static final String DEFAULTSTR = "--";
     public static final String DIFF_TYPE = "doundle_typle";
+    public static final String DIFF_ID = "doundle_id";
     public static final String DIFF_INDEX = "doundle_index";
     public static final String BUND_TAG = "bund_extra";
-    public static final int VIEWTAG_ERROR_MSG = 0x12fcde1;
     public static final String SPLIT_DOS = ", ";
     public static final String CONTACT_DOS = ",";
 
@@ -89,7 +89,11 @@ public class Consistent {
         int view_tag3 = 0x1234567b;
         int view_tag4 = 0x1234567c;
         int view_tag5 = 0x1234567d;
-        int value_tag = 0x1234567d;
+        int view_index = 0x1234567e;
+        /**
+         * 只能在一个地方用
+         */
+        int click_time = 0x1234567f;
     }
 
     public interface TransitionName {

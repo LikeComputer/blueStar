@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="gameBook"
+            type="com.yun.juimodel.ui.home.m.Home.GameBookBean"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="260dp"
+        android:background="@drawable/home_round_conor_bg"
+        android:layout_marginRight="@dimen/normal_16dp"
+        android:onClick="@{gameBook::showDetail}"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/home_item_hotrecom_pic"
+            android:layout_width="260dp"
+            bind:loadImageUrl="@{gameBook.pic}"
+            bind:roundedCornerRadius="@dimen/spacing_8"
+            bind:roundTopLeft="true"
+            bind:roundTopRight="true"
+            bind:roundBottomLeft="false"
+            bind:roundBottomRight="false"
+            android:layout_height="93dp"/>
+
+        <TextView
+            tools:text="@string/home_item_hotmap_score"
+            android:text="@{gameBook.ZScore}"
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintTop_toTopOf="parent"
+            style="@style/game_detail_zscore"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            tools:text="游戏名字"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:text="@{gameBook.name}"
+            android:textSize="@dimen/spacing_15"
+            android:textColor="@color/black_2e33"
+            android:padding="@dimen/spacing_11"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/spacing_11"
+            android:text="@string/home_item_gamebook_booked"
+            android:textColor="@color/tv_orign_ff88"
+            android:textSize="12dp"
+            android:visibility="@{gameBook.isBook?View.VISIBLE:View.GONE}"
+            android:layout_height="0dp"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

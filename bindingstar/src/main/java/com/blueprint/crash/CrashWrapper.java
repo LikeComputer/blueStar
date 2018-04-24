@@ -347,7 +347,7 @@ public final class CrashWrapper implements Thread.UncaughtExceptionHandler {
      * @return itself
      */
     public CrashWrapper withKeys(final String... keys) {
-        if(CheckHelper.checkArrays(keys)) {
+        if(CheckHelper.safeArrays(keys)) {
             this.keys.addAll(Arrays.asList(keys));
         }
         return this;

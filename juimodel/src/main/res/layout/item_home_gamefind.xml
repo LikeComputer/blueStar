@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="gameFind"
+            type="com.yun.juimodel.ui.home.m.Home.FindGameBean"/>
+    </data>
+
+    <!--android:background="@drawable/home_round_conor_bg"-->
+    <android.support.constraint.ConstraintLayout
+        android:background="@drawable/selector_bg_press"
+        android:layout_width="match_parent"
+        android:onClick="@{gameFind::showDetail}"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/home_item_gamefind_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:padding="@dimen/normal_16dp"
+            android:textSize="15dp"
+            android:textColor="@color/black_2e33"
+            android:text="@string/home_item_findgame_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/gray_8b8b"
+            android:padding="@dimen/normal_16dp"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:onClick="@{gameFind::showMore}"
+            android:text="@string/item_show_more"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            bind:layout_constraintLeft_toLeftOf="@+id/home_item_gamefind_tag"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            android:id="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_gamefind_tag"
+            android:layout_width="180dp"
+            bind:loadRoundImageUrl="@{gameFind.link}"
+            bind:round="@{@dimen/spacing_8}"
+            android:layout_height="116dp"/>
+
+        <TextView
+            tools:text="@string/home_item_hotmap_score"
+            android:text="@{gameFind.ZScore}"
+            bind:layout_constraintRight_toRightOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_hotrecom_pic"
+            style="@style/game_detail_zscore"/>
+
+        <TextView
+            android:id="@+id/home_item_gamefind_title"
+            android:layout_width="wrap_content"
+            tools:text="名字"
+            android:textSize="15dp"
+            android:textColor="@color/black_2e33"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_hotrecom_pic"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_hotrecom_pic"
+            android:layout_marginStart="@dimen/normal_16dp"
+            android:text="@{gameFind.name}"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/home_item_gamefind_book"
+            android:layout_width="0dp"
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_hotrecom_pic"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            android:layout_marginRight="@dimen/normal_16dp"
+            android:drawableRight="@drawable/btn_enter_22_darkgray"
+            android:text="@string/home_item_gamebook_booked"
+            android:textSize="12dp"
+            android:textColor="@color/tv_orign_ff88"
+            android:visibility="@{gameFind.state==1?View.VISIBLE:View.GONE}"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="0dp"
+            tools:text="描述描述描述描述描述描述描述"
+            android:textSize="12dp"
+            android:layout_marginRight="@dimen/normal_16dp"
+            bind:layout_constraintBottom_toTopOf="@+id/home_item_gamefind_book"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            android:textColor="@color/gray_8b8b"
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_hotrecom_pic"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_gamefind_title"
+            android:layout_marginTop="@dimen/normal_16dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_marginBottom="@dimen/spacing_8"
+            android:layout_marginStart="@dimen/normal_16dp"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_pic"
+            android:text="@{gameFind.describe}"
+            android:layout_height="0dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divide_line"
+            android:layout_marginTop="@dimen/normal_16dp"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_pic"
+            android:background="@color/divide_line_color"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

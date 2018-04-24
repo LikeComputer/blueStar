@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--边距 上下是6dp-->
+    <!--左右是10dp-->
+    <item>
+        <shape
+            android:shape="rectangle">
+            <size
+                android:width="150dp"
+                android:height="126dp"/>
+            <solid android:color="@color/gray999"/>
+        </shape>
+    </item>
+    <item
+        android:gravity="center_vertical|start"
+        android:right="16dp">
+        <shape
+            android:shape="rectangle">
+            <corners android:radius="5dp"/>
+            <size
+                android:width="50dp"
+                android:height="26dp"/>
+            <gradient
+                android:endColor="#ffb754"
+                android:startColor="#ff6714"/>
+        </shape>
+    </item>
+
+</layer-list>
+
+

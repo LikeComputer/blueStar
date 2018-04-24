@@ -1,6 +1,7 @@
 package com.blueprint.behavior;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -134,7 +135,9 @@ public class JTopBehave extends CoordinatorLayout.Behavior<View> {
     //    onNestedScroll() 会在scrolling View做完滚动后调用，通过回调可以知道scrolling view滚动了多少和它没有消耗的滚动事件。
     //target是当前滑动的可滚动的view [NestedScrollingChild子view]
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed){
+    public void onNestedScroll(
+            @NonNull CoordinatorLayout coordinatorLayout,
+            @NonNull View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type){
         mDyUnconsumeds += dyUnconsumed;
         if(mDyUnconsumeds == 0) {
             mDyUnconsumeds = 0;
@@ -163,7 +166,7 @@ public class JTopBehave extends CoordinatorLayout.Behavior<View> {
                 mTitleHide = dyConsumed>0;
             }
         }
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
     }
 
     //    onNestedPreScroll() 会在scrolling View获得滚动事件前调用，它允许你消费部分或者全部的事件信息。
@@ -171,6 +174,7 @@ public class JTopBehave extends CoordinatorLayout.Behavior<View> {
     public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed){
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);
     }
+
 
     @Override
     public boolean onNestedFling(CoordinatorLayout coordinatorLayout, View child, View target, float velocityX, float velocityY, boolean consumed){

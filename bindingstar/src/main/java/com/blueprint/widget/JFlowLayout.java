@@ -9,6 +9,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Size;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,10 @@ import android.widget.Checkable;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.blueprint.Consistent;
-
+import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.annotations.NonNull;
 
 import static com.blueprint.helper.DrawHelper.getColorStateList2;
 import static com.blueprint.helper.DrawHelper.getListDrable;
@@ -31,6 +29,7 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
 
 
     public static final int DEFAULT_SPACING = 20;
+    private static final int DEFAULTERROR = -110;
     /**
      * 横向间隔
      */
@@ -68,6 +67,8 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
     private int mItemBg_ids = Consistent.DEFAULTERROR;
     private int mItemGravity = Gravity.CENTER;
     private boolean mChildClickAble = true;
+    //强制单行 等同于横向 linelayout
+    private boolean mForceSingleLine = false;
 
     public JFlowLayout(Context context){
         super(context);
@@ -117,11 +118,11 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
                 }
                 int childWidth = child.getMeasuredWidth();
                 mUsedWidth += childWidth;// 增加使用的宽度
-                if(mUsedWidth<=sizeWidth && mLine.getViewCount()<mMaxChileEachLine) {// 使用宽度小于总宽度，该child属于这一行。
+                if (mForceSingleLine || (mUsedWidth <= sizeWidth && mLine.getViewCount() < mMaxChileEachLine)) {// 使用宽度小于总宽度，该child属于这一行。
                     mLine.addView(child);// 添加child
                     mUsedWidth += mHorizontalSpacing;// 加上间隔
-                    if(mUsedWidth>=sizeWidth) {// 加上间隔后如果大于等于总宽度，需要换行
-                        if(!newLine()) {
+                    if (!mForceSingleLine && (mUsedWidth >= sizeWidth)) {// 加上间隔后如果大于等于总宽度，需要换行
+                        if (!newLine()) {
                             break;
                         }
                     }
@@ -151,6 +152,9 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
             //            mLines.get(mLines.size() - 1).setLastLine(true);
             //        }
             int totalWidth = MeasureSpec.getSize(widthMeasureSpec);
+            if (mForceSingleLine||totalWidth == 0) {
+                totalWidth = mUsedWidth;
+            }
             int totalHeight = 0;
             final int linesCount = mLines.size();
             for(int i = 0; i<linesCount; i++) {// 加上所有行的高度
@@ -209,20 +213,21 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
     public void onClick(View v){
         if(v instanceof Checkable) {
             //CheckedTextView点击之后不会像checkBox那样自动改变checked状态 需要手动设置
-            ( (Checkable)v ).setChecked(!( (Checkable)v ).isChecked());
-            if(mSingleSelecte && ( (Checkable)v ).isChecked()) {
-                if(lastSelected != null) {
+            ((Checkable) v).setChecked(!((Checkable) v).isChecked());
+            if (mSingleSelecte && ((Checkable) v).isChecked()) {
+                if (lastSelected != null) {
                     lastSelected.setChecked(false);
                 }
-                lastSelected = (Checkable)v;
+                lastSelected = (Checkable) v;
             }else {
                 lastSelected = null;
             }
-            if(mListener != null) {
-                //选中状态表示被点击
-                mListener.onItemSelected(v, indexOfChild(v));
-                //                mListener.onItemSelected(v, (Integer)v.getTag(Consistent.ViewTag.view_tag5));
-            }
+        }
+        if (mListener != null) {
+            //选中状态表示被点击
+            v.setTag(this);
+            mListener.onItemSelected(v, indexOfChild(v));
+            //                mListener.onItemSelected(v, (Integer)v.getTag(Consistent.ViewTag.view_tag5));
         }
     }
 
@@ -257,8 +262,8 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
             // 总宽度
             int layoutWidth = getMeasuredWidth()-getPaddingLeft()-getPaddingRight();
             // 剩余的宽度，是除了View和间隙的剩余空间
-            int surplusWidth = layoutWidth-mWidth-mHorizontalSpacing*( count-1 );
-            if(surplusWidth>=0) {// 剩余空间
+            int surplusWidth = layoutWidth - mWidth - mHorizontalSpacing * (count - 1);
+            if (mForceSingleLine || surplusWidth >= 0) {// 剩余空间
                 // 采用float类型数据计算后四舍五入能减少int类型计算带来的误差
                 int splitSpacing = (int)( surplusWidth/count+0.5 );
                 for(int i = 0; i<count; i++) {
@@ -321,7 +326,6 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
     }
 
     public JFlowLayout setSingleSelected(boolean singleSelecte){
-
         mSingleSelecte = singleSelecte;
         return this;
     }
@@ -335,7 +339,16 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
         }
     }
 
-    public JFlowLayout setChildClickAble(boolean clickAble){
+
+    @Override public void removeView(View view) {
+        super.removeView(view);
+        if (getChildCount() == 0) {
+            setVisibility(GONE);
+        }
+    }
+
+
+    public JFlowLayout setChildClickAble(boolean clickAble) {
         mChildClickAble = clickAble;
         return this;
     }
@@ -386,7 +399,7 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
         }else if(mItemBg_ids != Consistent.DEFAULTERROR) {
             box.setBackgroundResource(mItemBg_ids);
         }
-        box.setTextSize(mTextSize);
+        box.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mTextSize);
         box.setText(content);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1) {
             box.setTextAlignment(TEXT_ALIGNMENT_GRAVITY);
@@ -502,6 +515,16 @@ public class JFlowLayout extends ViewGroup implements View.OnClickListener {
             mMaxLinesCount = count;
             requestLayoutInner();
         }
+        return this;
+    }
+
+    public boolean isForceSingleLine() {
+        return mForceSingleLine;
+    }
+
+
+    public JFlowLayout setForceSingleLine(boolean forceSingleLine) {
+        mForceSingleLine = forceSingleLine;
         return this;
     }
 }

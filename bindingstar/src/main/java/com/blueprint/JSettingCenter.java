@@ -9,6 +9,7 @@ import io.reactivex.Single;
 
 import static com.blueprint.helper.FileHelper.clearFile;
 import static com.blueprint.helper.FileHelper.getDirSize;
+import static com.blueprint.helper.PackageHelper.getPackageName;
 import static com.blueprint.helper.PhoneHelper.strongClearCache;
 
 public class JSettingCenter {
@@ -58,6 +59,6 @@ public class JSettingCenter {
      * <p>类似app详情页的清除缓存，清除后会被清除进程app被强制关闭</p>
      */
     public static void strongClearAppCache(){
-        strongClearCache(LibApp.getPackageName());
+        strongClearCache(getPackageName());
     }
 }

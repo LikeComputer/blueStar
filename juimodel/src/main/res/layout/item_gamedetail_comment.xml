@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.yun.helper.Data2UIhelper"/>
+
+        <variable
+            name="commentModel"
+            type="com.yun.juimodel.ui.home.m.Comment.CommentBean"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            tools:padding="@dimen/normal_16dp"
+            android:background="@drawable/selector_bg_press"
+            bind:padingltr="@{@dimen/normal_16dp}"
+            android:onClick="@{commentModel::showDetail}"
+            android:layout_height="wrap_content">
+
+            <com.yun.widget.AvatorImageView
+                android:id="@+id/game_detail_comm_avator"
+                android:onClick="@{commentModel::seeUserDetail}"
+                loadAvator="@{Data2UIhelper.getMiddlePortrait(commentModel.uid)}"
+                android:layout_width="38dp"
+                android:layout_height="38dp"/>
+
+            <TextView
+                android:id="@+id/game_detail_comm_username"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black_2e33"
+                android:textSize="14dp"
+                tools:text="迷路先生"
+                android:text="@{commentModel.nickname}"
+                bind:layout_constraintLeft_toRightOf="@+id/game_detail_comm_avator"
+                android:layout_marginLeft="@dimen/normal_16dp"
+                android:layout_height="wrap_content"/>
+            <!--android:background="@drawabg_blue_round_2nd_2"-->
+            <TextView
+                bind:layout_constraintTop_toTopOf="@+id/game_detail_comm_username"
+                bind:layout_constraintBottom_toBottomOf="@+id/game_detail_comm_username"
+                android:layout_width="wrap_content"
+                android:textColor="@color/j_white"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_6"
+                android:paddingRight="@dimen/spacing_6"
+                android:includeFontPadding="false"
+                bind:levelbg="@{commentModel.level}"
+                android:textSize="10dp"
+                bind:layout_constraintLeft_toRightOf="@+id/game_detail_comm_username"
+                android:layout_marginLeft="@dimen/spacing_6"
+                android:layout_height="13dp"/>
+
+            <com.blueprint.widget.JRatingBar
+                android:id="@+id/game_detail_comm_rb"
+                bind:starWidth="11dp"
+                bind:starHeight="11dp"
+                bind:starDistance="2dp"
+                bind:starClickable="false"
+                android:clickable="false"
+                bind:rbProgress="@{commentModel.score}"
+                bind:starBackground="@drawable/btn_star_74_normal"
+                bind:starDrawBackground="@drawable/btn_star_74_highlight"
+                bind:layout_constraintLeft_toLeftOf="@+id/game_detail_comm_username"
+                bind:layout_constraintBottom_toBottomOf="@+id/game_detail_comm_avator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_detail_comm_user_score"
+                android:layout_width="wrap_content"
+                android:text="@{String.valueOf(commentModel.score)}"
+                bind:layout_constraintBottom_toBottomOf="@+id/game_detail_comm_rb"
+                bind:layout_constraintLeft_toRightOf="@+id/game_detail_comm_rb"
+                android:layout_marginLeft="@dimen/spacing_8"
+                android:textSize="11dp"
+                bind:layout_constraintTop_toTopOf="@+id/game_detail_comm_rb"
+                tools:text="9.5"
+                android:textColor="@color/gray_8b8b"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="投诉"
+                android:textSize="12dp"
+                android:textColor="@color/gray_8b8b"
+                android:paddingLeft="@dimen/spacing_8"
+                android:paddingBottom="@dimen/spacing_8"
+                bind:layout_constraintTop_toTopOf="@+id/game_detail_comm_username"
+                android:onClick="@{commentModel::complaint}"
+                bind:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_detail_comm_content"
+                android:layout_width="match_parent"
+                android:textColor="@color/black_2e33"
+                android:textSize="13dp"
+                tools:text="叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽叽叽喳喳- 咕叽咕叽"
+                android:layout_marginTop="@dimen/normal_16dp"
+                android:text="@{commentModel.content}"
+                android:lineSpacingExtra="@dimen/common_line_spac"
+                bind:layout_constraintTop_toBottomOf="@+id/game_detail_comm_user_score"
+                bind:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_detail_comm_publishmsg"
+                tools:text="2018-1-3  小米5"
+                android:text="@{commentModel.timeDevice}"
+                bind:layout_constraintTop_toBottomOf="@+id/game_detail_comm_content"
+                android:layout_marginTop="@dimen/normal_16dp"
+                android:textColor="@color/q_gray_baba"
+                android:textSize="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_detail_comm_num"
+                tools:text="评论25"
+                android:visibility="@{commentModel.isCommentDetail?View.GONE:View.VISIBLE}"
+                android:text="@{commentModel.commentNum}"
+                bind:layout_constraintRight_toRightOf="parent"
+                bind:layout_constraintTop_toTopOf="@+id/game_detail_comm_publishmsg"
+                android:drawableLeft="@drawable/btn_comment_26_darkgray"
+                android:paddingLeft="@dimen/normal_16dp"
+                style="@style/comment_zan_act"/>
+
+            <TextView
+                bind:select="@{commentModel.isPourPraise}"
+                android:id="@+id/game_detail_comm_dzan"
+                tools:text="赞25"
+                android:drawableLeft="@drawable/comm_detail_dzan"
+                android:onClick="@{()->commentModel.actionZan(false)}"
+                android:text="@{commentModel.pourPraiseNum}"
+                bind:layout_constraintRight_toLeftOf="@+id/game_detail_comm_num"
+                bind:layout_constraintTop_toTopOf="@+id/game_detail_comm_publishmsg"
+                style="@style/comment_zan_act"/>
+
+            <TextView
+                tools:text="赞25"
+                bind:select="@{commentModel.isPraise}"
+                android:text="@{commentModel.praiseNum}"
+                bind:layout_constraintRight_toLeftOf="@+id/game_detail_comm_dzan"
+                android:layout_marginRight="@dimen/normal_16dp"
+                android:checked="true"
+                android:gravity="center"
+                android:onClick="@{()->commentModel.actionZan(true)}"
+                android:drawableLeft="@drawable/comm_detail_zan"
+                bind:layout_constraintRight_toRightOf="parent"
+                bind:layout_constraintTop_toTopOf="@+id/game_detail_comm_publishmsg"
+                style="@style/comment_zan_act"/>
+
+            <View
+                bind:layout_constraintTop_toBottomOf="@+id/game_detail_comm_publishmsg"
+                android:visibility="@{commentModel.isCommentDetail?View.GONE:View.VISIBLE}"
+                android:layout_marginTop="@dimen/normal_16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/divide_line_color"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:visibility="@{commentModel.isCommentDetail?View.VISIBLE:View.GONE}"
+            android:background="@color/divide_line_color"
+
+            android:layout_height="0.5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:visibility="@{commentModel.isCommentDetail?View.VISIBLE:View.GONE}"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            android:layout_marginRight="@dimen/normal_16dp"
+            android:textColor="@color/tv_orign_ff88"
+            android:background="@drawable/btn_gray_round_5"
+            android:layout_marginTop="@dimen/normal_16dp"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingBottom="@dimen/spacing_8"
+            android:paddingLeft="@dimen/normal_16dp"
+            android:text="@{commentModel.commentDetailNum}"
+            tools:text="几条回复"/>
+    </LinearLayout>
+</layout>

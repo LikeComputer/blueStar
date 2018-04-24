@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="hotRecom"
+            type="com.yun.juimodel.ui.home.m.Home.HotRecommendBean"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="260dp"
+        android:background="@drawable/home_round_conor_bg"
+        android:layout_marginRight="@dimen/normal_16dp"
+        android:onClick="@{hotRecom::showDetail}"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/home_item_hotrecom_pic"
+            android:layout_width="match_parent"
+            bind:loadImageUrl="@{hotRecom.pic}"
+            bind:roundedCornerRadius="@dimen/spacing_8"
+            bind:roundTopLeft="true"
+            bind:roundTopRight="true"
+            android:layout_height="93dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            tools:text="游戏名字"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:text="@{hotRecom.name}"
+            android:paddingLeft="@dimen/spacing_15"
+            android:background="@drawable/bg_gradient_black"
+            android:gravity="bottom"
+            android:paddingBottom="@dimen/spacing_6"
+            android:paddingTop="@dimen/spacing_6"
+            android:textSize="@dimen/spacing_15"
+            android:textColor="@color/j_white"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            tools:text="@string/home_item_hotmap_score"
+            android:text="@{hotRecom.ZScore}"
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintTop_toTopOf="parent"
+            style="@style/game_detail_zscore"/>
+
+        <com.yun.widget.AvatorImageView
+            android:id="@+id/home_item_hotrecom_avator"
+            android:layout_width="24dp"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_pic"
+            android:layout_margin="@dimen/normal_16dp"
+            bind:loadAvator="@{hotRecom.avator}"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@{hotRecom.nickname}"
+            tools:text="作者"
+            android:textSize="@dimen/spacing_13"
+            android:textColor="@color/tv_orign_ff88"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_8"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_hotrecom_avator"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_avator"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_hotrecom_avator"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="8dp"
+            android:text="@{hotRecom.content}"
+            android:paddingRight="@dimen/normal_16dp"
+            android:paddingLeft="@dimen/normal_16dp"
+            android:paddingBottom="@dimen/normal_16dp"
+            android:textSize="@dimen/spacing_12"
+            android:textColor="@color/black_2e33"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_avator"
+            tools:text="描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述"
+            android:layout_height="wrap_content"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

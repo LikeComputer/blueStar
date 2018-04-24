@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item android:state_checked="true">-->
+        <!--<shape  android:shape="rectangle">-->
+            <!--<corners android:radius="@dimen/spacing_12"/>-->
+            <!--<padding-->
+                <!--android:left="@dimen/spacing_12"-->
+                <!--android:right="@dimen/spacing_12"/>-->
+            <!--<stroke android:color="@color/q_gray_f5a"/>-->
+        <!--</shape>-->
+    <!--</item>-->
+    <item android:state_pressed="true">
+        <shape  android:shape="rectangle">
+            <corners android:radius="@dimen/spacing_12"/>
+            <padding
+                android:top="@dimen/spacing_2"
+                android:bottom="@dimen/spacing_2"
+                android:left="@dimen/spacing_8"
+                android:right="@dimen/spacing_8"/>
+            <stroke android:color="@color/stroke_gray_d1d1" android:width="0.5dp"/>
+            <solid android:color="@color/q_gray_f5a"/>
+        </shape>
+    </item>
+    <item>
+        <shape  android:shape="rectangle">
+            <corners android:radius="@dimen/spacing_12"/>
+            <padding
+                android:top="@dimen/spacing_2"
+                android:bottom="@dimen/spacing_2"
+                android:left="@dimen/spacing_8"
+                android:right="@dimen/spacing_8"/>
+            <stroke android:color="@color/stroke_gray_d1d1" android:width="0.5dp"/>
+        </shape>
+    </item>
+</selector>

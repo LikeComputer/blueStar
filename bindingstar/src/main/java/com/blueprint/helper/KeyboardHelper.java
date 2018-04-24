@@ -36,6 +36,11 @@ public final class KeyboardHelper {
         }
     }
 
+    /**
+     * 当当前方法不能隐藏键盘的时候(有时候弹窗弹出键盘然后隐藏会有问题) 使用{@link #hideKeyboard(EditText)}
+     * <b>前提是 activity 必须有 focus的view</b>
+     * @param activity
+     */
     public static void hideKeyboard(Activity activity){
         if(activity != null) {
             InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -57,7 +62,13 @@ public final class KeyboardHelper {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public static void hideKeyboard(View view){
+    /**
+     * 当使用{@link #hideKeyboard(Activity)} 无效的时候使用 此方法
+     * <b>dialog在隐藏的时候一般需要隐藏输入法，一定要注意 先隐藏输入法，然后再dimiss对话框，不然activity.getCurrentFocus()就没了在dialog里面的<br>
+     *     先dimiss dialog再隐藏输入法 会导致隐藏输入法失败</b>
+     * @param view
+     */
+    public static void hideKeyboard(EditText view){
         if(view != null) {
             InputMethodManager imm = (InputMethodManager)view.getContext()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.support.v7.widget.LinearLayoutManager"/>
+
+        <variable
+            name="findGame"
+            type="com.yun.juimodel.ui.home.m.Home.FindGameBean"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <!--android:padding="@dimen/spacing_28"-->
+    <!--android:background="@drawable/img_scorebg_218"-->
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_8"
+        android:layout_marginRight="@dimen/spacing_8"
+        bind:cardCornerRadius="@dimen/spacing_8"
+        bind:cardElevation="@dimen/spacing_18"
+        android:layout_marginBottom="70dp"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="260dp"
+            android:minHeight="361dp"
+            android:elevation="@dimen/spacing_20"
+            android:translationZ="50dp"
+            android:layout_height="match_parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/game_book_pic_prew"
+                android:layout_width="match_parent"
+                bind:loadImageUrl="@{findGame.link}"
+                bind:roundedCornerRadius="@dimen/spacing_8"
+                bind:roundTopLeft="true"
+                bind:roundTopRight="true"
+                bind:roundBottomLeft="false"
+                bind:roundBottomRight="false"
+                android:layout_height="110dp"/>
+
+            <TextView
+                android:id="@+id/game_book_gamename"
+                bind:layout_constraintTop_toBottomOf="@+id/game_book_pic_prew"
+                android:layout_marginTop="@dimen/spacing_18"
+                bind:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="@dimen/spacing_16"
+                android:layout_width="wrap_content"
+                android:elevation="@dimen/spacing_20"
+                tools:text="我的世界"
+                android:text="@{findGame.name}"
+                android:textColor="@color/black_2e33"
+                android:textSize="@dimen/spacing_15"
+                android:layout_height="wrap_content"/>
+
+            <com.blueprint.widget.JRatingBar
+                android:id="@+id/game_book_rb_score"
+                bind:layout_constraintLeft_toLeftOf="@+id/game_book_gamename"
+                bind:layout_constraintTop_toBottomOf="@+id/game_book_gamename"
+                android:layout_marginTop="@dimen/spacing_11"
+                bind:starWidth="11dp"
+                bind:starHeight="11dp"
+                bind:starDistance="2dp"
+                bind:rbProgress="@{findGame.score}"
+                bind:starClickable="false"
+                android:clickable="false"
+                bind:starBackground="@drawable/btn_star_74_normal"
+                bind:starDrawBackground="@drawable/btn_star_74_highlight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_book_score"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:textColor="@color/gray_8b8b"
+                bind:layout_constraintTop_toTopOf="@+id/game_book_rb_score"
+                bind:layout_constraintBottom_toBottomOf="@+id/game_book_rb_score"
+                bind:layout_constraintLeft_toRightOf="@+id/game_book_rb_score"
+                bind:layout_goneMarginLeft="@dimen/spacing_4"
+                android:textSize="11dp"
+                tools:text="10"
+                android:text="@{String.valueOf(findGame.score)}"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_book_comnum"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:textColor="@color/gray_8b8b"
+                bind:layout_constraintTop_toTopOf="@+id/game_book_score"
+                bind:layout_constraintBottom_toBottomOf="@+id/game_book_score"
+                bind:layout_constraintLeft_toRightOf="@+id/game_book_score"
+                bind:layout_goneMarginLeft="@dimen/spacing_4"
+                android:textSize="11dp"
+                tools:text="10人评价"
+                android:text="@{findGame.commentNum}"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_book_desc"
+                android:layout_width="0dp"
+                android:maxLines="4"
+                bind:layout_constraintTop_toBottomOf="@+id/game_book_rb_score"
+                bind:layout_constraintLeft_toLeftOf="@+id/game_book_rb_score"
+                bind:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="@dimen/spacing_13"
+                android:layout_marginRight="@dimen/spacing_16"
+                android:ellipsize="end"
+                bind:layout_constraintBottom_toTopOf="@+id/game_book_mark"
+                tools:text="游戏描述"
+                android:text="@{findGame.describe}"
+                android:textSize="12dp"
+                android:textColor="@color/black_2e33"
+                android:layout_marginBottom="@dimen/spacing_12"
+                android:lineSpacingExtra="@dimen/common_line_spac"
+                android:layout_height="0dp"/>
+
+            <com.blueprint.widget.JFlowLayout
+                android:id="@+id/game_book_mark"
+                android:layout_width="0dp"
+                tools:background="#f0f"
+                tools:text="标签"
+                bind:keyList="@{findGame.flowTags}"
+                bind:selectListener="@{findGame}"
+                android:layout_marginBottom="@dimen/spacing_19"
+                android:minHeight="@dimen/spacing_28"
+                bind:layout_constraintBottom_toTopOf="@+id/game_book_do"
+                bind:layout_constraintLeft_toLeftOf="@+id/game_book_rb_score"
+                bind:layout_constraintRight_toRightOf="parent"
+                android:layout_marginRight="@dimen/spacing_16"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/game_book_do"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textSize="@dimen/spacing_14"
+                android:onClick="toBookPlay"
+                android:textColor="@drawable/statebg_gamestate_tvcolor"
+                android:background="@drawable/statebg_gamebook_act"
+                bind:layout_constraintLeft_toLeftOf="parent"
+                bind:layout_constraintRight_toRightOf="parent"
+                bind:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/spacing_19"
+                bind:gameBookstate="@{findGame}"
+                android:text="@{findGame.bookState}"
+                tools:text="我要玩/预约"/>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>

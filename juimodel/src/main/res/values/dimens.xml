@@ -1,0 +1,45 @@
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <!-- dp -->
+    <dimen name="spacing_0">0dp</dimen>
+    <!-- 默认列表分割大小 -->
+    <dimen name="spacing_divide_line">0.5dp</dimen>
+    <dimen name="spacing_1">1dp</dimen>
+    <dimen name="spacing_2">2dp</dimen>
+    <dimen name="spacing_3">3dp</dimen>
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_5">5dp</dimen>
+    <dimen name="spacing_6">6dp</dimen>
+    <dimen name="spacing_7">7dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_9">9dp</dimen>
+    <dimen name="spacing_10">10dp</dimen>
+    <dimen name="spacing_11">11dp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_13">13dp</dimen>
+    <dimen name="spacing_14">14dp</dimen>
+    <dimen name="spacing_15">15dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+    <dimen name="spacing_17">17dp</dimen>
+    <dimen name="spacing_18">18dp</dimen>
+    <dimen name="spacing_19">19dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
+    <dimen name="spacing_21">21dp</dimen>
+    <dimen name="spacing_22">22dp</dimen>
+    <dimen name="spacing_24">24dp</dimen>
+    <dimen name="spacing_25">25dp</dimen>
+    <dimen name="spacing_26">26dp</dimen>
+    <dimen name="spacing_27">27dp</dimen>
+    <dimen name="spacing_28">28dp</dimen>
+    <dimen name="spacing_29">29dp</dimen>
+    <dimen name="spacing_30">30dp</dimen>
+    <dimen name="spacing_34">34dp</dimen>
+    <!-- 默认列表图标大小 -->
+    <dimen name="spacing_48">48dp</dimen>
+    <dimen name="spacing_50">50dp</dimen>
+    <dimen name="spacing_58">58dp</dimen>
+    <dimen name="common_line_spac">13dp</dimen>
+    <dimen name="divide_line">0.5dp</dimen>
+</resources>

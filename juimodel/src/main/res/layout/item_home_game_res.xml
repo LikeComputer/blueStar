@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="android.view.Gravity"/>
+
+        <variable
+            name="gameRes"
+            type="com.yun.juimodel.ui.home.m.Home.ResourceBean"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:background="@drawable/selector_bg_press"
+        android:layout_marginRight="@dimen/normal_16dp"
+        android:layout_width="wrap_content"
+        android:onClick="@{gameRes::showDetail}"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="60dp"
+            tools:src="@mipmap/ic_launcher"
+            android:visibility="@{gameRes.styleLone?View.GONE:View.VISIBLE}"
+            bind:loadRoundImageUrl="@{gameRes.icon}"
+            bind:round="@{@dimen/spacing_8}"
+            android:layout_height="60dp"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="125dp"
+            tools:src="@mipmap/ic_launcher"
+            android:visibility="@{gameRes.styleLone?View.VISIBLE:View.GONE}"
+            bind:loadRoundImageUrl="@{gameRes.icon}"
+            bind:round="@{@dimen/spacing_5}"
+            android:layout_height="60dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:text="@{gameRes.name}"
+            tools:text="游戏"
+            android:textSize="@dimen/spacing_12"
+            android:textColor="@color/black_2e33"
+            bind:layout_constraintTop_toTopOf="parent"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:gravity="@{gameRes.styleLone?Gravity.START:Gravity.CENTER}"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="68dp"
+            android:layout_height="wrap_content"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

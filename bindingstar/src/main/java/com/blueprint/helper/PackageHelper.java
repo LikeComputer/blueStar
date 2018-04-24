@@ -1,6 +1,7 @@
 package com.blueprint.helper;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -16,11 +17,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.blueprint.LibApp;
+import com.orhanobut.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,7 +34,7 @@ import java.util.List;
 import io.reactivex.annotations.NonNull;
 
 import static com.blueprint.LibApp.getContext;
-import static com.blueprint.helper.CheckHelper.checkLists;
+import static com.blueprint.helper.CheckHelper.safeLists;
 import static com.blueprint.helper.ShellHelper.checkRootPermission;
 import static com.blueprint.helper.ShellHelper.execCommand;
 
@@ -94,13 +98,14 @@ public class PackageHelper {
     //普通安装
     public static void installNormal(File file){
         if(file != null && file.exists()) {
+//            Android8.0未知来源应用安装权限
             Intent intent = new Intent(Intent.ACTION_VIEW);
             // 由于没有在Activity环境下启动Activity,设置下面的标签
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //版本在7.0以上是不能直接通过uri访问的
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) {
                 //参数1 上下文, 参数2 Provider主机地址 和配置文件中保持一致   参数3  共享的文件
-                Uri apkUri = FileProvider.getUriForFile(getContext(), LibApp.getPackageName()+".fileprovider", file);
+                Uri apkUri = FileProvider.getUriForFile(getContext(), getPackageName()+".fileprovider", file);
                 //添加这一句表示对目标应用临时授权该Uri所代表的文件
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
@@ -109,6 +114,26 @@ public class PackageHelper {
             }
             getContext().startActivity(intent);
         }
+    }
+
+    private static boolean cheInstallPermission(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean b = LibApp.getContext().getPackageManager().canRequestPackageInstalls();
+            if (!b) {
+                ToastHelper.showShort("缺少未知来源应用安装权限，无法自动安装应用");
+            }
+            return b;
+        }
+        else {
+            return true;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void startInstallPermissionSettingActivity(Activity activity, int requestCode) {
+        //注意这个是8.0新API
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     //通过Root方式安装
@@ -217,7 +242,7 @@ public class PackageHelper {
 
         ActivityManager activityManager = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(1);
-        if(!checkLists(tasksInfo)) {
+        if(!safeLists(tasksInfo)) {
             return false;
         }
         try {
@@ -441,18 +466,62 @@ public class PackageHelper {
     }
 
     /**
-     * 判断App是否处于前台
-     * <p>当不是查看当前App，且SDK大于21时，
-     * 需添加权限 {@code <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>}</p>
-     *
-     * @param packageName
-     *         包名
-     * @return {@code true}: 是<br>{@code false}: 否
+     * 方法描述：判断某一应用是否正在运行
+     * Created by cafeting on 2017/2/4.
+     * @param packageName 应用的包名
+     * @return true 表示正在运行，false 表示没有运行
      */
-    public static boolean isAppForeground(final String packageName){
+    public static boolean isAppRunning(String packageName) {
+        ActivityManager am = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
+        if (list.size() <= 0) {
+            return false;
+        }
+        for (ActivityManager.RunningTaskInfo info : list) {
+            if (info.baseActivity.getPackageName().equals(packageName)) {
+                return true;
+            }
+        }
         return false;
     }
 
+    /**
+     * 判断是否安装apk
+     * 获取已安装应用的 uid，-1 表示未安装此应用或程序异常
+     * @param packageName
+     * @return
+     */
+    public static int getPackageUid(String packageName) {
+        try {
+            ApplicationInfo applicationInfo = getContext().getPackageManager().getApplicationInfo(packageName, 0);
+            if (applicationInfo != null) {
+                Logger.d(applicationInfo.uid);
+                return applicationInfo.uid;
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+        return -1;
+    }
+
+    /**
+     * 判断某一 uid 的程序是否有正在运行的进程，即是否存活
+     *
+     * @param uid 已安装应用的 uid
+     * @return true 表示正在运行，false 表示没有运行
+     */
+    public static boolean isProcessRunning(int uid) {
+        ActivityManager am = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> runningServiceInfos = am.getRunningServices(200);
+        if (runningServiceInfos.size() > 0) {
+            for (ActivityManager.RunningServiceInfo appProcess : runningServiceInfos){
+                if (uid == appProcess.uid) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static String getProcessName(int pid) {
         ActivityManager am = (ActivityManager) LibApp.getContext().getSystemService(Context.ACTIVITY_SERVICE);
@@ -479,6 +548,10 @@ public class PackageHelper {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String getPackageName() {
+        return LibApp.getContext().getPackageName();
     }
 
     //todo   动态还appicon  http://blog.csdn.net/eclipsexys/article/details/53791818

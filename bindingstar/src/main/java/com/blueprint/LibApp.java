@@ -31,12 +31,15 @@ import android.widget.TextView;
 import com.blueprint.crash.CrashWrapper;
 import com.blueprint.helper.CheckHelper;
 import com.blueprint.helper.LogHelper;
+import com.blueprint.helper.PackageHelper;
 import com.blueprint.helper.SpHelper;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static com.blueprint.helper.ToastHelper.toastLongSafeDebug;
@@ -44,87 +47,109 @@ import static com.blueprint.helper.ToastHelper.toastLongSafeDebug;
 public class LibApp {
 
     private static final String TAG = LibApp.class.getSimpleName();
-    @SuppressLint("StaticFieldLeak") protected static Activity sCurrentActivity;
-    @SuppressLint("StaticFieldLeak") protected static Context sContext;
+    @SuppressLint("StaticFieldLeak")
+    protected static Activity sCurrentActivity;
+    @SuppressLint("StaticFieldLeak")
+    protected static Context sContext;
     private static boolean sInDebug;
+    private static boolean sNeedLeackCanary = true;
     private static String sBaseUrl = "http://gank.io/api/data/";
     protected static Activity sMainActivity;
     //需要可调
     public static boolean JELLYLIST = false;
     private static LibApplicationStateCallbacks sCallbacks;
-
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(2000);
 
     //todo 权衡下看看是否需要添加 https://www.jianshu.com/p/006fb4fb0f0c
     public static CrashWrapper takeCare(Application context, final boolean inDebug) {
         sContext = context.getApplicationContext();
         sInDebug = inDebug;
         JELLYLIST = (boolean) new SpHelper("libConfig").get("JELLYLIST", false);
+
+//        if (LeakCanary.isInAnalyzerProcess(context)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//              return this;
+//        }
+        if (sNeedLeackCanary)
+            LeakCanary.install(context);
+
         context.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override public void onActivityCreated(Activity activity, Bundle bundle) {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle bundle) {
                 sCurrentActivity = activity;
-                if(sCallbacks != null) {
-                    sCallbacks.onActivityCreated(activity,bundle);
+                if (sCallbacks != null) {
+                    sCallbacks.onActivityCreated(activity, bundle);
                 }
             }
 
 
-            @Override public void onActivityStarted(Activity activity) {
+            @Override
+            public void onActivityStarted(Activity activity) {
                 sCurrentActivity = activity;
-                if(sCallbacks != null) {
+                if (sCallbacks != null) {
                     sCallbacks.onActivityStarted(activity);
                 }
             }
 
 
-            @Override public void onActivityResumed(Activity activity) {
+            @Override
+            public void onActivityResumed(Activity activity) {
                 sCurrentActivity = activity;
-                if(sCallbacks != null) {
+                if (sCallbacks != null) {
                     sCallbacks.onActivityResumed(activity);
                 }
             }
 
 
-            @Override public void onActivityPaused(Activity activity) {
-                if(sCallbacks != null) {
+            @Override
+            public void onActivityPaused(Activity activity) {
+                if (sCallbacks != null) {
                     sCallbacks.onActivityPaused(activity);
                 }
             }
 
 
-            @Override public void onActivityStopped(Activity activity) {
-                if(sCallbacks != null) {
+            @Override
+            public void onActivityStopped(Activity activity) {
+                if (sCallbacks != null) {
                     sCallbacks.onActivityStopped(activity);
                 }
             }
 
 
-            @Override public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-                if(sCallbacks != null) {
-                    sCallbacks.onActivitySaveInstanceState(activity,bundle);
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+                if (sCallbacks != null) {
+                    sCallbacks.onActivitySaveInstanceState(activity, bundle);
                 }
             }
 
 
-            @Override public void onActivityDestroyed(Activity activity) {
+            @Override
+            public void onActivityDestroyed(Activity activity) {
                 sCurrentActivity = sMainActivity;
             }
         });
         context.registerComponentCallbacks(new ComponentCallbacks2() {
-            @Override public void onConfigurationChanged(Configuration newConfig) {
-                if(sCallbacks != null) {
+            @Override
+            public void onConfigurationChanged(Configuration newConfig) {
+                if (sCallbacks != null) {
                     sCallbacks.onConfigurationChanged(newConfig);
                 }
             }
 
 
-            @Override public void onLowMemory() {
-                if(sCallbacks != null) {
+            @Override
+            public void onLowMemory() {
+                if (sCallbacks != null) {
                     sCallbacks.onLowMemory();
                 }
             }
 
 
-            @Override public void onTrimMemory(int level) {
+            @Override
+            public void onTrimMemory(int level) {
                 //https://user-gold-cdn.xitu.io/2018/1/9/160d86decf686a79?imageView2/0/w/1280/h/960/format/webp/ignore-error/1
                 //                TRIM_MEMORY_RUNNING_MODERATE
                 //                你的应用正在运行，并且不会被杀死，但设备已经处于低内存状态，并且开始杀死LRU缓存里的内存。
@@ -142,10 +167,10 @@ public class LibApp {
                 //                系统运行在低内存状态，如果系统没有恢复内存，你的进程是首先被杀死的进程之一。你应该释放所有不重要的资源来恢复你的app状态。
                 //                因为onTrimMemory()是在API 14里添加的，你可以在老版本里使用onLowMemory()回调，大致跟TRIM_MEMORY_COMPLETE事件相同。
                 //                提示：当系统开始杀死LRU缓存里的进程时，尽管它主要从下往上工作，它同时也考虑了哪些进程消耗更多的内存，如果杀死它们，系统会得到更多的可用内存。所以，在LRU整个列表中，你消耗越少的内存，留在列表里的机会就更大。
-                if(level < TRIM_MEMORY_UI_HIDDEN) {
+                if (level < TRIM_MEMORY_UI_HIDDEN) {
                     LibApp.onLowMemory();
                 }
-                if(sCallbacks != null) {
+                if (sCallbacks != null) {
                     sCallbacks.onLowMemory();
                 }
             }
@@ -157,7 +182,8 @@ public class LibApp {
         //            builder.detectFileUriExposure();
         //        }
         Logger.addLogAdapter(new AndroidLogAdapter() {
-            @Override public boolean isLoggable(int priority, String tag) {
+            @Override
+            public boolean isLoggable(int priority, String tag) {
                 return inDebug;
             }
         });
@@ -187,7 +213,7 @@ public class LibApp {
     public static File getCacheDir() {
         checkContext();
         File externalCacheDir = sContext.getExternalCacheDir();
-        if(externalCacheDir == null) {
+        if (externalCacheDir == null) {
             externalCacheDir = sContext.getCacheDir();
         }
         return externalCacheDir;
@@ -197,22 +223,15 @@ public class LibApp {
     public static File getAppFileDir(String type) {
         checkContext();
         File externalCacheDir = sContext.getExternalFilesDir(type);
-        if(externalCacheDir == null) {
+        if (externalCacheDir == null) {
 
             externalCacheDir = Environment.getExternalStorageDirectory();
         }
         return externalCacheDir;
     }
 
-
-    public static String getPackageName() {
-        checkContext();
-        return sContext.getPackageName();
-    }
-
-
     private static void checkContext() {
-        if(sContext == null) {
+        if (sContext == null) {
             Log.e(TAG, "需要先调用 takeCare 初始化context");
             throw new RuntimeException("必须 先调用 takeCare 初始化context");
         }
@@ -236,19 +255,25 @@ public class LibApp {
     }
 
 
-    /** 获取资源 */
+    /**
+     * 获取资源
+     */
     public static Resources findResources() {
         return sContext.getResources();
     }
 
 
-    /** 获取文字 */
+    /**
+     * 获取文字
+     */
     public static String findString(int resId) {
         return findResources().getString(resId);
     }
 
 
-    /** 获取文字 占位符 */
+    /**
+     * 获取文字 占位符
+     */
     public static String findString(int resId, Object... formatArgs) {
         return findResources().getString(resId, formatArgs);
     }
@@ -259,60 +284,74 @@ public class LibApp {
     }
 
 
-    /** 获取文字数组 */
+    /**
+     * 获取文字数组
+     */
     public static String[] findStringArray(int resId) {
         return findResources().getStringArray(resId);
     }
 
 
-    /** 获取dimen */
+    /**
+     * 获取dimen
+     */
     public static int findDimens(int resId) {
         return findResources().getDimensionPixelSize(resId);
     }
 
 
-    /** 获取drawable */
+    /**
+     * 获取drawable
+     */
     public static Drawable findDrawable(int resId) {
         return ContextCompat.getDrawable(sContext, resId);
     }
 
 
-    /** 获取颜色 */
+    /**
+     * 获取颜色
+     */
     public static int findColor(int resId) {
         return ContextCompat.getColor(sContext, resId);
     }
 
 
-    /** 获取颜色 */
+    /**
+     * 获取颜色
+     */
     public static boolean findBoolen(int resId) {
         return sContext.getResources().getBoolean(resId);
     }
 
 
-    /** 获取颜色 */
+    /**
+     * 获取颜色
+     */
     public static int findColor(Context context, int resId) {
         return ContextCompat.getColor(context, resId);
     }
 
 
-    /** 获取颜色状态器 */
+    /**
+     * 获取颜色状态器
+     */
     public static ColorStateList findColorStateList(int resId) {
         return ContextCompat.getColorStateList(sContext, resId);
     }
 
 
     public static void setTextView(View rootView, int id, CharSequence charSequence) {
-        if(!TextUtils.isEmpty(charSequence)) {
+        if (!TextUtils.isEmpty(charSequence)) {
             ((TextView) rootView.findViewById(id)).setText(charSequence);
         }
     }
 
 
     public static void setTextContent(TextView tv, Object contentObject) {
-        if(CheckHelper.checkObjects(tv, contentObject)) {
-            if(contentObject instanceof Integer) {
+        if (CheckHelper.safeObjects(tv, contentObject)) {
+            if (contentObject instanceof Integer) {
                 tv.setText(((Integer) contentObject));
-            } else if(contentObject instanceof CharSequence) {
+            } else if (contentObject instanceof CharSequence) {
                 tv.setText((CharSequence) contentObject);
             }
         }
@@ -320,14 +359,14 @@ public class LibApp {
 
 
     public static void setTextView(TextView tv, CharSequence charSequence) {
-        if(tv != null && !TextUtils.isEmpty(charSequence)) {
+        if (tv != null && !TextUtils.isEmpty(charSequence)) {
             tv.setText(charSequence);
         }
     }
 
 
     public static void setImageSrc(ImageView iv, Drawable drawable) {
-        if(iv != null && drawable != null) {
+        if (iv != null && drawable != null) {
             iv.setImageDrawable(drawable);
         }
     }
@@ -347,6 +386,10 @@ public class LibApp {
         sInDebug = inDebug;
     }
 
+    public static void setNeedLeackCanary(boolean needLeackCanary) {
+        sNeedLeackCanary = needLeackCanary;
+    }
+
 
     public static boolean isInDebug() {
         return sInDebug;
@@ -359,9 +402,9 @@ public class LibApp {
     public static boolean isApplicationInBackground() {
         ActivityManager am = (ActivityManager) sContext.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskList = am.getRunningTasks(1);
-        if(taskList != null && !taskList.isEmpty()) {
+        if (taskList != null && !taskList.isEmpty()) {
             ComponentName topActivity = taskList.get(0).topActivity;
-            if(topActivity != null && !topActivity.getPackageName().equals(sContext.getPackageName())) {
+            if (topActivity != null && !topActivity.getPackageName().equals(sContext.getPackageName())) {
                 return true;
             }
         }
@@ -379,7 +422,7 @@ public class LibApp {
         PackageManager packageManager = LibApp.getContext().getPackageManager();
         String channel = "debug";
         try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(LibApp.getPackageName(), GET_META_DATA);
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(PackageHelper.getPackageName(), GET_META_DATA);
             channel = applicationInfo.metaData.getString(key);
         } catch (PackageManager.NameNotFoundException e) {
             LogHelper.slog_e("getChannel", Log.getStackTraceString(e));
@@ -393,22 +436,26 @@ public class LibApp {
     }
 
 
-    @Nullable public static Activity getCurrentActivity() {
+    @Nullable
+    public static Activity getCurrentActivity() {
         return sCurrentActivity;
     }
 
 
-    @Nullable public static void setMainActivity(Activity mainActivity) {
+    @Nullable
+    public static void setMainActivity(Activity mainActivity) {
         sMainActivity = mainActivity;
     }
 
 
-    @Nullable public static void releaseMainActivity() {
+    @Nullable
+    public static void releaseMainActivity() {
         sMainActivity = null;
     }
 
 
-    @Nullable public static void setCurrentActivity(Activity currentActivity) {
+    @Nullable
+    public static void setCurrentActivity(Activity currentActivity) {
         sCurrentActivity = currentActivity;
     }
 
@@ -424,7 +471,7 @@ public class LibApp {
     public static Activity getAct4View(View view) {
         Context context = view.getContext();
         while (context instanceof ContextWrapper) {
-            if(context instanceof Activity) {
+            if (context instanceof Activity) {
                 return (Activity) context;
             }
             context = ((ContextWrapper) context).getBaseContext();
@@ -432,15 +479,34 @@ public class LibApp {
         return sMainActivity;
     }
 
-    public static void startAct4View(View view,Intent intent) {
+    public static void startAct4View(View view, Intent intent) {
         Activity act4View = getAct4View(view);
-        if(act4View != null) {
+        if (act4View != null) {
             act4View.startActivity(intent);
         }
     }
 
+    /**
+     * 生成 ViewId
+     *
+     * @return
+     */
+    public static int generateViewId() {
+        for (; ; ) {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF) {
+                newValue = 1; // Roll over to 1, not 0.
+            }
+            if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                return result;
+            }
+        }
+    }
+
     public static void toLaunch() {
-        if(sMainActivity != null) {
+        if (sMainActivity != null) {
             Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
             launcherIntent.addCategory(Intent.CATEGORY_HOME);
             sMainActivity.startActivity(launcherIntent);
@@ -459,39 +525,57 @@ public class LibApp {
 
 
     public static void onLowMemory() {
-        if(sMainActivity != null) {
+        if (sMainActivity != null) {
             //可见但内存不足
             sMainActivity.onLowMemory();
             toastLongSafeDebug("处于低内存环境onTrimMemory");
         }
     }
 
+    public static boolean isMainProcess(Context context) {
+        int myPid = android.os.Process.myPid();
+        String processName = PackageHelper.getProcessName(myPid);
+        if (processName != null) {
+            return context.getPackageName().equals(processName);
+        }
+        return false;
+    }
 
     public static class LibApplicationStateCallbacks {
-        void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+        void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        }
 
 
-        void onActivityStarted(Activity activity) {}
+        void onActivityStarted(Activity activity) {
+        }
 
 
-        void onActivityResumed(Activity activity) {}
+        void onActivityResumed(Activity activity) {
+        }
 
 
-        void onActivityPaused(Activity activity) {}
+        void onActivityPaused(Activity activity) {
+        }
 
 
-        void onActivityStopped(Activity activity) {}
+        void onActivityStopped(Activity activity) {
+        }
 
 
-        void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+        void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        }
 
 
-        void onActivityDestroyed(Activity activity) {}
+        void onActivityDestroyed(Activity activity) {
+        }
 
-        void onConfigurationChanged(Configuration newConfig){}
+        void onConfigurationChanged(Configuration newConfig) {
+        }
 
-        void onLowMemory(){}
+        void onLowMemory() {
+        }
 
-        void onTrimMemory(int level){}
+        void onTrimMemory(int level) {
+        }
     }
 }

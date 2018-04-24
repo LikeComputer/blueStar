@@ -7,14 +7,18 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blueprint.Consistent;
 import com.blueprint.LibApp;
 
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 import static com.blueprint.Consistent.DEFAULTSTR;
+import static com.blueprint.helper.PackageHelper.getPackageName;
 
 public class CheckHelper {
 
@@ -28,6 +32,7 @@ public class CheckHelper {
     private static final int NUM_0 = '0';
 
     private static final int ID_LENGTH = 17;
+    private static long sLastClickTime;
 
     public static boolean verifyId18(String idNo) {
         if (idNo == null || idNo.isEmpty()) {
@@ -57,113 +62,19 @@ public class CheckHelper {
         return Character.toUpperCase(verifyCode) == CHECK_CODE_LIST[residue];
     }
 
+
     /**
      * 检查对象是否相同/都不为空
      *
      * @return true 安全的对象 都不为空
      */
-    public static boolean isEqual(Object object1, Object object2){
-        if(checkObjects(object1, object2)) {
-            if(object2.equals(object1)) {
+    public static boolean isEqual(Object object1, Object object2) {
+        if (safeObjects(object1, object2)) {
+            if (object2.equals(object1)) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * @param strs
-     * @return true 所有字符串都有效
-     */
-    public static boolean checkStrings(CharSequence... strs){
-        for(CharSequence str : strs) {
-            if(TextUtils.isEmpty(str)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @param strs
-     * @return true 所有字符串都有效
-     */
-    public static boolean checkObjectStr(Object... strs){
-        if(strs != null) {
-            for(Object str : strs) {
-                if(str == null || TextUtils.isEmpty(str.toString())) {
-                    return false;
-                }
-            }
-        }else {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 检查对象是否为空
-     *
-     * @return true 安全的对象 都不为空
-     */
-    public static boolean checkObjects(Object... objects){
-        for(Object object : objects) {
-            if(object == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 注意传过来的对象 是不相关的not like{p,p.friend}
-     *
-     * @param arrays
-     * @param <T>
-     * @return
-     */
-    public static <T> boolean checkArrays(T[]... arrays){
-        if(arrays != null) {
-            for(Object[] array : arrays) {
-                if(array == null || array.length == 0) {
-                    return false;
-                }
-            }
-        }else {
-            return false;
-        }
-        return true;
-    }
-
-    public static <T> T checkNotNull(T o){
-        return checkNotNull(o, "CheckHelper");
-    }
-
-    public static <T> T checkNotNull(T o, String warm){
-        if(o == null) {
-            throw new NullPointerException(warm);
-        }
-        return o;
-    }
-
-    /**
-     * 校验对象是否为空 为空抛异常
-     */
-    public static void verifyObjects(Object... objects){
-        for(Object object : objects) {
-            if(object == null) {
-                throw new NullPointerException("CheckHelper");
-            }
-        }
-    }
-
-
-    public static Object safeObject(Object o){
-        if(o == null) {
-            return "";
-        }else {
-            return o;
-        }
     }
 
 
@@ -172,9 +83,21 @@ public class CheckHelper {
      *
      * @return true 安全的Collection 都不为空
      */
-    public static boolean checkLists(Collection... lists){
-        for(Collection list : lists) {
-            if(list == null || list.size()<=0) {
+    public static boolean safeLists(Collection... lists) {
+        for (Collection list : lists) {
+            if (list == null || list.size() <= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return true 所有字符串都有效
+     */
+    public static boolean safeStrings(CharSequence... strs) {
+        for (CharSequence str : strs) {
+            if (TextUtils.isEmpty(str)) {
                 return false;
             }
         }
@@ -183,25 +106,113 @@ public class CheckHelper {
 
 
     /**
+     * @return true 所有字符串都有效
+     */
+    public static boolean safeObjectStr(Object... strs) {
+        if (strs != null) {
+            for (Object str : strs) {
+                if (str == null || TextUtils.isEmpty(str.toString())) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 检查对象是否为空
+     *
+     * @return true 安全的对象 都不为空
+     */
+    public static boolean safeObjects(Object... objects) {
+        for (Object object : objects) {
+            if (object == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * 注意传过来的对象 是不相关的not like{p,p.friend}
+     */
+    public static <T> boolean safeArrays(T[]... arrays) {
+        if (arrays != null) {
+            for (Object[] array : arrays) {
+                if (array == null || array.length == 0) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+
+    public static <T> T checkNotNull(T o) {
+        return checkNotNull(o, "CheckHelper");
+    }
+
+
+    public static <T> T checkNotNull(T o, String warm) {
+        if (o == null) {
+            throw new NullPointerException(warm);
+        }
+        return o;
+    }
+
+    public static Object safeObject(Object o) {
+        if (o == null) {
+            return "";
+        } else {
+            return o;
+        }
+    }
+
+    /**
      * 返回 安全的字符串
      *
      * @return 为空则返回“”
      */
-    public static String safeString(Object str){
-        if(str != null) {
+    public static String safeString(Object str) {
+        if (str != null) {
             return str.toString().trim();
-        }else {
+        } else {
             return DEFAULTSTR;
         }
     }
 
-    public static boolean viewTagBoolean(View view, int viewTag){
-        if(view.getTag(viewTag) != null && view.getTag(viewTag) instanceof Boolean) {
-            return (boolean)view.getTag(viewTag);
-        }else {
+
+    public static boolean viewTagBoolean(View view, int viewTag) {
+        if (view.getTag(viewTag) != null && view.getTag(viewTag) instanceof Boolean) {
+            return (boolean) view.getTag(viewTag);
+        } else {
             return false;
         }
     }
+
+
+    public static Long viewTagLong(View view, int viewTag) {
+        if (view.getTag(viewTag) != null && view.getTag(viewTag) instanceof Long) {
+            return (Long) view.getTag(viewTag);
+        } else {
+            return 0L;
+        }
+    }
+
+    public static int viewTagInt(View view, int viewTag) {
+        if (view.getTag(viewTag) != null && view.getTag(viewTag) instanceof Integer) {
+            return (int) view.getTag(viewTag);
+        } else {
+            return 0;
+        }
+    }
+
 
     /**
      * 到底有没有某项权限，怎么检测呢，基于以往 Android 在这方面的不精细，
@@ -213,16 +224,14 @@ public class CheckHelper {
      * <p>AppOpsManager.MODE_IGNORED "被禁止了</p>
      * <p>AppOpsManager.MODE_ERRORED 出错了</p>
      * </li>
-     *
-     * @param permission
      */
-    public static int checkPermission(final Activity activity, String permission){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
-            AppOpsManager appOpsManager = (AppOpsManager)LibApp.getContext().getSystemService(Context.APP_OPS_SERVICE);
-            int checkResult = appOpsManager.checkOpNoThrow(permission, Binder.getCallingUid(), LibApp.getPackageName());
-            if(checkResult == AppOpsManager.MODE_ALLOWED) {
+    public static int checkPermission(final Activity activity, String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AppOpsManager appOpsManager = (AppOpsManager) LibApp.getContext().getSystemService(Context.APP_OPS_SERVICE);
+            int checkResult = appOpsManager.checkOpNoThrow(permission, Binder.getCallingUid(), getPackageName());
+            if (checkResult == AppOpsManager.MODE_ALLOWED) {
                 LogHelper.Log_d("有权限");
-            }else if(checkResult == AppOpsManager.MODE_IGNORED) {
+            } else if (checkResult == AppOpsManager.MODE_IGNORED) {
                 // TODO: 只需要依此方法判断退出就可以了，这时是没有权限的。
                 LogHelper.Log_d("权限被禁止了");
                 //                new AlertDialog.Builder(activity).setTitle("权限")
@@ -238,9 +247,9 @@ public class CheckHelper {
                 //                                dialog.dismiss();
                 //                            }
                 //                        }).create().show();
-            }else if(checkResult == AppOpsManager.MODE_ERRORED) {
+            } else if (checkResult == AppOpsManager.MODE_ERRORED) {
                 LogHelper.Log_d("出错了");
-            }else if(checkResult == 4) {
+            } else if (checkResult == 4) {
                 LogHelper.Log_d("权限需要询问");
             }
             return checkResult;
@@ -248,17 +257,15 @@ public class CheckHelper {
         return AppOpsManager.MODE_ALLOWED;
     }
 
+
     /**
      * 判断是否包含
      * <p>( window.getDecorView().getSystemUiVisibility()&View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN ) == View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;</p>
-     *
-     * @param orin
-     * @param flag
-     * @return
      */
-    public static boolean checkHasFlag(int orin, int flag){
-        return ( orin&flag ) == flag;
+    public static boolean checkHasFlag(int orin, int flag) {
+        return (orin & flag) == flag;
     }
+
 
     /**
      * 判断App是否是Debug版本
@@ -274,6 +281,84 @@ public class CheckHelper {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+    /**
+     * 防抖处理
+     *
+     * @param interval 毫秒
+     * @return 在间隔interval时间 返回false
+     */
+    public static boolean throttleFirst(int interval) {
+        long currentClickTime = System.nanoTime();
+        if (TimeUnit.NANOSECONDS.toMillis(currentClickTime - sLastClickTime) > interval) {
+            sLastClickTime = currentClickTime;
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 防抖处理
+     * 类似throttleFirst
+     *
+     * @param interval 毫秒
+     * @return 在间隔interval时间 返回false
+     */
+    public static boolean throttleFirst(@NonNull View view, int interval) {
+        Object tag = view.getTag(Consistent.ViewTag.click_time);
+        long lastClickTime = 0;
+        if (tag != null) {
+            lastClickTime = (long) tag;
+        }
+        long currentClickTime = System.nanoTime();
+        if (TimeUnit.NANOSECONDS.toMillis(currentClickTime - lastClickTime) > interval) {
+            view.setTag(Consistent.ViewTag.click_time, currentClickTime);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 连续防抖处理
+     * 连续点击无数次(interv) 只返回一次true
+     *
+     * @param interval 毫秒
+     * @return 在间隔interval时间 返回false
+     */
+    public static boolean throttleFirstContinuous(int interval) {
+        long currentClickTime = System.nanoTime();
+        if (TimeUnit.NANOSECONDS.toMillis(currentClickTime - sLastClickTime) > interval) {
+            sLastClickTime = currentClickTime;
+            return true;
+        }
+        sLastClickTime = currentClickTime;
+        return false;
+    }
+
+
+    /**
+     * 连续防抖处理
+     * 连续点击无数次(interv) 只返回一次true
+     *
+     * @param interval 毫秒
+     * @return 在间隔interval时间 返回false
+     */
+    public static boolean throttleFirstContinuous(@NonNull View view, int interval) {
+        Object tag = view.getTag(Consistent.ViewTag.click_time);
+        long lastClickTime = 0;
+        if (tag != null) {
+            lastClickTime = (long) tag;
+        }
+        long currentClickTime = System.nanoTime();
+        view.setTag(Consistent.ViewTag.click_time, currentClickTime);
+        if (TimeUnit.NANOSECONDS.toMillis(currentClickTime - lastClickTime) > interval) {
+            return true;
+        }
+        return false;
     }
 }
 

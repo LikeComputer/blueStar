@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="welfareModel"
+            type="com.yun.juimodel.ui.home.m.Home.WelfareBean"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="260dp"
+        android:background="@drawable/home_round_conor_bg"
+        android:layout_marginRight="@dimen/normal_16dp"
+        android:onClick="@{welfareModel::showDetail}"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/home_item_welfare_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toRightOf="@+id/home_item_hotrecom_pic"
+            android:layout_marginLeft="@dimen/spacing_11"
+            android:textSize="@dimen/spacing_15"
+            android:textColor="@color/black_2e33"
+            android:text="@{welfareModel.title}"
+            tools:text="名字"/>
+
+        <TextView
+            android:id="@+id/home_item_welfare_gamename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_8b8b"
+            android:textSize="@dimen/spacing_13"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toLeftOf="@+id/home_item_welfare_title"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_pic"
+            android:text="@{welfareModel.name}"
+            tools:text="游戏名字"/>
+
+        <TextView
+            android:id="@+id/home_item_welfare_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/spacing_13"
+            android:textColor="@color/gray_8b8b"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toLeftOf="@+id/home_item_welfare_title"
+            android:text="@{welfareModel.detail}"
+            tools:text="@string/home_item_welfare_detail"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            bind:layout_constraintTop_toTopOf="parent"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            android:layout_margin="@dimen/spacing_11"
+            android:id="@+id/home_item_hotrecom_pic"
+            android:layout_width="60dp"
+            bind:loadRoundImageUrl="@{welfareModel.icon}"
+            bind:round="@{@dimen/spacing_8}"
+            android:layout_height="60dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_pic"
+            android:layout_marginTop="@dimen/spacing_11"
+            android:background="@drawable/home_bottom_round_conor_bg"
+            android:text="@string/home_item_welfare_toget"
+            android:textColor="@color/j_white"
+            android:layout_height="27dp"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

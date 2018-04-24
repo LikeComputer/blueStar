@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.Contacts;
@@ -22,8 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS;
 import static com.blueprint.LibApp.getContext;
+import static com.blueprint.helper.PackageHelper.getPackageName;
 
 public class IntentHelper {
 
@@ -50,7 +53,7 @@ public class IntentHelper {
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, title);
         intent.putExtra(Intent.EXTRA_TEXT, extraText);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(Intent.createChooser(intent, title));
     }
 
@@ -89,13 +92,28 @@ public class IntentHelper {
         }
         //判断 改intent跳转的目标是否存在
         if(toIntent.resolveActivityInfo(getContext().getPackageManager(), 0) != null) {
-            toIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            toIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         }
         List<ResolveInfo> resolveInfos = getContext().getPackageManager().queryIntentActivities(toIntent, 0);
         if(resolveInfos.size()>0) {
             getContext().startActivity(toIntent);
         }
         return resolveInfos.size()>0;
+    }
+
+    /**
+     * 意图跳转
+     * <p>先判断 intent是否能正常跳转
+     */
+    public static boolean safeStartIntent2(Activity activity,Intent toIntent){
+        if(toIntent == null) {
+            return false;
+        }
+        boolean intentAvailable = isIntentAvailable(toIntent);
+        if(intentAvailable) {
+            activity.startActivity(toIntent);
+        }
+        return intentAvailable;
     }
 
 
@@ -126,6 +144,41 @@ public class IntentHelper {
         safeStartIntent(intent);
     }
 
+    public static void launchApp4pagname(String package_name){
+        PackageManager packageManager = LibApp.getContext().getPackageManager();
+        Intent itent = packageManager.getLaunchIntentForPackage(package_name);
+        if(itent != null) {
+            itent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            LibApp.getContext().startActivity(itent);
+        }else {
+            //没有默认的入口 Activity
+        }
+    }
+
+    public static boolean isIntentAvailable(Intent intent){
+        PackageManager packageManager = LibApp.getContext().getPackageManager();
+        List list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size()>0;
+    }
+
+    /**
+     * 知道 App 的包名和 Activity 的全路径及其名称
+     * 需要启动的目标 Activity 在 AndroidManifest.xml 中的属性 Export=“true”
+     *
+     * @param package_name
+     * @param activity_path
+     */
+    public static void launchApp2Activity(String package_name, String activity_path){
+        Intent intent = new Intent();
+        ComponentName comp = new ComponentName(package_name, activity_path);
+        intent.setComponent(comp);
+        if(intent.resolveActivityInfo(LibApp.getContext().getPackageManager(), PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
+            LibApp.getContext().startActivity(intent);
+        }else {
+            //找不到指定的 Activity
+        }
+    }
 
     //4.打开浏览器:
     public static void openUrl(@NonNull String url){
@@ -163,11 +216,11 @@ public class IntentHelper {
      *
      * @param requestCode
      *         <pre>
-     *                           取出照片数据
-     *                          Bundle extras = intent.getExtras();
-     *                          Bitmap bitmap = (Bitmap) extras.get("data");
-     *                           安卓7以上返回 照片地址
-     *                           </pre>
+     *                                           取出照片数据
+     *                                          Bundle extras = intent.getExtras();
+     *                                          Bitmap bitmap = (Bitmap) extras.get("data");
+     *                                           安卓7以上返回 照片地址
+     *                                           </pre>
      */
     public static String takePicForResult(@NonNull Activity cx, int requestCode){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -276,8 +329,7 @@ public class IntentHelper {
      */
     public static void gotoMiuiPermission(Context ex){
         Intent i = new Intent("miui.intent.action.APP_PERM_EDITOR");
-        ComponentName componentName = new ComponentName("com.miui.securitycenter",
-                "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+        ComponentName componentName = new ComponentName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
         i.setComponent(componentName);
         i.putExtra("extra_pkgname", ex.getPackageName());
         try {
@@ -309,9 +361,8 @@ public class IntentHelper {
     public static void gotoHuaweiPermission(Context ex){
         try {
             Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ComponentName comp = new ComponentName("com.huawei.systemmanager",
-                    "com.huawei.permissionmanager.ui.MainActivity");//华为权限管理
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            ComponentName comp = new ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity");//华为权限管理
             intent.setComponent(comp);
             ex.startActivity(intent);
         }catch(Exception e) {
@@ -349,7 +400,7 @@ public class IntentHelper {
     }
 
     public static boolean restartApp(){
-        Intent intent = LibApp.getContext().getPackageManager().getLaunchIntentForPackage(LibApp.getPackageName());
+        Intent intent = LibApp.getContext().getPackageManager().getLaunchIntentForPackage(getPackageName());
         return safeStartIntent(intent);
     }
 
@@ -381,6 +432,7 @@ public class IntentHelper {
 
     /**
      * 无障碍设置界面
+     *
      * @param activity
      * @param path
      */

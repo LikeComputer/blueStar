@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="prewPic"
+            type="String"/>
+
+        <import type="com.yun.helper.Data2UIhelper"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        tools:src="@mipmap/ic_launcher"
+        bind:loadRoundImageUrl="@{prewPic}"
+        android:layout_marginRight="@dimen/normal_16dp"
+        bind:round="@{@dimen/spacing_8}"
+        android:onClick="@{(v)->Data2UIhelper.showPicDetail(v,prewPic)}"
+        android:layout_width="260dp"
+        android:layout_height="140dp"/>
+</layout>

@@ -32,6 +32,11 @@ public abstract class LoadMoreViewModel extends AbsLoadMoreViewModel<IRecvDataDi
         return this;
     }
 
+    @Override
+    protected void reset4Search(){
+        //do nullthing
+    }
+
     /**
      * {@link #subscribeData(Object)}保留 请求参数之后 会回掉
      * @param orignParam

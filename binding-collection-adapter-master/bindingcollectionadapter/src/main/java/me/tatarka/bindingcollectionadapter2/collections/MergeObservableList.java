@@ -300,17 +300,23 @@ public class MergeObservableList<T> extends JObservableList<T> implements JObser
     @Override
     public void onClear(JObservableList ts, int oldSize){
         modCount += 1;
-        int size = 0;
-        for(int i = 0, listsSize = lists.size(); i<listsSize; i++) {
-            List list = lists.get(i);
-            if(list == ts) {
-                LOG(TAG,size," =======清空数据了======= ");
-                for(JOnListChangedCallback listener : mListeners) {
-                    listener.onItemRangeRemoved(this, size, oldSize);
-                }
-                return;
+        if (oldSize<0){
+            for(JOnListChangedCallback listener : mListeners) {
+                listener.onClear(this, -1);
             }
-            size += list.size();
+        }else {
+            int size = 0;
+            for(int i = 0, listsSize = lists.size(); i<listsSize; i++) {
+                List list = lists.get(i);
+                if(list == ts) {
+                    LOG(TAG,size," =======清空数据了======= ");
+                    for(JOnListChangedCallback listener : mListeners) {
+                        listener.onItemRangeRemoved(this, size, oldSize);
+                    }
+                    return;
+                }
+                size += list.size();
+            }
         }
     }
 }

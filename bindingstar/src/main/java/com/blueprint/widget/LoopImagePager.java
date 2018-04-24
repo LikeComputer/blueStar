@@ -169,7 +169,7 @@ public class LoopImagePager extends RelativeLayout implements NestedScrollingChi
 
     public LoopImagePager setPagerData(List<String> pagerData){
         mPagerData = pagerData;
-        if(!CheckHelper.checkLists(pagerData)) {
+        if(!CheckHelper.safeLists(pagerData)) {
             LogHelper.Log_e("LoopImagePager,setPagerData:pagerData null");
             setVisibility(GONE);
         }

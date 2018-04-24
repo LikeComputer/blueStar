@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="gameRecom"
+            type="com.yun.juimodel.ui.home.m.Home.GameRecommendBean"/>
+    </data>
+
+    <!--android:background="@drawable/home_round_conor_bg"-->
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/normal_16dp"
+        android:onClick="@{gameRecom::showDetail}"
+        android:layout_height="wrap_content">
+
+        <TextView
+            tools:text="name"
+            android:id="@+id/home_item_gamrecom_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/normal_16dp"
+            android:paddingRight="@dimen/normal_16dp"
+            android:paddingLeft="@dimen/normal_16dp"
+            android:textSize="@dimen/spacing_15"
+            android:textColor="@color/black_2e33"
+            android:text="@{gameRecom.name}"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/home_item_hotrecom_pic"
+            bind:pressedStateOverlayImage="@color/common_state_press"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintLeft_toLeftOf="parent"
+            bind:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            android:layout_marginRight="@dimen/normal_16dp"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_gamrecom_tag"
+            android:layout_width="match_parent"
+            bind:loadRoundImageUrl="@{gameRecom.pic}"
+            bind:round="@{@dimen/spacing_8}"
+            android:layout_height="119dp"/>
+
+        <TextView
+            tools:text="@string/home_item_hotmap_score"
+            android:text="@{gameRecom.ZScore}"
+            bind:layout_constraintRight_toRightOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintTop_toTopOf="@+id/home_item_hotrecom_pic"
+            style="@style/game_detail_zscore"/>
+
+        <TextView
+            tools:text="desc"
+            android:layout_width="0dp"
+            bind:layout_constraintBottom_toBottomOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintRight_toRightOf="@+id/home_item_hotrecom_pic"
+            bind:layout_constraintLeft_toLeftOf="@+id/home_item_hotrecom_pic"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="@dimen/spacing_12"
+            android:textColor="@color/j_white"
+            android:text="@{gameRecom.describe}"
+            android:padding="@dimen/spacing_8"
+            android:background="@drawable/bg_gradient_black_botton_round8"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divide_line"
+            android:layout_marginTop="@dimen/normal_16dp"
+            bind:layout_constraintTop_toBottomOf="@+id/home_item_hotrecom_pic"
+            android:background="@color/divide_line_color"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

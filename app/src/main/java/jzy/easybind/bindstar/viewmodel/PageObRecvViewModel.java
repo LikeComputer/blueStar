@@ -73,7 +73,8 @@ public class PageObRecvViewModel extends LoadMoreObjectViewModel {
     private JObservableList<Object> refreshList = new JObservableList<>();
 
     public void deleItem(ItemViewModel o){
-        getDataLists().remove(o);
+        getDataLists().change(0, new ItemViewModel("新增数据"), 0);
+//        getDataLists().remove(o);
     }
 
     public PageObRecvViewModel(){
@@ -88,15 +89,16 @@ public class PageObRecvViewModel extends LoadMoreObjectViewModel {
 
 
     public void removeItem(){
-        if(getDataLists().size() == 11) {
-            getDataLists().clear();
-        }else if(getDataLists().size() == 12) {
-            getDataLists().clear();
-            getDataLists().add(new ItemViewModel("新增数据 1"));
-            getDataLists().add(new ItemRecvViewModel());
-            getDataLists().add(new ItemViewModel("新增数据 2"));
-        }else if(getDataLists().size()>1) {
-            getDataLists().remove(getDataLists().size()-1);
-        }
+        getDataLists().change(0, new ItemViewModel("新增数据"), 0);
+//        if(getDataLists().size() == 11) {
+//            getDataLists().clear();
+//        }else if(getDataLists().size() == 12) {
+//            getDataLists().clear();
+//            getDataLists().add(new ItemViewModel("新增数据 1"));
+//            getDataLists().add(new ItemRecvViewModel());
+//            getDataLists().add(new ItemViewModel("新增数据 2"));
+//        }else if(getDataLists().size()>1) {
+//            getDataLists().remove(getDataLists().size()-1);
+//        }
     }
 }

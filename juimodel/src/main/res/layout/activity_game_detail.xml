@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="gameDetailViewModel"
+            type="com.yun.juimodel.ui.home.vm.gamedetail.GameDetailViewModel"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <jonas.jlayout.MultiStateLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        bind:layoutChange="@{gameDetailViewModel}"
+        bind:onRetryListener="@{gameDetailViewModel}"
+        bind:showState="@{gameDetailViewModel.pageState}">
+        <!--<jzy.easybindpagelist.ScrollChildSwipeRefreshLayout-->
+        <!--android:id="@+id/jswipe_refrl"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--bind:onRefresh2="@{gameDetailViewModel}"-->
+        <!--bind:enableRefresh="@{gameDetailViewModel.enableSwipeRefresh}"-->
+        <!--bind:layoutChange="@{gameDetailViewModel}">-->
+        <com.yun.widget.VideoCoordinatorLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:shadowColor="@android:color/transparent"
+            android:layout_above="@+id/game_detail_action"
+            bind:elevation="0dp"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:shadowColor="@android:color/transparent"
+                bind:elevation="0dp"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    bind:contentScrim="?attr/colorPrimary"
+                    bind:expandedTitleMarginEnd="64dp"
+                    bind:expandedTitleMarginStart="48dp"
+                    bind:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/backdrop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/ic_launcher"
+                        android:fitsSystemWindows="true"
+                        android:transitionName="gamePoster"
+                        android:scaleType="fitXY"
+                        loadImageUrl="@{gameDetailViewModel.gameInfo.link}"
+                        bind:layout_collapseMode="parallax"/>
+
+                    <com.blueprint.widget.JToolbar
+                        android:id="@+id/jbase_toolbar"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:shadowColor="@color/divide_line_color"
+                        android:layout_height="?actionBarSize"
+                        bind:layout_collapseMode="pin"
+                        bind:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+                <View
+                    android:id="@+id/title_diviceline"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"/>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/normal_16dp"
+                    android:layout_height="match_parent">
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/home_game_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        bind:loadRoundImageUrl="@{gameDetailViewModel.gameInfo.icon}"
+                        bind:round="@{@dimen/spacing_8}"
+                        bind:defaultImage="@{@drawable/defalut_holder_round_8}"
+                        android:src="@drawable/defalut_holder_round_8"/>
+
+                    <TextView
+                        bind:layout_constraintLeft_toRightOf="@+id/home_game_icon"
+                        android:id="@+id/home_game_title"
+                        android:layout_width="wrap_content"
+                        android:textSize="17dp"
+                        android:textColor="@color/black_2e33"
+                        android:layout_marginLeft="@dimen/normal_16dp"
+                        tools:text="游戏名字"
+                        android:text="@{gameDetailViewModel.gameInfo.name}"
+                        android:layout_height="wrap_content"/>
+
+                    <com.blueprint.widget.JRatingBar
+                        bind:starWidth="11dp"
+                        bind:starHeight="11dp"
+                        bind:starDistance="2dp"
+                        bind:starClickable="false"
+                        android:clickable="false"
+                        bind:rbProgress="@{gameDetailViewModel.gameInfo.score}"
+                        bind:starBackground="@drawable/btn_star_74_normal"
+                        bind:starDrawBackground="@drawable/btn_star_74_highlight"
+                        bind:layout_constraintLeft_toLeftOf="@+id/home_game_title"
+                        android:id="@+id/home_game_ratb"
+                        android:layout_marginTop="@dimen/spacing_7"
+                        android:layout_width="wrap_content"
+                        bind:layout_constraintTop_toTopOf="@+id/home_game_icon"
+                        bind:layout_constraintBottom_toBottomOf="@+id/home_game_icon"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        bind:layout_constraintLeft_toRightOf="@+id/home_game_ratb"
+                        android:id="@+id/home_game_score"
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:textSize="11dp"
+                        tools:text="10"
+                        android:textColor="@color/gray_8b8b"
+                        bind:layout_constraintTop_toTopOf="@+id/home_game_ratb"
+                        android:text="@{String.valueOf(gameDetailViewModel.gameInfo.score)}"
+                        bind:layout_constraintBottom_toBottomOf="@+id/home_game_ratb"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        bind:layout_constraintLeft_toLeftOf="@+id/home_game_title"
+                        android:id="@+id/home_game_attention"
+                        android:layout_width="wrap_content"
+                        android:text="@{gameDetailViewModel.gameInfo.attenDownMsg}"
+                        tools:text="关注量      下载量"
+                        android:layout_marginTop="@dimen/spacing_9"
+                        android:textSize="11dp"
+                        bind:layout_constraintBottom_toBottomOf="@+id/home_game_icon"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="投诉"
+                        android:textSize="12dp"
+                        android:textColor="@color/gray_8b8b"
+                        android:paddingLeft="@dimen/spacing_8"
+                        android:paddingBottom="@dimen/spacing_8"
+                        android:onClick="@{gameDetailViewModel.gameInfo::complaint}"
+                        bind:layout_constraintRight_toRightOf="parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/home_game_act"
+                        bind:layout_constraintBottom_toBottomOf="@+id/home_game_icon"
+                        bind:layout_constraintRight_toRightOf="parent"
+                        android:layout_width="48dp"
+                        android:onClick="actLike"
+                        android:gravity="center"
+                        bind:gameAttention="@{gameDetailViewModel.gameInfo.isFollow}"
+                        android:layout_height="24dp"
+                        android:textSize="@dimen/spacing_12"
+                        android:textColor="@drawable/statebg_attenact_tvcolor"
+                        android:background="@drawable/statebg_attenact"
+                        tools:text="@string/game_detail_attention"/>
+
+                    <TextView
+                        android:id="@+id/game_detail_view_dynamic"
+                        bind:layout_constraintTop_toTopOf="@+id/home_game_act"
+                        android:layout_width="48dp"
+                        android:gravity="center"
+                        android:layout_height="24dp"
+                        android:textSize="@dimen/spacing_12"
+                        android:textColor="@color/j_white"
+                        android:background="@drawable/btn_green_round_5"
+                        android:onClick="watchGameDynamic"
+                        bind:layout_constraintRight_toLeftOf="@+id/home_game_act"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/game_detail_watch_dynamic"/>
+
+                    <com.blueprint.widget.JFlowLayout
+                        bind:layout_constraintTop_toBottomOf="@+id/home_game_icon"
+                        android:layout_width="wrap_content"
+                        bind:keyList="@{gameDetailViewModel.gameInfo.flowTags}"
+                        bind:selectListener="@{gameDetailViewModel.gameInfo}"
+                        bind:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        tools:background="#f0f"
+                        android:layout_marginTop="@dimen/normal_16dp"
+                        android:minHeight="@dimen/spacing_28"
+                        android:layout_height="wrap_content"/>
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <ImageView
+                android:id="@+id/right_share_icon"
+                android:layout_width="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/btn_share_38_white"
+                android:paddingRight="@dimen/normal_16dp"
+                android:layout_height="?actionBarSize"/>
+
+            <FrameLayout
+                android:id="@+id/home_search_content"
+                android:layout_width="match_parent"
+                bind:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent"/>
+
+        </com.yun.widget.VideoCoordinatorLayout>
+
+        <RelativeLayout
+            android:id="@+id/game_detail_action"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/j_white"
+            android:layout_height="48dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/divide_line_color"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                tools:text="预约中/下载/已预约"
+                bind:gameInfostate="@{gameDetailViewModel.gameInfo}"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/normal_16dp"
+                android:layout_marginRight="@dimen/normal_16dp"
+                android:gravity="center"
+                android:onClick="toBookPlay"
+                android:textSize="15dp"
+                android:textColor="@drawable/statebg_gamestate_tvcolor"
+                android:background="@drawable/statebg_gamebook_act_round"
+                android:layout_height="36dp"/>
+        </RelativeLayout>
+        <!--</jzy.easybindpagelist.ScrollChildSwipeRefreshLayout>-->
+    </jonas.jlayout.MultiStateLayout>
+</layout>

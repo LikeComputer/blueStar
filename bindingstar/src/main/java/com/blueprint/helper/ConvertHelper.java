@@ -37,6 +37,16 @@ public final class ConvertHelper {
 
     private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
+
+    /**
+     *
+     * @param sizeBytes size value to be formatted, in bytes
+     * @return
+     */
+    public static String sizeFormart(long sizeBytes) {
+        return android.text.format.Formatter.formatFileSize(LibApp.getContext(), sizeBytes);
+    }
+
     /**
      * byteArr转hexString
      * <p>例如：</p>

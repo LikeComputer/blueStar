@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="divide_line_color">#e5e5e5</color>
+    <color name="divide_line_light_color">#e5e5e5</color>
+    <color name="black_2e33">#2e2e33</color>
+    <color name="dark_gary_5d66">#5d5d66</color>
+    <color name="gray_8b8b">#8b8b99</color>
+    <color name="tv_orign_ff88">#ff8814</color>
+    <color name="tv_light_gary">#b3b3b3</color>
+    <color name="tvbg_gray_f5f5">#f5f5fb</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="divide_line_9d86">#ca9d86</color>
+    <color name="q_gray_baba">#babacc</color>
+    <color name="stroke_gray_d1d1">#d1d1e6</color>
+    <color name="gray_baba">#babacc</color>
+    <color name="common_state_press">#20000000</color>
+    <color name="q_gray_f5a">#f5f5fa</color>
+</resources>

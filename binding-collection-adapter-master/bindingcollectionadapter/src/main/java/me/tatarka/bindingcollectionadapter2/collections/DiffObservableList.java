@@ -78,7 +78,7 @@ public class DiffObservableList<T extends IRecvDataDiff> implements ListUpdateCa
         LOG(TAG, "DiffObservableList #update(list) 检测数据差异-->JOnListChangedCallback-->adapter更新");
         try {
             DiffUtil.DiffResult diffResult = doCalculateDiff(mOrignList, newItems);
-            mOrignList.change(newItems);//使用新数据  adapter跟新的时候 需要使用到
+            mOrignList.changeAllSilent(newItems);//使用新数据  adapter跟新的时候 需要使用到
             diffResult.dispatchUpdatesTo(this);
             return true;
         }catch(Exception e) {

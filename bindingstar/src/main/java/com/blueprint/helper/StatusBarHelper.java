@@ -3,6 +3,7 @@ package com.blueprint.helper;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -20,11 +21,20 @@ import java.lang.reflect.Method;
 
 public class StatusBarHelper {
 
-    public static void removeSystemUIFlag(Window window, int addFlag) {
+    public static void removeSystemUIFlag(Window window, int rmFlag) {
         View decorView = window.getDecorView();
         int systemUiVisibility = decorView.getSystemUiVisibility();
-        //todo
-        decorView.setSystemUiVisibility(systemUiVisibility | addFlag);
+        decorView.setSystemUiVisibility(systemUiVisibility & ~rmFlag);
+    }
+
+
+    public static int addFlag(int orignFlags, int addFlag) {
+        return orignFlags |= addFlag;
+    }
+
+
+    public static int rmFlag(int orignFlags, int rmFlag) {
+        return orignFlags &= ~rmFlag;
     }
 
 
@@ -34,9 +44,9 @@ public class StatusBarHelper {
     }
 
 
-    public static void setLayoutFullScreen(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    public static void addLayoutFullScreen(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            addSystemUIFlag(activity.getWindow(), View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
     }
 
@@ -53,11 +63,11 @@ public class StatusBarHelper {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(colorId);
             window.setNavigationBarColor(Color.TRANSPARENT);
-            addSystemUIFlag(window, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = activity.getWindow();
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //addSystemUIFlag(window, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            //}
+            //else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //    Window window = activity.getWindow();
+            //    window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 
@@ -70,14 +80,12 @@ public class StatusBarHelper {
      */
     public static int StatusBarLightMode(Activity activity) {
         int result = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (MIUISetStatusBarLightMode(activity.getWindow(), true)) {
                 result = 1;
-            }
-            else if (FlymeSetStatusBarLightMode(activity.getWindow(), true)) {
+            } else if (FlymeSetStatusBarLightMode(activity.getWindow(), true)) {
                 result = 2;
-            }
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 addSystemUIFlag(activity.getWindow(), View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 result = 3;
             }
@@ -90,14 +98,12 @@ public class StatusBarHelper {
      * 6.0以上版本设置状态栏图标为深色和魅族特定的文字风格
      */
     public static void AndroidStatusBarTextMode(Window window, boolean dark) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (dark) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 addSystemUIFlag(window, View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            }
-            else {
-                //todo  去掉 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                addSystemUIFlag(window, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            } else {
+                removeSystemUIFlag(window, View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             }
         }
     }
@@ -108,7 +114,7 @@ public class StatusBarHelper {
      * 可以用来判断是否为Flyme用户
      *
      * @param window 需要设置的窗口
-     * @param dark 是否把状态栏字体及图标颜色设置为深色
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
     private static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
@@ -125,8 +131,7 @@ public class StatusBarHelper {
                 int value = meizuFlags.getInt(lp);
                 if (dark) {
                     value |= bit;
-                }
-                else {
+                } else {
                     value &= ~bit;
                 }
                 meizuFlags.setInt(lp, value);
@@ -150,7 +155,7 @@ public class StatusBarHelper {
      * 需要开发者同时写上以上两种实现方法。
      *
      * @param window 需要设置的窗口
-     * @param dark 是否把状态栏字体及图标颜色设置为深色
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
     private static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
@@ -179,10 +184,25 @@ public class StatusBarHelper {
         return result;
     }
 
+    /**
+     * 一般用于 布局填充屏幕的情况下，适配低版本布局fitSystemWindow属性 设置padingTop的问题
+     * @return
+     */
+    public static int getStatusBarHeight4Pading() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return 0;
+        } else {
+            return getStatusBarHeight();
+        }
+    }
 
     public static int getStatusBarHeight() {
+        return getSystemResPixelSize("status_bar_height");
+    }
+
+    public static int getSystemResPixelSize(String status_bar_height) {
         Resources system = Resources.getSystem();
-        int resourceId = system.getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = system.getIdentifier(status_bar_height, "dimen", "android");
         return system.getDimensionPixelSize(resourceId);
     }
 
@@ -197,13 +217,23 @@ public class StatusBarHelper {
         boolean hasMenuKey = ViewConfiguration.get(LibApp.getContext()).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         if (!hasMenuKey && !hasBackKey) {
-            Resources res = LibApp.getContext().getResources();
-            int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
-            return res.getDimensionPixelSize(resourceId);
-        }
-        else {
+            return getSystemResPixelSize("navigation_bar_height");
+        } else {
             return 0;
         }
+    }
+
+
+    /**
+     * 获取 actionBar的高度
+     *
+     * @return
+     */
+    public static float getActionBarHeight() {
+        TypedArray actionbarSizeTypedArray = LibApp.getContext().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+        float dimension = actionbarSizeTypedArray.getDimension(0, 0);
+        actionbarSizeTypedArray.recycle();
+        return dimension;
     }
 
 

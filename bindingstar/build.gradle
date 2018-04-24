@@ -7,6 +7,7 @@ android {
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'star-proguard-rules.pro'
 
     }
     dataBinding {
@@ -28,19 +29,33 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.support.recyclerview
-    implementation deps.support.app_compat
-    implementation deps.support.design
-    implementation deps.support.constraint
-    implementation deps.logger
-    implementation deps.jtabstrip
-    implementation deps.rxbinding
-    implementation deps.gson
-    implementation deps.rxjava2
-    implementation deps.rx_android
-    implementation deps.jstatelayout
-    compileOnly deps.lifecycle.runtime
-    compileOnly deps.lifecycle.extensions
+    api deps.support.recyclerview
+    api deps.support.app_compat
+    api deps.support.design
+    api deps.support.constraint
+    api deps.logger
+    api deps.jtabstrip
+    api deps.rxbinding
+    api deps.gson
+    api deps.rxjava2
+    api deps.rx_android
+    api deps.jstatelayout
+    debugImplementation deps.leakcanary
+    releaseImplementation deps.leakcanary_no_op
+
+    //图片 支持 GIF 动图，需要添加
+    api deps.fresco_gif
+    api deps.fresco
+
+    // Java8 support for Lifecycles
+    api deps.lifecycle.java8
+    // ViewModel and LiveData
+    api deps.lifecycle.runtime
+    api deps.lifecycle.extensions
+    // ReactiveStreams support for LiveData
+    api deps.lifecycle.reactivestreams
+    // Test helpers for LiveData
+    testImplementation deps.lifecycle.core_testing
     annotationProcessor deps.lifecycle.compiler
 //    implementation 'com.yun.ospl:bindingcollectionadapter:1.0.1'
 //    implementation 'com.yun.ospl:easybindpagelist:0.1.15'

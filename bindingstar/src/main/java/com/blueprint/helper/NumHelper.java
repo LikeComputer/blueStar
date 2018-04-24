@@ -1,5 +1,9 @@
 package com.blueprint.helper;
 
+import android.text.format.Formatter;
+
+import com.blueprint.LibApp;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -58,7 +62,7 @@ public class NumHelper {
     }
 
     /**
-     * 数字格式化  去末尾0
+     * 数字格式化  末尾保留0
      *
      * @param num
      * @param nScale
@@ -66,7 +70,7 @@ public class NumHelper {
      */
     public static String getNumString(double num, int nScale){
         //        return String.format(".1f%", num); //四舍五入
-        StringBuffer sb = new StringBuffer("#.");
+        StringBuffer sb = new StringBuffer("0.");
         for(int i = 0; i<nScale; i++) {
             sb.append("0");
         }
@@ -76,7 +80,7 @@ public class NumHelper {
 
     /**
      * 数字 百分比 格式化  去末尾0
-     *
+     *  num会自动乘100
      * @param num
      * @param nScale
      * @return
@@ -96,7 +100,7 @@ public class NumHelper {
      *
      * @param num
      * @param nScale
-     * @param type
+     * @param type  1百分数
      * @return
      */
     public static String getNumString(double num, int nScale, int type){
@@ -152,13 +156,6 @@ public class NumHelper {
         return (float)o;
     }
 
-    //    public static <N> N null2float(Object o){
-    //        if(o == null) {
-    //            return 0;
-    //        }
-    //        return ( (N)o );
-    //    }
-
     public static int null2Int(Object o){
         if(o == null) {
             return 0;
@@ -166,6 +163,11 @@ public class NumHelper {
         return (int)o;
     }
 
+    public static String formatByte2Str(long sizeBytes) {
+
+//        Formatter.formatFileSize(LibApp.getContext(),sizeBytes);//两位小数
+        return Formatter.formatShortFileSize(LibApp.getContext(),sizeBytes);
+    }
 
     public static long formatBytes(long sizeBytes){
         long result = sizeBytes;

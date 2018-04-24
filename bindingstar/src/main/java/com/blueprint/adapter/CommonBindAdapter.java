@@ -53,7 +53,7 @@ public class CommonBindAdapter {
     //标签
     @BindingAdapter(value = { "keyList", "selectListener" }, requireAll = false)
     public static void setKeylist(JFlowLayout flowLayout, List<String> keys, JFlowLayout.OnItemSelectedListener selectedListener) {
-        if (CheckHelper.checkLists(keys)) {
+        if (CheckHelper.safeLists(keys)) {
             flowLayout.removeAllViews();
             flowLayout.setHorizontalSpacing(dp2px(9))
                       .setVerticalSpacing(dp2px(9))

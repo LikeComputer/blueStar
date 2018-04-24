@@ -57,7 +57,6 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
     @Nullable protected RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     @Override
     public void setItemBinding(ItemBinding<T> itemBinding){
         this.itemBinding = itemBinding;
@@ -169,6 +168,11 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
         }
     }
 
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder){
+        super.onViewDetachedFromWindow(holder);
+    }
+
     public void configLayoutManager(final RecyclerView.LayoutManager layoutManager){
         mLayoutManager = layoutManager;
         if(mLayoutManager instanceof GridLayoutManager) {
@@ -200,7 +204,7 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
     public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads){
         if(isForDataBinding(payloads)) {
             ViewDataBinding binding = DataBindingUtil.getBinding(holder.itemView);
-            binding.executePendingBindings();
+            binding.executePendingBindings();//数据更新了直接executePendingBindings无效
         }else {
             super.onBindViewHolder(holder, position, payloads);
         }
@@ -305,11 +309,15 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
 
     @Override
     public void onClear(JObservableList ts, int itemCount){
-        //        this.recyclerView.scrollToPosition(0);
-        onItemRangeRemoved(ts, 0, itemCount);
-        //        if(getItemCount() == 1) {
-        //            LOG("清空数据了,只剩下 loading");
-        //        }
+        if (itemCount < 0) {
+            notifyDataSetChanged();
+        }else {
+            //        this.recyclerView.scrollToPosition(0);
+            onItemRangeRemoved(ts, 0, itemCount);
+            //        if(getItemCount() == 1) {
+            //            LOG("清空数据了,只剩下 loading");
+            //        }
+        }
     }
 
     public interface ItemIds<T> {
@@ -319,4 +327,5 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
     public interface ViewHolderFactory {
         ViewHolder createViewHolder(ViewDataBinding binding);
     }
+    
 }

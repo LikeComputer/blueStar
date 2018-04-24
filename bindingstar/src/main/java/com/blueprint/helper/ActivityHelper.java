@@ -33,7 +33,7 @@ public class ActivityHelper {
      */
     public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
                                               @NonNull Fragment fragment, int frameId) {
-        CheckHelper.verifyObjects(fragmentManager,fragment);
+        CheckHelper.safeObjects(fragmentManager,fragment);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
         transaction.commit();

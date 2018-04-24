@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{()->outRecvViewModel.deleItem(itemViewModel)}"
+        android:onLongClick="@{()->outRecvViewModel.addItem()}"
         android:padding="16dp"
-        android:text="@{itemViewModel.content}"/>
+        android:text="@{itemViewModel.showThing}"/>
         <!--android:onLongClick="@{()->outRecvViewModel.deleItem(itemViewModel)}"-->
 </layout>

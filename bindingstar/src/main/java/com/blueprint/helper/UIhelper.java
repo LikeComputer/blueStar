@@ -365,7 +365,7 @@ public class UIhelper {
 
     public static String textViewHintFromSp(SpHelper spHelper, String key, TextView textView){
         String value = spHelper.get(key, "").toString();
-        if(CheckHelper.checkStrings(value)) {
+        if(CheckHelper.safeStrings(value)) {
             textView.setHint(value);
         }
         return value;

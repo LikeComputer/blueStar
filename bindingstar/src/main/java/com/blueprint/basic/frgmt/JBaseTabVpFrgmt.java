@@ -30,8 +30,9 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
     protected int mCurrentItem = 0;
 
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View rootView = inflater.inflate(setContentLayout4Frgmt(), container, false);
         mTabStrip = rootView.findViewById(R.id.jbase_tab_strip);
         mViewpager = rootView.findViewById(R.id.jbase_viewpager);
@@ -50,54 +51,60 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
         return rootView;
     }
 
+    public void setCurrentItem(int currentItem){
+        mCurrentItem = currentItem;
+        if(mViewpager != null && mViewpager.getCurrentItem() != mCurrentItem) {
+            mViewpager.setCurrentItem(mCurrentItem);
+        }
+    }
 
-    protected void reConfigToolBar(JToolbar toolBar) {
+    protected void reConfigToolBar(JToolbar toolBar){
     }
 
 
     /**
      * 默认 没有
      */
-    protected boolean requestNoToolBar() {
+    protected boolean requestNoToolBar(){
         return true;
     }
 
-    public boolean setContentBelowTitleBar() {
+    public boolean setContentBelowTitleBar(){
         return true;
     }
 
 
-    protected void stateLayoutBelowTitleBar() {
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mTabStrip.getLayoutParams();
+    protected void stateLayoutBelowTitleBar(){
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)mTabStrip.getLayoutParams();
         layoutParams.topToBottom = R.id.jbase_toolbar;
     }
 
 
-    protected void initToolBar() {
+    protected void initToolBar(){
         //标题内容
 
     }
 
-    public void setTitle(CharSequence title) {
+    public void setTitle(CharSequence title){
         if(mToolBar != null) {
             mToolBar.setTitle(title);
         }
     }
 
-    protected int setContentLayout4Frgmt() {
+    protected int setContentLayout4Frgmt(){
         if(requestNoToolBar()) {
             return R.layout.jbasic_toolbar_tab_vp_layout;
-        } else {
+        }else {
             return R.layout.jbasic_tab_vp_layout;
         }
     }
 
 
-    protected void extrasConfiguration(View rootView) {
+    protected void extrasConfiguration(View rootView){
     }
 
 
-    private void setupAdapter() {
+    private void setupAdapter(){
         // http://blog.csdn.net/a1274624994/article/details/53575976
         //getFragmentManager()有问题 浪费好多时间：getChildFragmentManager  T_T
         mViewpager.setAdapter(new TabAdapter(getChildFragmentManager(), setTabTitles(), setFrgmtProvider()));
@@ -105,13 +112,13 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
         if(mViewpager.getAdapter() instanceof TabAdapter) {
             //在onsizechange之后设置导致indicator不显示
             mTabStrip.bindViewPager(mViewpager);
-        } else {
+        }else {
             mTabStrip.setVisibility(View.GONE);
         }
     }
 
 
-    protected void initTabStrip() {
+    protected void initTabStrip(){
         //        //        2，拿TabStyleDelegate
         //        JTabStyleDelegate tabStyleDelegate = mBaseTabStrip.getTabStyleDelegate();
         //        //        3, 用TabStyleDelegate设置属性
@@ -126,21 +133,22 @@ public abstract class JBaseTabVpFrgmt extends JBaseFragment {
     }
 
 
-    protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate) {
+    protected void reConfigTabStrip(JTabStyleDelegate tabStyleDelegate){
     }
 
     protected abstract BaseFrgmtFractory setFrgmtProvider();
 
     protected abstract String[] setTabTitles();
 
-//    protected void setupAdapter(){
-//        if(!mIsFirstVisibile) {
-//            super.setupAdapter();
-//        }
-//    }
-//
+    //在可见的时候 初始化 viewPager 只在需要的时候 获取数据
+    //    protected void setupAdapter(){
+    //        if(!mIsFirstVisibile) {
+    //            super.setupAdapter();
+    //        }
+    //    }
+    //
     @Override
     public void firstUserVisibile(){
-//        setupAdapter();
+        //        setupAdapter();
     }
 }

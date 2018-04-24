@@ -16,6 +16,11 @@ import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
 import static android.text.format.DateUtils.SECOND_IN_MILLIS;
 import static com.blueprint.helper.RegexHelper.isNumeric;
 
+/**
+ *  DateUtils
+ *  TimeUnit
+ *  TimeUnit.DAYS.toMillis() 时间转换
+ */
 public class TimeHelper {
 
     public static final String DateFormat_YMD = "yyyy-MM-dd";
@@ -134,12 +139,19 @@ public class TimeHelper {
         }
     }
 
-    public static String dateYMD(String strTimestamp){
-        if(TextUtils.isEmpty(strTimestamp) || strTimestamp.equals("null") && !isNumeric(strTimestamp)) {
+    /**
+     *
+     * @param time 毫秒
+     * @return
+     */
+    public static String formartDateYMD(Object time){
+        String strTimestamp = StrHelper.safeObject2Str(time);
+        if(TextUtils.isEmpty(strTimestamp) || !isNumeric(strTimestamp)) {
             return "";
         }
         long timestamp = Long.parseLong(strTimestamp);
-        Date startDate = new Date(timestamp*1000L); //时间戳转化为日期
+//        Date startDate = new Date(timestamp*1000L); //时间戳转化为日期
+        Date startDate = new Date(timestamp); //时间戳转化为日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
         return sdf.format(startDate);
     }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="me.tatarka.bindingcollectionadapter2.recv.LayoutManagers"/>
+
+        <import type="android.support.v7.widget.LinearLayoutManager"/>
+
+        <variable
+            name="itemImgModel"
+            type="com.yun.juimodel.ui.home.vm.ItemImgModel"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#f0f"
+        android:longClickable="true"
+        android:gravity="center_vertical"
+        android:onLongClickListener="@{itemImgModel::onToggleChecked}"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:src="@mipmap/ic_launcher"
+            android:scaleType="fitXY"
+            android:onClick="@{(v)->itemImgModel.clickShow(v,itemImgModel.index)}"
+            android:layout_height="200dp"/>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:text='@{"Item " + (itemImgModel.index + 1)}'
+            tools:text="Item 1"/>
+
+    </LinearLayout>
+</layout>

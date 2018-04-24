@@ -55,6 +55,8 @@ public abstract class JBaseVMActivity<VM extends ViewModel> extends JBaseActivit
             setMoreVariableView(contentViewDatabinding);
         }else if(requestNoTitleBar() && mToolBar != null) {
             mToolBar.setVisibility(View.GONE);
+        }else if(mToolBar != null) {
+            initToolBar();
         }
         int variableId = setRootVariableId();
         if(variableId != 0){

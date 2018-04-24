@@ -100,7 +100,7 @@ public class SpanClickObservable extends Observable<Object> {
     private SpannableString clickSpanTextStrParser(
             @NonNull SpannableString orignSpan, final String key,
             @ColorInt int spanTextColor, final OnSpanClickListener onSpanClickListener){
-        if(CheckHelper.checkStrings(orignSpan, key)) {
+        if(CheckHelper.safeStrings(orignSpan, key)) {
             Pattern p = Pattern.compile(RegexHelper.safeRegex(key));//不支持拆分
             Matcher m = p.matcher(orignSpan);
             while(m.find()) {

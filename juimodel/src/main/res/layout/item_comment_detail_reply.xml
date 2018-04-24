@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="com.yun.helper.Data2UIhelper"/>
+
+        <variable
+            name="replayViewModel"
+            type="com.yun.juimodel.ui.home.m.CommonDetail.ReplyDetail"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        tools:padding="@dimen/normal_16dp"
+        android:background="@drawable/selector_bg_press"
+        android:onClick="@{replayViewModel::replyMe}"
+        bind:padingltr="@{@dimen/normal_16dp}"
+        android:layout_height="wrap_content">
+
+        <com.yun.widget.AvatorImageView
+            android:id="@+id/comment_detail_reply_avator"
+            android:src="@mipmap/ic_launcher"
+            android:onClick="@{replayViewModel::seeUserDetail}"
+            loadAvator="@{Data2UIhelper.getMiddlePortrait(replayViewModel.uid)}"
+            android:layout_width="38dp"
+            android:layout_height="38dp"/>
+
+        <TextView
+            android:id="@+id/comment_detail_reply_name"
+            bind:layout_constraintTop_toTopOf="@+id/comment_detail_reply_avator"
+            bind:layout_constraintLeft_toRightOf="@+id/comment_detail_reply_avator"
+            tools:text="回复名字"
+            android:textSize="14dp"
+            android:textColor="@color/black_2e33"
+            android:text="@{replayViewModel.nickname}"
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            bind:layout_constraintRight_toRightOf="parent"
+            bind:layout_constraintTop_toTopOf="@+id/comment_detail_reply_avator"
+            tools:text="回复时间"
+            android:textSize="11dp"
+            android:textColor="@color/gray_8b8b"
+            android:text="@{replayViewModel.publishTime}"
+            android:layout_marginLeft="@dimen/normal_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/comment_detail_reply_content"
+            bind:layout_constraintTop_toBottomOf="@+id/comment_detail_reply_name"
+            bind:layout_constraintLeft_toLeftOf="@+id/comment_detail_reply_name"
+            bind:layout_constraintRight_toRightOf="parent"
+            tools:text="回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字回复名字"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            android:text="@{replayViewModel.commentContent}"
+            android:textSize="13dp"
+            android:textColor="@color/black_2e33"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/comment_detail_reply_content2"
+            bind:layout_constraintTop_toBottomOf="@+id/comment_detail_reply_name"
+            bind:layout_constraintLeft_toLeftOf="@+id/comment_detail_reply_name"
+            tools:text="回复名字回"
+            android:visibility="@{replayViewModel.replyed?View.VISIBLE:View.GONE}"
+            android:text="@{replayViewModel.replyRelation}"
+            android:onClick="@{replayViewModel::seeReplyDetail}"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="@dimen/common_line_spac"
+            android:textSize="13dp"
+            android:textColor="@color/black_2e33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="0dp"
+            bind:layout_constraintRight_toRightOf="parent"
+            android:layout_height="0.5dp"
+            bind:layout_constraintTop_toBottomOf="@+id/comment_detail_reply_content"
+            android:layout_marginTop="@dimen/normal_16dp"
+            bind:layout_constraintLeft_toLeftOf="@+id/comment_detail_reply_content"
+            android:background="@color/divide_line_color"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>
